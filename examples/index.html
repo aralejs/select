@@ -80,7 +80,7 @@ function parseCity(type, prov) {
 <p>基本使用，默认选中 option2</p>
 <p><select id="example1">
     <option value="option1">option1</option>
-    <option value="option2" selected="selected">options2</option>
+    <option value="option2" selected="selected">option2</option>
 </select></p>
 <div class="highlight"><pre><span class="nx">seajs</span><span class="p">.</span><span class="nx">use</span><span class="p">([</span><span class="s1">&#39;../src/select&#39;</span><span class="p">],</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Select</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">new</span> <span class="nx">Select</span><span class="p">({</span>
@@ -134,25 +134,25 @@ seajs.use(['../src/select'], function(Select) {
         <span class="kd">var</span> <span class="nx">model</span> <span class="o">=</span> <span class="nx">parseProv</span><span class="p">(</span><span class="nx">type</span><span class="p">);</span>
         <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">model</span><span class="p">);</span>
         <span class="nx">a2</span><span class="p">.</span><span class="nx">syncModel</span><span class="p">(</span><span class="nx">model</span><span class="p">);</span>
-    <span class="p">}).</span><span class="nx">render</span><span class="p">();</span>
+    <span class="p">});</span>
 
     <span class="kd">var</span> <span class="nx">a2</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Select</span><span class="p">({</span>
         <span class="nx">trigger</span><span class="o">:</span> <span class="s1">&#39;#myselect2&#39;</span><span class="p">,</span>
-        <span class="nx">model</span><span class="o">:</span> <span class="p">{</span>
-            <span class="nx">select</span><span class="o">:</span> <span class="nx">parseProv</span><span class="p">(</span><span class="s1">&#39;WATER&#39;</span><span class="p">)</span>
-        <span class="p">}</span>
+        <span class="nx">model</span><span class="o">:</span> <span class="nx">parseProv</span><span class="p">(</span><span class="s1">&#39;WATER&#39;</span><span class="p">)</span>
     <span class="p">}).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;change&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">target</span><span class="p">)</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">prov</span> <span class="o">=</span> <span class="nx">target</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s1">&#39;data-value&#39;</span><span class="p">);</span>
         <span class="kd">var</span> <span class="nx">model</span> <span class="o">=</span> <span class="nx">parseCity</span><span class="p">(</span><span class="nx">a1</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">),</span> <span class="nx">prov</span><span class="p">);</span>
         <span class="nx">a3</span><span class="p">.</span><span class="nx">syncModel</span><span class="p">(</span><span class="nx">model</span><span class="p">);</span>
-    <span class="p">}).</span><span class="nx">render</span><span class="p">();</span>
+    <span class="p">});</span>
 
     <span class="kd">var</span> <span class="nx">a3</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Select</span><span class="p">({</span>
         <span class="nx">trigger</span><span class="o">:</span> <span class="s1">&#39;#myselect3&#39;</span><span class="p">,</span>
-        <span class="nx">model</span><span class="o">:</span> <span class="p">{</span>
-            <span class="nx">select</span><span class="o">:</span> <span class="nx">parseCity</span><span class="p">(</span><span class="s1">&#39;WATER&#39;</span><span class="p">)</span>
-        <span class="p">}</span>
-    <span class="p">}).</span><span class="nx">render</span><span class="p">();</span>
+        <span class="nx">model</span><span class="o">:</span> <span class="nx">parseCity</span><span class="p">(</span><span class="s1">&#39;WATER&#39;</span><span class="p">)</span>
+    <span class="p">});</span>
+
+    <span class="nx">a1</span><span class="p">.</span><span class="nx">render</span><span class="p">();</span>
+    <span class="nx">a2</span><span class="p">.</span><span class="nx">render</span><span class="p">();</span>
+    <span class="nx">a3</span><span class="p">.</span><span class="nx">render</span><span class="p">();</span>
 <span class="p">});</span>
 </pre></div>
 
@@ -165,25 +165,25 @@ seajs.use(['../src/select'], function(Select) {
         var model = parseProv(type);
         console.log(model);
         a2.syncModel(model);
-    }).render();
+    });
 
     var a2 = new Select({
         trigger: '#myselect2',
-        model: {
-            select: parseProv('WATER')
-        }
+        model: parseProv('WATER')
     }).on('change', function(target) {
         var prov = target.attr('data-value');
         var model = parseCity(a1.get('value'), prov);
         a3.syncModel(model);
-    }).render();
+    });
 
     var a3 = new Select({
         trigger: '#myselect3',
-        model: {
-            select: parseCity('WATER')
-        }
-    }).render();
+        model: parseCity('WATER')
+    });
+
+    a1.render();
+    a2.render();
+    a3.render();
 });
 </script>
 

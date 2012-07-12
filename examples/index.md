@@ -47,7 +47,7 @@ function parseCity(type, prov) {
 
 <select id="example1">
     <option value="option1">option1</option>
-    <option value="option2" selected="selected">options2</option>
+    <option value="option2" selected="selected">option2</option>
 </select>
 
 ```javascript
@@ -91,24 +91,24 @@ seajs.use(['../src/select'], function(Select) {
         var model = parseProv(type);
         console.log(model);
         a2.syncModel(model);
-    }).render();
+    });
 
     var a2 = new Select({
         trigger: '#myselect2',
-        model: {
-            select: parseProv('WATER')
-        }
+        model: parseProv('WATER')
     }).on('change', function(target) {
         var prov = target.attr('data-value');
         var model = parseCity(a1.get('value'), prov);
         a3.syncModel(model);
-    }).render();
+    });
 
     var a3 = new Select({
         trigger: '#myselect3',
-        model: {
-            select: parseCity('WATER')
-        }
-    }).render();
+        model: parseCity('WATER')
+    });
+
+    a1.render();
+    a2.render();
+    a3.render();
 });
 ```

@@ -92,13 +92,15 @@ define(function(require, exports, module) {
         select: function(selector) {
             var selectIndex = getSelectedIndex(selector, this.options);
             this.set('selectedIndex', selectIndex);
+            this.trigger('change', this.currentItem);
             this.hide();
             return this;
         },
 
         syncModel: function(model) {
-            this.model = completeModel(this.model, this.get('prefix'));
+            this.model = completeModel(model, this.get('prefix'));
             this.renderPartial('[data-role=content]');
+            this.options = this.$('[data-role=content]').children();
             this.select('[data-selected=true]');
             return this;
         },
@@ -129,14 +131,9 @@ define(function(require, exports, module) {
             // 处理当前选中的元素
             selector.attr('data-selected', true)
                 .addClass(this.get('prefix') + '-selected');
-            this.set('value', selector.html());
+            this.set('value', selector.attr('data-value'));
+            this.get('trigger').html(selector.html());
             this.currentItem = selector;
-
-            this.trigger('change', selector);
-        },
-
-        _onRenderValue: function(val) {
-            this.get('trigger').html(val);
         },
 
         _onRenderDisabled: function(val) {
@@ -189,7 +186,7 @@ define(function(require, exports, module) {
         }
         // 当所有都没有设置 selected，默认设置第一个
         if (!hasDefaultSelect) {
-            newModel[0].selected = true;
+            newModel[0].selected = 'true';
         }
         return {select: model, prefix: prefix};
     }
@@ -199,13 +196,18 @@ define(function(require, exports, module) {
         var i, newModel = [], hasDefaultSelect = false;
         for (i in model) {
             var o = model[i];
-            !o.defaultSelected && o.defaultSelected = false;
-            o.selected && (hasDefaultSelect = true);
+            o.defaultSelected = o.defaultSelected ? 'true' : 'false';
+            if (o.selected) {
+                o.selected = 'true';
+                hasDefaultSelect = true;
+            } else {
+                o.selected = 'false';
+            }
             newModel.push(o);
         }
         // 当所有都没有设置 selected，默认设置第一个
         if (!hasDefaultSelect) {
-            newModel[0].selected = true;
+            newModel[0].selected = 'true';
         }
         return {select: newModel, prefix: prefix};
     }
