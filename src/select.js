@@ -11,14 +11,15 @@ define(function(require, exports, module) {
         attrs: {
             prefix: 'ui-select',
             triggerTemplate: '<a href="#"></a>',
-            template: '<div class="{{prefix}}"><ul class="{{prefix}}-content" data-role="content">{{#each select}}<li data-role="item" class="{{../prefix}}-item" data-value="{{value}}" data-selected="{{selected}}">{{text}}</li>{{/each}}</ul></div>',
+            template: '<div class="{{prefix}}"><ul class="{{prefix}}-content" data-role="content">{{#each select}}<li data-role="item" class="{{../prefix}}-item" data-value="{{value}}" data-defaultSelected="{{defaultSelected}}" data-selected="{{selected}}">{{text}}</li>{{/each}}</ul></div>',
             // select 的参数
             value: '',
             length: 0,
             selectedIndex: 0,
             multiple: false, // TODO
             disabled: false,
-            // 不要覆盖
+            // 以下不要覆盖
+            selectSource: null,
             triggerType: 'click'
         },
 
@@ -35,84 +36,104 @@ define(function(require, exports, module) {
             }
         },
 
-        initAttrs: function(config) {
-            Select.superclass.initAttrs.call(this, config);
+        // 覆盖父类
+        // --------
+
+        initAttrs: function(config, dataAttrsConfig) {
+            Select.superclass.initAttrs.call(this, config, dataAttrsConfig);
 
             // trigger 如果为 select 则根据 select 的结构生成
             // trigger 如果为其他 DOM，则由用户提供 model
             var select = this.get('trigger');
             if (select[0].tagName.toLowerCase() == 'select') {
-                this.model = {
-                    select: parseSelect(select[0])
-                };
+                // 替换之前把 select 保存起来
+                this.set('selectSource', select);
                 // 替换 trigger
                 var newTrigger = $(this.get('triggerTemplate'));
                 this.set('trigger', newTrigger);
                 select.after(newTrigger).hide();
-            }
 
-            this.model.prefix = this.get('prefix');
+                this.model = convertSelect(select[0], this.get('prefix'));
+            } else {
+                this.model = completeModel(this.model, this.get('prefix'));
+            }
         },
 
         setup: function() {
             Select.superclass.setup.call(this);
+
             var that = this;
+            this.get('trigger').on('click', function(e) {
+                e.preventDefault();
+                if (!that.get('disabled')) {
+                    that.show();
+                }
+            });
 
+            var options = this.options = this.$('[data-role=content]').children();
+
+            // 初始化 select 的参数
             this.select('[data-selected=true]');
-            this.set('length', this.$('[data-role=content]').children().length);
-
-            this.get('trigger')
-                .html(this.currentItem.html())
-                .on('click', function(e) {
-                    e.preventDefault();
-                    if (!that.get('disabled')) {
-                        that.show();
-                    }
-                });
+            this.set('length', options.length);
         },
 
+        destroy: function() {
+            this.element.remove();
+            var select = this.get('selectSource');
+            if (select) {
+                this.get('trigger').remove();
+                select.show();
+            }
+        },
+
+        // 方法接口
+        // --------
+
         select: function(selector) {
-            if ($.isNumeric(selector)) { // 如果是索引
-                selector = this.$('[data-role=item]').eq(selector);
-            } else if (typeof selector === 'string') { // 如果是选择器
-                selector = this.$(selector).eq(0);
-            } else { // 如果是 DOM
-                selector = $(selector);
-            }
-
-            // 如果不选中当前元素
-            if (this.currentItem != selector) {
-                // 处理之前选中的元素
-                if (this.currentItem) {
-                    this.currentItem.attr('data-selected', false)
-                    .removeClass(this.get('prefix') + '-selected');
-                }
-
-                // 处理当前选中的元素
-                this.currentItem = selector;
-                this.currentItem.attr('data-selected', true)
-                .addClass(this.get('prefix') + '-selected');
-
-                this.set('value', this.currentItem.attr('data-value'));
-
-                this.get('trigger').html(selector.html());
-                this.trigger('change', selector);
-            }
+            var selectIndex = getSelectedIndex(selector, this.options);
+            this.set('selectedIndex', selectIndex);
             this.hide();
+            return this;
         },
 
         syncModel: function(model) {
-            this.model = {
-                select: model,
-                prefix: this.get('prefix')
-            };
+            this.model = completeModel(this.model, this.get('prefix'));
             this.renderPartial('[data-role=content]');
             this.select('[data-selected=true]');
             return this;
         },
 
         add: function(item) {
-            
+            return this;
+        },
+
+        remove: function(item) {
+            return this;
+        },
+
+        // set 后的回调
+        // ------------
+
+        _onRendarSelectedIndex: function(index) {
+            var selector = this.options[index];
+
+            // 处理之前选中的元素
+            if (this.currentItem) {
+                this.currentItem.attr('data-selected', false)
+                .removeClass(this.get('prefix') + '-selected');
+            }
+
+            // 处理当前选中的元素
+            selector.attr('data-selected', true)
+                .addClass(this.get('prefix') + '-selected');
+            this.set('value', selector.html());
+            this.currentItem = selector;
+
+            this.trigger('change', selector);
+        },
+
+        _onRenderValue: function(val) {
+            this.get('trigger').html(val);
         },
 
         _onRenderDisabled: function(val) {
@@ -129,7 +150,7 @@ define(function(require, exports, module) {
     // Helper
     // ------
 
-    // 转换 select 对象为 object
+    // 转换 select 对象为 model
     //
     // <select>
     //   <option value='value1'>text1</option>
@@ -144,20 +165,45 @@ define(function(require, exports, module) {
     //   {value: 'value2', text: 'text2',
     //      defaultSelected: true, selected: true}
     // ]
-    function parseSelect(select) {
-        var i, result = [], options = select.options, l = options.length;
+    function convertSelect(select, prefix) {
+        var i, model = [], options = select.options, l = options.length;
         for (i = 0; i < l; i++) {
             var j, o = {}, option = options[i];
-            var fields = ['text', 'value', 'selected'];
+            var fields = ['text', 'value', 'defaultSelected', 'selected'];
             for (j in fields) {
                 var field = fields[j];
                 o[field] = option[field];
             }
-            if (option.defaultSelected) {
-                o.selected = true;
-            }
-            result.push(o);
+            model.push(o);
         }
-        return result;
+        return {select: model, prefix: prefix};
+    }
+
+    // 补全 model 对象
+    function completeModel(model, prefix) {
+        var i, newModel = [], hasDefaultSelect = false;
+        for (i in model) {
+            var o = model[i];
+            !o.defaultSelected && o.defaultSelected = false;
+            o.selected && defaultSelect = true;
+            newModel.push(o);
+        }
+        // 当所有都没有设置 selected，默认设置第一个
+        if (!hasDefaultSelect) {
+            newModel[0].selected = true;
+        }
+        return {select: newModel, prefix: prefix};
+    }
+
+    function getSelectedIndex(selector, options) {
+        var index;
+        if ($.isNumeric(selector)) { // 如果是索引
+            index = selector;
+        } else if (typeof selector === 'string') { // 如果是选择器
+            index = options.index(selector);
+        } else { // 如果是 DOM
+            index = options.index(selector);
+        }
+        return index;
     }
 });
