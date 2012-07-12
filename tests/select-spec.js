@@ -26,7 +26,7 @@ define(function(require) {
 
             expect(trigger.is(':hidden')).toBeTruthy();
             expect(select.get('trigger').html()).toBe('text2');
-            expect(select.get('value')).toBe('value2');
+            expect(select.get('value')).toBe('text2');
             expect(select.get('length')).toBe(2);
             expect(select.get('selectedIndex')).toBe(1);
         });

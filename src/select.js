@@ -71,8 +71,8 @@ define(function(require, exports, module) {
             });
 
             var options = this.options = this.$('[data-role=content]').children();
-
             // 初始化 select 的参数
+            // 必须在插入文档流后操作
             this.select('[data-selected=true]');
             this.set('length', options.length);
         },
@@ -103,19 +103,22 @@ define(function(require, exports, module) {
             return this;
         },
 
-        add: function(item) {
+        getOption: function() {
+
+        },
+        addOption: function(item) {
             return this;
         },
 
-        remove: function(item) {
+        removeOption: function(item) {
             return this;
         },
 
         // set 后的回调
         // ------------
 
-        _onRendarSelectedIndex: function(index) {
-            var selector = this.options[index];
+        _onRenderSelectedIndex: function(index) {
+            var selector = this.options.eq(index);
 
             // 处理之前选中的元素
             if (this.currentItem) {
@@ -166,7 +169,8 @@ define(function(require, exports, module) {
     //      defaultSelected: true, selected: true}
     // ]
     function convertSelect(select, prefix) {
-        var i, model = [], options = select.options, l = options.length;
+        var i, model = [], options = select.options,
+            l = options.length, hasDefaultSelect = false;
         for (i = 0; i < l; i++) {
             var j, o = {}, option = options[i];
             var fields = ['text', 'value', 'defaultSelected', 'selected'];
@@ -174,7 +178,18 @@ define(function(require, exports, module) {
                 var field = fields[j];
                 o[field] = option[field];
             }
+            o.defaultSelected = option.defaultSelected ? 'true' : 'false';
+            if (option.selected) {
+                o.selected = 'true';
+                hasDefaultSelect = true;
+            } else {
+                o.selected = 'false';
+            }
             model.push(o);
+        }
+        // 当所有都没有设置 selected，默认设置第一个
+        if (!hasDefaultSelect) {
+            newModel[0].selected = true;
         }
         return {select: model, prefix: prefix};
     }
@@ -185,7 +200,7 @@ define(function(require, exports, module) {
         for (i in model) {
             var o = model[i];
             !o.defaultSelected && o.defaultSelected = false;
-            o.selected && defaultSelect = true;
+            o.selected && (hasDefaultSelect = true);
             newModel.push(o);
         }
         // 当所有都没有设置 selected，默认设置第一个
@@ -200,7 +215,7 @@ define(function(require, exports, module) {
         if ($.isNumeric(selector)) { // 如果是索引
             index = selector;
         } else if (typeof selector === 'string') { // 如果是选择器
-            index = options.index(selector);
+            index = options.index(options.parent().find(selector));
         } else { // 如果是 DOM
             index = options.index(selector);
         }
