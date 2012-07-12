@@ -57,25 +57,69 @@ function parseCity(type, prov) {
 </script>
 
 <style>
-.ui-chosen {
+.ui-select {
+    border: 1px solid #eee;
 }
-.ui-chosen-content {
+.ui-select-content {
     padding: 2px 0;
     margin: 0;
     background: #fff;
 }
-.ui-chosen-item {
+.ui-select-item {
     padding: 5px 10px;
     width: 80px;
     list-style: none;
 }
-.ui-chosen-selected {
+.ui-select-selected {
     background: red;
 }
-.ui-chosen-hover {
+.ui-select-hover {
     background: #ccc;
 }
 </style>
+<p>基本使用，默认选中 option2</p>
+<p><select id="example1">
+    <option value="option1">option1</option>
+    <option value="option2" selected="selected">options2</option>
+</select></p>
+<div class="highlight"><pre><span class="nx">seajs</span><span class="p">.</span><span class="nx">use</span><span class="p">([</span><span class="s1">&#39;../src/select&#39;</span><span class="p">],</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Select</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">new</span> <span class="nx">Select</span><span class="p">({</span>
+        <span class="nx">trigger</span><span class="o">:</span> <span class="s1">&#39;#example1&#39;</span>
+    <span class="p">}).</span><span class="nx">render</span><span class="p">();</span>
+<span class="p">});</span>
+</pre></div>
+
+<script type="text/javascript">
+seajs.use(['../src/select'], function(Select) {
+    new Select({
+        trigger: '#example1'
+    }).render();
+});
+</script>
+<p>初始化可以传递一个 model</p>
+<p><a href="#" id="example2"></a></p>
+<div class="highlight"><pre><span class="nx">seajs</span><span class="p">.</span><span class="nx">use</span><span class="p">([</span><span class="s1">&#39;../src/select&#39;</span><span class="p">],</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Select</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">new</span> <span class="nx">Select</span><span class="p">({</span>
+        <span class="nx">trigger</span><span class="o">:</span> <span class="s1">&#39;#example2&#39;</span><span class="p">,</span>
+        <span class="nx">model</span><span class="o">:</span> <span class="p">[</span>
+            <span class="p">{</span><span class="nx">value</span><span class="o">:</span><span class="s1">&#39;option1&#39;</span><span class="p">,</span> <span class="nx">text</span><span class="o">:</span><span class="s1">&#39;option1&#39;</span><span class="p">,</span> <span class="nx">select</span><span class="o">:</span> <span class="kc">false</span><span class="p">},</span>
+            <span class="p">{</span><span class="nx">value</span><span class="o">:</span><span class="s1">&#39;option2&#39;</span><span class="p">,</span> <span class="nx">text</span><span class="o">:</span><span class="s1">&#39;option2&#39;</span><span class="p">,</span> <span class="nx">select</span><span class="o">:</span> <span class="kc">true</span><span class="p">}</span>
+        <span class="p">]</span>
+    <span class="p">}).</span><span class="nx">render</span><span class="p">();</span>
+<span class="p">});</span>
+</pre></div>
+
+<script type="text/javascript">
+seajs.use(['../src/select'], function(Select) {
+    new Select({
+        trigger: '#example2',
+        model: [
+            {value:'option1', text:'option1', select: false},
+            {value:'option2', text:'option2', select: true}
+        ]
+    }).render();
+});
+</script>
 <p><select id="myselect1">
     <option value="WATER">水费</option>
     <option value="ELECTRIC">电费</option>
@@ -147,18 +191,5 @@ seajs.use(['../src/select'], function(Select) {
 
         </div>
         <hr class="end" />
-        <script type="text/javascript">
-            seajs.use('#jquery/1.7.2/jquery', function($) {
-                $('#nav-test').click(function() {
-                    var href = $(this).attr('href');
-                    var iframe = '<div class="container"><iframe src="' +
-                        href + '" frameborder="0" width="100%" height="640">' +
-                        '</iframe></div>';
-                    $('#main').html(iframe);
-                    !!history.pushState && history.pushState(null, 'Test', href);
-                    return false;
-                });
-            });
-        </script>
     </body>
 </html>

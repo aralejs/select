@@ -22,25 +22,57 @@ function parseCity(type, prov) {
 </script>
 
 <style>
-.ui-chosen {
+.ui-select {
+    border: 1px solid #eee;
 }
-.ui-chosen-content {
+.ui-select-content {
     padding: 2px 0;
     margin: 0;
     background: #fff;
 }
-.ui-chosen-item {
+.ui-select-item {
     padding: 5px 10px;
     width: 80px;
     list-style: none;
 }
-.ui-chosen-selected {
+.ui-select-selected {
     background: red;
 }
-.ui-chosen-hover {
+.ui-select-hover {
     background: #ccc;
 }
 </style>
+
+基本使用，默认选中 option2
+
+<select id="example1">
+    <option value="option1">option1</option>
+    <option value="option2" selected="selected">options2</option>
+</select>
+
+```javascript
+seajs.use(['../src/select'], function(Select) {
+    new Select({
+        trigger: '#example1'
+    }).render();
+});
+```
+
+初始化可以传递一个 model
+
+<a href="#" id="example2"></a>
+
+```javascript
+seajs.use(['../src/select'], function(Select) {
+    new Select({
+        trigger: '#example2',
+        model: [
+            {value:'option1', text:'option1', select: false},
+            {value:'option2', text:'option2', select: true}
+        ]
+    }).render();
+});
+```
 
 <select id="myselect1">
     <option value="WATER">水费</option>

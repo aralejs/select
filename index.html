@@ -91,18 +91,5 @@
 
         </div>
         <hr class="end" />
-        <script type="text/javascript">
-            seajs.use('#jquery/1.7.2/jquery', function($) {
-                $('#nav-test').click(function() {
-                    var href = $(this).attr('href');
-                    var iframe = '<div class="container"><iframe src="' +
-                        href + '" frameborder="0" width="100%" height="640">' +
-                        '</iframe></div>';
-                    $('#main').html(iframe);
-                    !!history.pushState && history.pushState(null, 'Test', href);
-                    return false;
-                });
-            });
-        </script>
     </body>
 </html>
