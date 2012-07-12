@@ -67,8 +67,8 @@ seajs.use(['../src/select'], function(Select) {
     new Select({
         trigger: '#example2',
         model: [
-            {value:'option1', text:'option1', select: false},
-            {value:'option2', text:'option2', select: true}
+            {value:'option1', text:'option1', selected: false},
+            {value:'option2', text:'option2', selected: true}
         ]
     }).render();
 });

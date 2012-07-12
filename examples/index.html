@@ -102,8 +102,8 @@ seajs.use(['../src/select'], function(Select) {
     <span class="k">new</span> <span class="nx">Select</span><span class="p">({</span>
         <span class="nx">trigger</span><span class="o">:</span> <span class="s1">&#39;#example2&#39;</span><span class="p">,</span>
         <span class="nx">model</span><span class="o">:</span> <span class="p">[</span>
-            <span class="p">{</span><span class="nx">value</span><span class="o">:</span><span class="s1">&#39;option1&#39;</span><span class="p">,</span> <span class="nx">text</span><span class="o">:</span><span class="s1">&#39;option1&#39;</span><span class="p">,</span> <span class="nx">select</span><span class="o">:</span> <span class="kc">false</span><span class="p">},</span>
-            <span class="p">{</span><span class="nx">value</span><span class="o">:</span><span class="s1">&#39;option2&#39;</span><span class="p">,</span> <span class="nx">text</span><span class="o">:</span><span class="s1">&#39;option2&#39;</span><span class="p">,</span> <span class="nx">select</span><span class="o">:</span> <span class="kc">true</span><span class="p">}</span>
+            <span class="p">{</span><span class="nx">value</span><span class="o">:</span><span class="s1">&#39;option1&#39;</span><span class="p">,</span> <span class="nx">text</span><span class="o">:</span><span class="s1">&#39;option1&#39;</span><span class="p">,</span> <span class="nx">selected</span><span class="o">:</span> <span class="kc">false</span><span class="p">},</span>
+            <span class="p">{</span><span class="nx">value</span><span class="o">:</span><span class="s1">&#39;option2&#39;</span><span class="p">,</span> <span class="nx">text</span><span class="o">:</span><span class="s1">&#39;option2&#39;</span><span class="p">,</span> <span class="nx">selected</span><span class="o">:</span> <span class="kc">true</span><span class="p">}</span>
         <span class="p">]</span>
     <span class="p">}).</span><span class="nx">render</span><span class="p">();</span>
 <span class="p">});</span>
@@ -114,8 +114,8 @@ seajs.use(['../src/select'], function(Select) {
     new Select({
         trigger: '#example2',
         model: [
-            {value:'option1', text:'option1', select: false},
-            {value:'option2', text:'option2', select: true}
+            {value:'option1', text:'option1', selected: false},
+            {value:'option2', text:'option2', selected: true}
         ]
     }).render();
 });

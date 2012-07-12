@@ -14,7 +14,9 @@ define(function(require, exports, module) {
             template: '<div class="{{prefix}}"><ul class="{{prefix}}-content" data-role="content">{{#each select}}<li data-role="item" class="{{../prefix}}-item" data-value="{{value}}" data-selected="{{selected}}">{{text}}</li>{{/each}}</ul></div>',
             // select 的参数
             value: '',
-            multiple : false, // TODO
+            length: 0,
+            selectedIndex: 0,
+            multiple: false, // TODO
             disabled: false,
             // 不要覆盖
             triggerType: 'click'
@@ -57,6 +59,7 @@ define(function(require, exports, module) {
             var that = this;
 
             this.select('[data-selected=true]');
+            this.set('length', this.$('[data-role=content]').children().length);
 
             this.get('trigger')
                 .html(this.currentItem.html())
@@ -108,6 +111,10 @@ define(function(require, exports, module) {
             return this;
         },
 
+        add: function(item) {
+            
+        },
+
         _onRenderDisabled: function(val) {
             if (val) {
                 var className = this.get('prefix') + '-disabled';
@@ -141,12 +148,12 @@ define(function(require, exports, module) {
         var i, result = [], options = select.options, l = options.length;
         for (i = 0; i < l; i++) {
             var j, o = {}, option = options[i];
-            var fields = ['text', 'value', 'defaultSelected', 'selected'];
+            var fields = ['text', 'value', 'selected'];
             for (j in fields) {
                 var field = fields[j];
                 o[field] = option[field];
             }
-            if (o.defaultSelected) {
+            if (option.defaultSelected) {
                 o.selected = true;
             }
             result.push(o);
