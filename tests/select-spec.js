@@ -8,14 +8,14 @@ define(function(require) {
         var trigger, select;
 
         afterEach(function() {
-//            if (select) {
-//                select.destroy();
-//                select = null;
-//            }
-//            if (trigger) {
-//                trigger.remove();
-//                trigger = null;
-//            }
+            if (select) {
+                select.destroy();
+                select = null;
+            }
+            if (trigger) {
+                trigger.remove();
+                trigger = null;
+            }
         });
 
         test('normal use', function() {
