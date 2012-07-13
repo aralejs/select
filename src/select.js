@@ -15,7 +15,7 @@ define(function(require, exports, module) {
             // select 的参数
             value: '',
             length: 0,
-            selectedIndex: 0,
+            selectedIndex: -1,
             multiple: false, // TODO
             disabled: false,
             // 以下不要覆盖
@@ -99,14 +99,18 @@ define(function(require, exports, module) {
         syncModel: function(model) {
             this.model = completeModel(model, this.get('prefix'));
             this.renderPartial('[data-role=content]');
-            this.options = this.$('[data-role=content]').children();
+            // 渲染后重置 select 的属性
+            this.set('selectedIndex', -1);
+            this.set('value', '');
+            var options = this.options = this.$('[data-role=content]').children();
+            this.set('length', options.length);
+
             this.select('[data-selected=true]');
             return this;
         },
 
-        getOption: function() {
+        getOption: function() {},
 
-        },
         addOption: function(item) {
             return this;
         },
@@ -119,6 +123,8 @@ define(function(require, exports, module) {
         // ------------
 
         _onRenderSelectedIndex: function(index) {
+            if (index == -1) return;
+
             var selector = this.options.eq(index);
 
             // 处理之前选中的元素
