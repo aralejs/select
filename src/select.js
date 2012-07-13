@@ -150,7 +150,7 @@ define(function(require, exports, module) {
     // Helper
     // ------
 
-    // 转换 select 对象为 model
+    // 将 select 对象转换为 model
     //
     // <select>
     //   <option value='value1'>text1</option>
@@ -193,20 +193,25 @@ define(function(require, exports, module) {
 
     // 补全 model 对象
     function completeModel(model, prefix) {
-        var i, newModel = [], hasDefaultSelect = false;
+        var i, j, newModel = [], selectIndexArray = [];
         for (i in model) {
             var o = model[i];
             o.defaultSelected = o.defaultSelected ? 'true' : 'false';
             if (o.selected) {
-                o.selected = 'true';
-                hasDefaultSelect = true;
+                o.selected = o.defaultSelected = 'true';
+                selectIndexArray.push(i);
             } else {
-                o.selected = 'false';
+                o.selected = o.defaultSelected = 'false';
             }
             newModel.push(o);
         }
-        // 当所有都没有设置 selected，默认设置第一个
-        if (!hasDefaultSelect) {
+        if (selectIndexArray.length > 0) {
+            // 如果有多个 selected 则选中最后一个
+            selectIndexArray.pop();
+            for (j in selectIndexArray) {
+                newModel[0].selected = 'false';
+            }
+        } else { //当所有都没有设置 selected 则默认设置第一个
             newModel[0].selected = 'true';
         }
         return {select: newModel, prefix: prefix};
