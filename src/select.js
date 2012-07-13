@@ -19,8 +19,7 @@ define(function(require, exports, module) {
             multiple: false, // TODO
             disabled: false,
             // 以下不要覆盖
-            selectSource: null,
-            triggerType: 'click'
+            selectSource: null
         },
 
         events: {
@@ -59,9 +58,8 @@ define(function(require, exports, module) {
             }
         },
 
+        // popup 绑定 trigger 无法在 disabled 阻止，所以全覆盖
         setup: function() {
-            Select.superclass.setup.call(this);
-
             var that = this;
             this.get('trigger').on('click', function(e) {
                 e.preventDefault();
@@ -75,6 +73,11 @@ define(function(require, exports, module) {
             // 必须在插入文档流后操作
             this.select('[data-selected=true]');
             this.set('length', options.length);
+
+            // 调用 dropdown
+            this._tweakAlignDefaultValue();
+            // 调用 overlay
+            this._setupShim();
         },
 
         destroy: function() {

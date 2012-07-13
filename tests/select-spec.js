@@ -270,7 +270,34 @@ define(function(require) {
                 .toBe('true');
         });
 
+        test('trigger click', function() {
+            trigger = $('<a href="#" id="example"></a>').appendTo(document.body);
+            select = new Select({
+                trigger: '#example',
+                model: [
+                    {value: 'value1', text: 'text1'},
+                    {value: 'value2', text: 'text2', selected: true}
+                ]
+            }).render();
+
+            trigger.click();
+            expect(select.element.is(':hidden')).toBeFalsy();
+        });
+
         test('set disabled', function() {
+            trigger = $('<a href="#" id="example"></a>').appendTo(document.body);
+            select = new Select({
+                trigger: '#example',
+                model: [
+                    {value: 'value1', text: 'text1'},
+                    {value: 'value2', text: 'text2', selected: true}
+                ],
+                disabled: true
+            }).render();
+
+            trigger.click();
+            expect(trigger.hasClass('ui-select-disabled')).toBeTruthy();
+            expect(select.element.is(':hidden')).toBeTruthy();
         });
 
         test('set prefix', function() {
