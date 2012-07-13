@@ -10,7 +10,6 @@ define(function(require, exports, module) {
 
         attrs: {
             prefix: 'ui-select',
-            triggerTemplate: '<a href="#"></a>',
             template: '<div class="{{prefix}}"><ul class="{{prefix}}-content" data-role="content">{{#each select}}<li data-role="item" class="{{../prefix}}-item" data-value="{{value}}" data-defaultSelected="{{defaultSelected}}" data-selected="{{selected}}">{{text}}</li>{{/each}}</ul></div>',
             // select 的参数
             value: '',
@@ -48,7 +47,9 @@ define(function(require, exports, module) {
                 // 替换之前把 select 保存起来
                 this.set('selectSource', select);
                 // 替换 trigger
-                var newTrigger = $(this.get('triggerTemplate'));
+                var triggerTemplate = '<a href="#" class="' +
+                    this.get('prefix') + '-trigger"></a>';
+                var newTrigger = $(triggerTemplate);
                 this.set('trigger', newTrigger);
                 select.after(newTrigger).hide();
 
@@ -152,7 +153,6 @@ define(function(require, exports, module) {
                 this.get('trigger').addClass(className);
             }
         }
-
     });
 
     module.exports = Select;

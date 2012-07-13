@@ -301,17 +301,14 @@ define(function(require) {
         });
 
         test('set prefix', function() {
-            trigger = $('<a href="#" id="example"></a>').appendTo(document.body);
+            trigger = $('<select id="example"><option value="value1">text1</option><option value="value2" selected>text2</option></select>').appendTo(document.body);
             select = new Select({
                 trigger: '#example',
-                model: [
-                    {value: 'value1', text: 'text1'},
-                    {value: 'value2', text: 'text2', selected: true}
-                ],
                 prefix: 'test'
             }).render();
 
             expect(select.element.hasClass('test')).toBeTruthy();
+            expect(select.get('trigger').hasClass('test-trigger')).toBeTruthy();
             expect(select.$('.test-content').length).toBe(1);
             expect(select.$('.test-item').length).toBe(2);
             expect(select.options.eq(0).hasClass('test-selected')).toBeFalsy();
@@ -320,9 +317,6 @@ define(function(require) {
             select.select(0);
             expect(select.options.eq(0).hasClass('test-selected')).toBeTruthy();
             expect(select.options.eq(1).hasClass('test-selected')).toBeFalsy();
-        });
-
-        test('set triggerTemplate', function() {
         });
     });
 });
