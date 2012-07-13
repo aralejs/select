@@ -93,8 +93,8 @@ define(function(require, exports, module) {
         // 方法接口
         // --------
 
-        select: function(selector) {
-            var selectIndex = getSelectedIndex(selector, this.options);
+        select: function(option) {
+            var selectIndex = getSelectedIndex(option, this.options);
             this.set('selectedIndex', selectIndex);
             this.hide();
             return this;
@@ -226,14 +226,14 @@ define(function(require, exports, module) {
         return {select: newModel, prefix: prefix};
     }
 
-    function getSelectedIndex(selector, options) {
+    function getSelectedIndex(option, options) {
         var index;
-        if ($.isNumeric(selector)) { // 如果是索引
-            index = selector;
-        } else if (typeof selector === 'string') { // 如果是选择器
-            index = options.index(options.parent().find(selector));
+        if ($.isNumeric(option)) { // 如果是索引
+            index = option;
+        } else if (typeof option === 'string') { // 如果是选择器
+            index = options.index(options.parent().find(option));
         } else { // 如果是 DOM
-            index = options.index(selector);
+            index = options.index(option);
         }
         return index;
     }

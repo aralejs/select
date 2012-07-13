@@ -1,7 +1,7 @@
 
 # Select
 
-模拟 select
+模拟 select 的组件
 
 ---
 
@@ -12,36 +12,52 @@
 * popup
 
 
-## API 说明
+## Attribute & Property
 
 ### trigger
 
-trigger 可以为 select 或 任何 DOM。
+trigger 可以为 select 或 其他任何 DOM。
 
-如果为 select，会将其隐藏并按照 `triggerTemplate` 生成一个 DOM 放在原来的位置。
+* 如果为 select，会将其隐藏并生成一个 a 标签放在原来的位置。
+* 如果为 DOM，则不做处理。
 
-如果为 DOM，则不做处理。
-
-### prefix
-
-样式前缀，默认为 ui-chosen
-
-### triggerTemplate
-
-trigger 的模版，只有当 trigger 为 select 时才会使用。
-
-### template
-
-生成 select 的模版，数据源为 model。
+### model
 
 model 的来源有两处
 
 1. 初始化传入
 2. 如果 trigger 为 select，则会根据结构生成 model
 
+model 的格式为
+
+```javascript
+[
+    {value:'value1', text: 'text1', selected: true},
+    {value:'value2', text: 'text2'}
+]
+```
+
+`value` `text` `selected` 均为 option 的属性
+
+### template
+
+生成组件的模版，数据源为 model。
+
+### prefix
+
+样式前缀，默认为 `ui-select`
+
 ### value
 
-select 的值，等同于 select.value
+模拟 select 的值，获取被选中 option 的 value 值，等同于 `select.value`
+
+### length
+
+模拟 select 的值，获取 option 的个数，等同于 `select.length`
+
+### selectIndex
+
+模拟 select 的值，获取被选中 option 的索引值，等同于 `select.selectIndex`
 
 ### multiple
 
@@ -49,20 +65,31 @@ select 的值，等同于 select.value
 
 ### disabled
 
-select 是否 disabled，如果 disabled 则点击无效。
+模拟 select 的值，设置 select 是否可点，等同于 `select.disabled`
 
-### select(selector)
+## Method
 
-选中某项，selector 支持三种
+### select(item)
+
+选中某项，`item` 支持三种
 
 1. 列表索引，为 Number
-2. 选择器
-3. DOM
-
+2. 选择器，为 String
+3. DOM，支持 DOM Element 和 jQuery 对象
 
 ### syncModel(model)
 
-重新渲染 select，model 为对应 select 的数据。
+重新渲染 select，model 为数据源，和上面的格式一致
 
+### addOption(item)
 
+// TODO
+
+### getOption(item)
+
+// TODO
+
+### removeOption(item)
+
+// TODO
 
