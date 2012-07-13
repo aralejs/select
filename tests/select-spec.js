@@ -259,7 +259,7 @@ define(function(require) {
             expect(select.get('trigger').html()).toBe('text4');
             expect(select.get('value')).toBe('value4');
             expect(select.get('selectedIndex')).toBe(1);
-            expect(select.currentItem[0]).toBe(select.element.find('[data-role=item]')[0]);
+            expect(select.currentItem[0]).toBe(select.element.find('[data-role=item]')[1]);
             expect(select.options.eq(0).attr('data-defaultSelected'))
                 .toBe('false');
             expect(select.options.eq(0).attr('data-selected'))
