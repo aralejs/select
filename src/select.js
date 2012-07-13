@@ -92,7 +92,6 @@ define(function(require, exports, module) {
         select: function(selector) {
             var selectIndex = getSelectedIndex(selector, this.options);
             this.set('selectedIndex', selectIndex);
-            this.trigger('change', this.currentItem);
             this.hide();
             return this;
         },
@@ -124,16 +123,18 @@ define(function(require, exports, module) {
 
             // 处理之前选中的元素
             if (this.currentItem) {
-                this.currentItem.attr('data-selected', false)
-                .removeClass(this.get('prefix') + '-selected');
+                this.currentItem.attr('data-selected', 'false')
+                    .removeClass(this.get('prefix') + '-selected');
             }
 
             // 处理当前选中的元素
-            selector.attr('data-selected', true)
+            selector.attr('data-selected', 'true')
                 .addClass(this.get('prefix') + '-selected');
             this.set('value', selector.attr('data-value'));
             this.get('trigger').html(selector.html());
             this.currentItem = selector;
+
+            this.trigger('change', selector);
         },
 
         _onRenderDisabled: function(val) {
