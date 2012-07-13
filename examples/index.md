@@ -105,11 +105,39 @@ seajs.use(['../src/select','jquery'], function(Select, $) {
 });
 ```
 
+可以通过 select 接口去选择
+
+<a href="#" id="example4">请选择</a>
+<a href="#" class="example4-select" data-value="1">选择1</a>
+<a href="#" class="example4-select" data-value="2">选择2</a>
+<a href="#" class="example4-select" data-value="3">选择3</a>
+<a href="#" class="example4-select" data-value="4">选择4</a>
+
+
+```javascript
+seajs.use(['../src/select','jquery'], function(Select, $) {
+    var example4 = new Select({
+        trigger: '#example4',
+        model: [
+            {value:'option1', text:'option1'},
+            {value:'option2', text:'option2'},
+            {value:'option3', text:'option3'},
+            {value:'option4', text:'option4'}
+        ]
+    }).render();
+
+    $('.example4-select').click(function(e) {
+        e.preventDefault();
+        var index = $(e.currentTarget).attr('data-value');
+        example4.select(index - 1);
+    });
+});
+```
+
 <select id="myselect1">
     <option value="WATER">水费</option>
     <option value="ELECTRIC">电费</option>
 </select>
-
 <a href="#" id="myselect2">请选择</a>
 <a href="#" id="myselect3">请选择</a>
 
