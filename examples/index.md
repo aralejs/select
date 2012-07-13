@@ -134,17 +134,46 @@ seajs.use(['../src/select','jquery'], function(Select, $) {
 });
 ```
 
-<select id="myselect1">
+提供 change 的事件
+
+<a href="#" id="example5">请选择</a>
+<span id="example5-log"></span>
+
+```javascript
+seajs.use(['../src/select','jquery'], function(Select, $) {
+    var log = $('#example5-log');
+    new Select({
+        trigger: '#example5',
+        model: [
+            {value:'option1', text:'option1'},
+            {value:'option2', text:'option2'},
+            {value:'option3', text:'option3'},
+            {value:'option4', text:'option4'}
+        ]
+    }).on('change', function(target) {
+        log.html(
+            '已选择: value -> ' + 
+            target.attr('data-value') +
+            ' text -> ' +
+            target.html()
+        );
+    }).render();
+});
+```
+
+支持 select 级联操作
+
+<select id="exampel5-1">
     <option value="WATER">水费</option>
     <option value="ELECTRIC">电费</option>
 </select>
-<a href="#" id="myselect2">请选择</a>
-<a href="#" id="myselect3">请选择</a>
+<a href="#" id="exampel5-2">请选择</a>
+<a href="#" id="exampel5-3">请选择</a>
 
 ```javascript
 seajs.use(['../src/select'], function(Select) {
     var a1 = new Select({
-        trigger: '#myselect1'
+        trigger: '#exampel5-1'
     }).on('change', function(target) {
         var type = target.attr('data-value');
         var model = parseProv(type);
@@ -153,7 +182,7 @@ seajs.use(['../src/select'], function(Select) {
     });
 
     var a2 = new Select({
-        trigger: '#myselect2',
+        trigger: '#exampel5-2',
         model: parseProv('WATER')
     }).on('change', function(target) {
         var prov = target.attr('data-value');
@@ -162,7 +191,7 @@ seajs.use(['../src/select'], function(Select) {
     });
 
     var a3 = new Select({
-        trigger: '#myselect3',
+        trigger: '#exampel5-3',
         model: parseCity('WATER')
     });
 

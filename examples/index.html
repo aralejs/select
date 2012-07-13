@@ -182,6 +182,7 @@ seajs.use(['../src/select','jquery'], function(Select, $) {
             <span class="p">{</span><span class="nx">value</span><span class="o">:</span><span class="s1">&#39;option4&#39;</span><span class="p">,</span> <span class="nx">text</span><span class="o">:</span><span class="s1">&#39;option4&#39;</span><span class="p">}</span>
         <span class="p">]</span>
     <span class="p">}).</span><span class="nx">render</span><span class="p">();</span>
+
     <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.example4-select&#39;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
         <span class="nx">e</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">();</span>
         <span class="kd">var</span> <span class="nx">index</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">currentTarget</span><span class="p">).</span><span class="nx">attr</span><span class="p">(</span><span class="s1">&#39;data-value&#39;</span><span class="p">);</span>
@@ -201,6 +202,7 @@ seajs.use(['../src/select','jquery'], function(Select, $) {
             {value:'option4', text:'option4'}
         ]
     }).render();
+
     $('.example4-select').click(function(e) {
         e.preventDefault();
         var index = $(e.currentTarget).attr('data-value');
@@ -208,15 +210,61 @@ seajs.use(['../src/select','jquery'], function(Select, $) {
     });
 });
 </script>
-<p><select id="myselect1">
+<p>提供 change 的事件</p>
+<p><a href="#" id="example5">请选择</a>
+<span id="example5-log"></span></p>
+<div class="highlight"><pre><span class="nx">seajs</span><span class="p">.</span><span class="nx">use</span><span class="p">([</span><span class="s1">&#39;../src/select&#39;</span><span class="p">,</span><span class="s1">&#39;jquery&#39;</span><span class="p">],</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Select</span><span class="p">,</span> <span class="nx">$</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">log</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#example5-log&#39;</span><span class="p">);</span>
+    <span class="k">new</span> <span class="nx">Select</span><span class="p">({</span>
+        <span class="nx">trigger</span><span class="o">:</span> <span class="s1">&#39;#example5&#39;</span><span class="p">,</span>
+        <span class="nx">model</span><span class="o">:</span> <span class="p">[</span>
+            <span class="p">{</span><span class="nx">value</span><span class="o">:</span><span class="s1">&#39;option1&#39;</span><span class="p">,</span> <span class="nx">text</span><span class="o">:</span><span class="s1">&#39;option1&#39;</span><span class="p">},</span>
+            <span class="p">{</span><span class="nx">value</span><span class="o">:</span><span class="s1">&#39;option2&#39;</span><span class="p">,</span> <span class="nx">text</span><span class="o">:</span><span class="s1">&#39;option2&#39;</span><span class="p">},</span>
+            <span class="p">{</span><span class="nx">value</span><span class="o">:</span><span class="s1">&#39;option3&#39;</span><span class="p">,</span> <span class="nx">text</span><span class="o">:</span><span class="s1">&#39;option3&#39;</span><span class="p">},</span>
+            <span class="p">{</span><span class="nx">value</span><span class="o">:</span><span class="s1">&#39;option4&#39;</span><span class="p">,</span> <span class="nx">text</span><span class="o">:</span><span class="s1">&#39;option4&#39;</span><span class="p">}</span>
+        <span class="p">]</span>
+    <span class="p">}).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;change&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">target</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">log</span><span class="p">.</span><span class="nx">html</span><span class="p">(</span>
+            <span class="s1">&#39;已选择: value -&gt; &#39;</span> <span class="o">+</span> 
+            <span class="nx">target</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s1">&#39;data-value&#39;</span><span class="p">)</span> <span class="o">+</span>
+            <span class="s1">&#39; text -&gt; &#39;</span> <span class="o">+</span>
+            <span class="nx">target</span><span class="p">.</span><span class="nx">html</span><span class="p">()</span>
+        <span class="p">);</span>
+    <span class="p">}).</span><span class="nx">render</span><span class="p">();</span>
+<span class="p">});</span>
+</pre></div>
+
+<script type="text/javascript">
+seajs.use(['../src/select','jquery'], function(Select, $) {
+    var log = $('#example5-log');
+    new Select({
+        trigger: '#example5',
+        model: [
+            {value:'option1', text:'option1'},
+            {value:'option2', text:'option2'},
+            {value:'option3', text:'option3'},
+            {value:'option4', text:'option4'}
+        ]
+    }).on('change', function(target) {
+        log.html(
+            '已选择: value -> ' + 
+            target.attr('data-value') +
+            ' text -> ' +
+            target.html()
+        );
+    }).render();
+});
+</script>
+<p>支持 select 级联操作</p>
+<p><select id="exampel5-1">
     <option value="WATER">水费</option>
     <option value="ELECTRIC">电费</option>
 </select>
-<a href="#" id="myselect2">请选择</a>
-<a href="#" id="myselect3">请选择</a></p>
+<a href="#" id="exampel5-2">请选择</a>
+<a href="#" id="exampel5-3">请选择</a></p>
 <div class="highlight"><pre><span class="nx">seajs</span><span class="p">.</span><span class="nx">use</span><span class="p">([</span><span class="s1">&#39;../src/select&#39;</span><span class="p">],</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Select</span><span class="p">)</span> <span class="p">{</span>
     <span class="kd">var</span> <span class="nx">a1</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Select</span><span class="p">({</span>
-        <span class="nx">trigger</span><span class="o">:</span> <span class="s1">&#39;#myselect1&#39;</span>
+        <span class="nx">trigger</span><span class="o">:</span> <span class="s1">&#39;#exampel5-1&#39;</span>
     <span class="p">}).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;change&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">target</span><span class="p">)</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">type</span> <span class="o">=</span> <span class="nx">target</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s1">&#39;data-value&#39;</span><span class="p">);</span>
         <span class="kd">var</span> <span class="nx">model</span> <span class="o">=</span> <span class="nx">parseProv</span><span class="p">(</span><span class="nx">type</span><span class="p">);</span>
@@ -225,7 +273,7 @@ seajs.use(['../src/select','jquery'], function(Select, $) {
     <span class="p">});</span>
 
     <span class="kd">var</span> <span class="nx">a2</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Select</span><span class="p">({</span>
-        <span class="nx">trigger</span><span class="o">:</span> <span class="s1">&#39;#myselect2&#39;</span><span class="p">,</span>
+        <span class="nx">trigger</span><span class="o">:</span> <span class="s1">&#39;#exampel5-2&#39;</span><span class="p">,</span>
         <span class="nx">model</span><span class="o">:</span> <span class="nx">parseProv</span><span class="p">(</span><span class="s1">&#39;WATER&#39;</span><span class="p">)</span>
     <span class="p">}).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;change&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">target</span><span class="p">)</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">prov</span> <span class="o">=</span> <span class="nx">target</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s1">&#39;data-value&#39;</span><span class="p">);</span>
@@ -234,7 +282,7 @@ seajs.use(['../src/select','jquery'], function(Select, $) {
     <span class="p">});</span>
 
     <span class="kd">var</span> <span class="nx">a3</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Select</span><span class="p">({</span>
-        <span class="nx">trigger</span><span class="o">:</span> <span class="s1">&#39;#myselect3&#39;</span><span class="p">,</span>
+        <span class="nx">trigger</span><span class="o">:</span> <span class="s1">&#39;#exampel5-3&#39;</span><span class="p">,</span>
         <span class="nx">model</span><span class="o">:</span> <span class="nx">parseCity</span><span class="p">(</span><span class="s1">&#39;WATER&#39;</span><span class="p">)</span>
     <span class="p">});</span>
 
@@ -247,7 +295,7 @@ seajs.use(['../src/select','jquery'], function(Select, $) {
 <script type="text/javascript">
 seajs.use(['../src/select'], function(Select) {
     var a1 = new Select({
-        trigger: '#myselect1'
+        trigger: '#exampel5-1'
     }).on('change', function(target) {
         var type = target.attr('data-value');
         var model = parseProv(type);
@@ -256,7 +304,7 @@ seajs.use(['../src/select'], function(Select) {
     });
 
     var a2 = new Select({
-        trigger: '#myselect2',
+        trigger: '#exampel5-2',
         model: parseProv('WATER')
     }).on('change', function(target) {
         var prov = target.attr('data-value');
@@ -265,7 +313,7 @@ seajs.use(['../src/select'], function(Select) {
     });
 
     var a3 = new Select({
-        trigger: '#myselect3',
+        trigger: '#exampel5-3',
         model: parseCity('WATER')
     });
 
