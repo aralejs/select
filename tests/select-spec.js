@@ -298,6 +298,12 @@ define(function(require) {
             trigger.click();
             expect(trigger.hasClass('ui-select-disabled')).toBeTruthy();
             expect(select.element.is(':hidden')).toBeTruthy();
+            select.hide();
+
+            select.set('disabled', false);
+            trigger.click();
+            expect(trigger.hasClass('ui-select-disabled')).toBeFalsy();
+            expect(select.element.is(':hidden')).toBeFalsy();
         });
 
         test('set prefix', function() {

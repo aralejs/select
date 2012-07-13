@@ -41,9 +41,12 @@ function parseCity(type, prov) {
 .ui-select-hover {
     background: #ccc;
 }
+.ui-select-disabled {
+    color: #ccc;
+}
 </style>
 
-基本使用，默认选中 option2
+基本使用，trigger 为 select，并默认选中 option2
 
 <select id="example1">
     <option value="option1">option1</option>
@@ -60,17 +63,45 @@ seajs.use(['../src/select'], function(Select) {
 
 初始化可以传递一个 model
 
-<a href="#" id="example2"></a>
+<a href="#" id="example2">请选择</a>
 
 ```javascript
 seajs.use(['../src/select'], function(Select) {
     new Select({
         trigger: '#example2',
         model: [
-            {value:'option1', text:'option1', selected: false},
+            {value:'option1', text:'option1'},
             {value:'option2', text:'option2', selected: true}
         ]
     }).render();
+});
+```
+
+设置 select 为 disabled
+
+<select id="example3">
+    <option value="option1">option1</option>
+    <option value="option2" selected="selected">option2</option>
+</select>
+<a href="#" id="example3-abled" style="margin-left:20px;">设置 disabled=false</a>
+<a href="#" id="example3-disabled" style="margin-left:20px;">设置 disabled=true</a>
+
+```javascript
+seajs.use(['../src/select','jquery'], function(Select, $) {
+    var example3 = new Select({
+        trigger: '#example3',
+        disabled: true
+    }).render();
+
+    $('#example3-disabled').click(function(e) {
+        e.preventDefault();
+        example3.set('disabled', true);
+    });
+
+    $('#example3-abled').click(function(e) {
+        e.preventDefault();
+        example3.set('disabled', false);
+    });
 });
 ```
 

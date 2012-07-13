@@ -76,8 +76,11 @@ function parseCity(type, prov) {
 .ui-select-hover {
     background: #ccc;
 }
+.ui-select-disabled {
+    color: #ccc;
+}
 </style>
-<p>基本使用，默认选中 option2</p>
+<p>基本使用，trigger 为 select，并默认选中 option2</p>
 <p><select id="example1">
     <option value="option1">option1</option>
     <option value="option2" selected="selected">option2</option>
@@ -97,12 +100,12 @@ seajs.use(['../src/select'], function(Select) {
 });
 </script>
 <p>初始化可以传递一个 model</p>
-<p><a href="#" id="example2"></a></p>
+<p><a href="#" id="example2">请选择</a></p>
 <div class="highlight"><pre><span class="nx">seajs</span><span class="p">.</span><span class="nx">use</span><span class="p">([</span><span class="s1">&#39;../src/select&#39;</span><span class="p">],</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Select</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">new</span> <span class="nx">Select</span><span class="p">({</span>
         <span class="nx">trigger</span><span class="o">:</span> <span class="s1">&#39;#example2&#39;</span><span class="p">,</span>
         <span class="nx">model</span><span class="o">:</span> <span class="p">[</span>
-            <span class="p">{</span><span class="nx">value</span><span class="o">:</span><span class="s1">&#39;option1&#39;</span><span class="p">,</span> <span class="nx">text</span><span class="o">:</span><span class="s1">&#39;option1&#39;</span><span class="p">,</span> <span class="nx">selected</span><span class="o">:</span> <span class="kc">false</span><span class="p">},</span>
+            <span class="p">{</span><span class="nx">value</span><span class="o">:</span><span class="s1">&#39;option1&#39;</span><span class="p">,</span> <span class="nx">text</span><span class="o">:</span><span class="s1">&#39;option1&#39;</span><span class="p">},</span>
             <span class="p">{</span><span class="nx">value</span><span class="o">:</span><span class="s1">&#39;option2&#39;</span><span class="p">,</span> <span class="nx">text</span><span class="o">:</span><span class="s1">&#39;option2&#39;</span><span class="p">,</span> <span class="nx">selected</span><span class="o">:</span> <span class="kc">true</span><span class="p">}</span>
         <span class="p">]</span>
     <span class="p">}).</span><span class="nx">render</span><span class="p">();</span>
@@ -114,10 +117,53 @@ seajs.use(['../src/select'], function(Select) {
     new Select({
         trigger: '#example2',
         model: [
-            {value:'option1', text:'option1', selected: false},
+            {value:'option1', text:'option1'},
             {value:'option2', text:'option2', selected: true}
         ]
     }).render();
+});
+</script>
+<p>设置 select 为 disabled</p>
+<p><select id="example3">
+    <option value="option1">option1</option>
+    <option value="option2" selected="selected">option2</option>
+</select>
+<a href="#" id="example3-abled" style="margin-left:20px;">设置 disabled=false</a>
+<a href="#" id="example3-disabled" style="margin-left:20px;">设置 disabled=true</a></p>
+<div class="highlight"><pre><span class="nx">seajs</span><span class="p">.</span><span class="nx">use</span><span class="p">([</span><span class="s1">&#39;../src/select&#39;</span><span class="p">,</span><span class="s1">&#39;jquery&#39;</span><span class="p">],</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Select</span><span class="p">,</span> <span class="nx">$</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">example3</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Select</span><span class="p">({</span>
+        <span class="nx">trigger</span><span class="o">:</span> <span class="s1">&#39;#example3&#39;</span><span class="p">,</span>
+        <span class="nx">disabled</span><span class="o">:</span> <span class="kc">true</span>
+    <span class="p">}).</span><span class="nx">render</span><span class="p">();</span>
+
+    <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#example3-disabled&#39;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">e</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">();</span>
+        <span class="nx">example3</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;disabled&#39;</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+    <span class="p">});</span>
+
+    <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#example3-abled&#39;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">e</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">();</span>
+        <span class="nx">example3</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;disabled&#39;</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
+    <span class="p">});</span>
+<span class="p">});</span>
+</pre></div>
+
+<script type="text/javascript">
+seajs.use(['../src/select','jquery'], function(Select, $) {
+    var example3 = new Select({
+        trigger: '#example3',
+        disabled: true
+    }).render();
+
+    $('#example3-disabled').click(function(e) {
+        e.preventDefault();
+        example3.set('disabled', true);
+    });
+
+    $('#example3-abled').click(function(e) {
+        e.preventDefault();
+        example3.set('disabled', false);
+    });
 });
 </script>
 <p><select id="myselect1">

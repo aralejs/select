@@ -148,10 +148,9 @@ define(function(require, exports, module) {
         },
 
         _onRenderDisabled: function(val) {
-            if (val) {
-                var className = this.get('prefix') + '-disabled';
-                this.get('trigger').addClass(className);
-            }
+            var className = this.get('prefix') + '-disabled';
+            var trigger = this.get('trigger');
+            trigger[(val ? 'addClass' : 'removeClass')](className);
         }
     });
 
