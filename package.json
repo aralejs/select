@@ -1,10 +1,13 @@
 {
     "name": "select",
     "version": "0.8.0",
-    "moduleDependencies": {
+    "dependencies": {
         "jquery": "1.7.2",
         "dropdown": "popup/0.9.5/dropdown",
         "templatable": "widget/0.9.16/templatable"
+    },
+    "output": {
+        "select.js": "default"
     },
     "tests": [
         "select"
