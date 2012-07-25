@@ -1,7 +1,7 @@
 define(function(require, exports, module) {
 
     var Dropdown = require('dropdown');
-    var $ = require('jquery');
+    var $ = require('$');
     var Templatable = require('templatable');
 
     var Select = Dropdown.extend({
@@ -203,9 +203,8 @@ define(function(require, exports, module) {
     // 补全 model 对象
     function completeModel(model, prefix) {
         var i, j, newModel = [], selectIndexArray = [];
-        for (i in model) {
+        for (i = 0, l = model.length; i < l; i++) {
             var o = model[i];
-            o.defaultSelected = o.defaultSelected ? 'true' : 'false';
             if (o.selected) {
                 o.selected = o.defaultSelected = 'true';
                 selectIndexArray.push(i);
@@ -217,7 +216,7 @@ define(function(require, exports, module) {
         if (selectIndexArray.length > 0) {
             // 如果有多个 selected 则选中最后一个
             selectIndexArray.pop();
-            for (j in selectIndexArray) {
+            for (j = 0, ll = selectIndexArray.length; j < ll; j++) {
                 newModel[0].selected = 'false';
             }
         } else { //当所有都没有设置 selected 则默认设置第一个

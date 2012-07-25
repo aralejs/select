@@ -2,12 +2,12 @@
     "name": "select",
     "version": "0.8.0",
     "dependencies": {
-        "jquery": "1.7.2",
-        "dropdown": "popup/0.9.5/dropdown",
+        "$": "$",
+        "dropdown": "popup/0.9.6/dropdown",
         "templatable": "widget/0.9.16/templatable"
     },
     "output": {
-        "select.js": "default"
+        "select.js": "."
     },
     "tests": [
         "select"

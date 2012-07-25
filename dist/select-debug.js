@@ -1,7 +1,7 @@
-define("#select/0.8.0/select-debug", ["#popup/0.9.5/dropdown-debug", "#popup/0.9.5/popup-debug", "#jquery/1.7.2/jquery-debug", "#overlay/0.9.7/overlay-debug", "#position/0.9.2/position-debug", "#iframe-shim/0.9.2/iframe-shim-debug", "#widget/0.9.16/widget-debug", "#base/0.9.16/base-debug", "#class/0.9.2/class-debug", "#events/0.9.1/events-debug", "#base/0.9.16/aspect-debug", "#base/0.9.16/attribute-debug", "#widget/0.9.16/daparser-debug", "#widget/0.9.16/auto-render-debug", "#widget/0.9.16/templatable-debug", "#widget/0.9.16/ast-printer-debug", "#handlebars/1.0.0/handlebars-debug"], function(require, exports, module) {
+define("#select/0.8.0/select-debug", ["$-debug", "#popup/0.9.6/dropdown-debug", "#popup/0.9.6/popup-debug", "#overlay/0.9.8/overlay-debug", "#iframe-shim/0.9.3/iframe-shim-debug", "#position/0.9.2/position-debug", "#widget/0.9.16/widget-debug", "#base/0.9.16/base-debug", "#events/0.9.1/events-debug", "#class/0.9.2/class-debug", "#widget/0.9.16/templatable-debug", "#handlebars/1.0.0/handlebars-debug"], function(require, exports, module) {
 
-    var Dropdown = require('#popup/0.9.5/dropdown-debug');
-    var $ = require('#jquery/1.7.2/jquery-debug');
+    var Dropdown = require('#popup/0.9.6/dropdown-debug');
+    var $ = require('$-debug');
     var Templatable = require('#widget/0.9.16/templatable-debug');
 
     var Select = Dropdown.extend({
@@ -203,7 +203,7 @@ define("#select/0.8.0/select-debug", ["#popup/0.9.5/dropdown-debug", "#popup/0.9
     // 补全 model 对象
     function completeModel(model, prefix) {
         var i, j, newModel = [], selectIndexArray = [];
-        for (i in model) {
+        for (i = 0, l = model.length; i < l; i++) {
             var o = model[i];
             o.defaultSelected = o.defaultSelected ? 'true' : 'false';
             if (o.selected) {
@@ -217,7 +217,7 @@ define("#select/0.8.0/select-debug", ["#popup/0.9.5/dropdown-debug", "#popup/0.9
         if (selectIndexArray.length > 0) {
             // 如果有多个 selected 则选中最后一个
             selectIndexArray.pop();
-            for (j in selectIndexArray) {
+            for (j = 0, ll = selectIndexArray.length; j < ll; j++) {
                 newModel[0].selected = 'false';
             }
         } else { //当所有都没有设置 selected 则默认设置第一个
