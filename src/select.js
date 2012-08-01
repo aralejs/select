@@ -1,16 +1,28 @@
 define(function(require, exports, module) {
 
-    var Dropdown = require('dropdown');
+    var Overlay = require('overlay');
     var $ = require('$');
     var Templatable = require('templatable');
 
-    var Select = Dropdown.extend({
+    var template = require('./select.tpl');
+
+    var Select = Overlay.extend({
 
         Implements: Templatable,
 
         attrs: {
+            trigger: {
+                value: null, // required
+                getter: function(val) {
+                    return $(val);
+                }
+            },
             prefix: 'ui-select',
-            template: '<div class="{{prefix}}"><ul class="{{prefix}}-content" data-role="content">{{#each select}}<li data-role="item" class="{{../prefix}}-item" data-value="{{value}}" data-defaultSelected="{{defaultSelected}}" data-selected="{{selected}}">{{text}}</li>{{/each}}</ul></div>',
+            template: template,
+            // 定位配置
+            align: {
+                baseXY: [0, '100%']
+            },
             // select 的参数
             value: '',
             length: 0,
@@ -59,10 +71,9 @@ define(function(require, exports, module) {
             }
         },
 
-        // popup 绑定 trigger 无法在 disabled 阻止，所以全覆盖
         setup: function() {
             var that = this;
-            this.get('trigger').on('click', function(e) {
+            var trigger = this.get('trigger').on('click', function(e) {
                 e.preventDefault();
                 if (!that.get('disabled')) {
                     that.show();
@@ -75,10 +86,28 @@ define(function(require, exports, module) {
             this.select('[data-selected=true]');
             this.set('length', options.length);
 
-            // 调用 dropdown
             this._tweakAlignDefaultValue();
-            // 调用 overlay
-            this._setupShim();
+
+            // 调用 overlay，点击 body 隐藏
+            this._blurHide(trigger);
+
+            Select.superclass.setup.call(this);
+        },
+
+        show: function() {
+            Select.superclass.show.call(this);
+            this._setPosition();
+        },
+
+        // borrow from dropdown
+        // 调整 align 属性的默认值, 在 trigger 下方
+        _tweakAlignDefaultValue: function() {
+            var align = this.get('align');
+            // 默认基准定位元素为 trigger
+            if (align.baseElement._id === 'VIEWPORT') {
+                align.baseElement = this.get('trigger');
+            }
+            this.set('align', align);
         },
 
         destroy: function() {
