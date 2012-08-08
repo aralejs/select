@@ -125,6 +125,10 @@ define(function(require, exports, module) {
         select: function(option) {
             var selectIndex = getSelectedIndex(option, this.options);
             this.set('selectedIndex', selectIndex);
+
+            var selector = this.options.eq(selectIndex);
+            this.trigger('change', selector);
+
             this.hide();
             return this;
         },
@@ -172,8 +176,6 @@ define(function(require, exports, module) {
             this.set('value', selector.attr('data-value'));
             this.get('trigger').html(selector.html());
             this.currentItem = selector;
-
-            this.trigger('change', selector);
         },
 
         _onRenderDisabled: function(val) {
