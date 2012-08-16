@@ -3,8 +3,14 @@
     "version": "0.8.0",
     "dependencies": {
         "$": "$",
-        "dropdown": "popup/0.9.6/dropdown",
+        "overlay": "0.9.9",
         "templatable": "widget/0.9.16/templatable"
+    },
+    "devDependencies": {
+        "overlay": "overlay/master/overlay",
+        "widget": "widget/0.9.16/widget",
+        "position": "position/0.9.2/position",
+        "iframe-shim": "iframe-shim/0.9.3/iframe-shim"
     },
     "output": {
         "select.js": "."

@@ -1,16 +1,28 @@
-define("#select/0.8.0/select-debug", ["$-debug", "#popup/0.9.6/dropdown-debug", "#popup/0.9.6/popup-debug", "#overlay/0.9.8/overlay-debug", "#iframe-shim/0.9.3/iframe-shim-debug", "#position/0.9.2/position-debug", "#widget/0.9.16/widget-debug", "#base/0.9.16/base-debug", "#events/0.9.1/events-debug", "#class/0.9.2/class-debug", "#widget/0.9.16/templatable-debug", "#handlebars/1.0.0/handlebars-debug"], function(require, exports, module) {
+define("#select/0.8.0/select-debug", ["$-debug", "#overlay/0.9.9/overlay-debug", "#iframe-shim/0.9.3/iframe-shim-debug", "#position/0.9.2/position-debug", "#widget/0.9.16/widget-debug", "#base/0.9.16/base-debug", "#events/0.9.1/events-debug", "#class/0.9.2/class-debug", "#widget/0.9.16/templatable-debug", "#handlebars/1.0.0/handlebars-debug"], function(require, exports, module) {
 
-    var Dropdown = require('#popup/0.9.6/dropdown-debug');
+    var Overlay = require('#overlay/0.9.9/overlay-debug');
     var $ = require('$-debug');
     var Templatable = require('#widget/0.9.16/templatable-debug');
 
-    var Select = Dropdown.extend({
+    var template ='<div class="{{prefix}}"><ul class="{{prefix}}-content" data-role="content">{{#each select}}<li data-role="item" class="{{../prefix}}-item" data-value="{{value}}" data-defaultSelected="{{defaultSelected}}" data-selected="{{selected}}">{{text}}</li>{{/each}}</ul></div>';
+
+    var Select = Overlay.extend({
 
         Implements: Templatable,
 
         attrs: {
+            trigger: {
+                value: null, // required
+                getter: function(val) {
+                    return $(val);
+                }
+            },
             prefix: 'ui-select',
-            template: '<div class="{{prefix}}"><ul class="{{prefix}}-content" data-role="content">{{#each select}}<li data-role="item" class="{{../prefix}}-item" data-value="{{value}}" data-defaultSelected="{{defaultSelected}}" data-selected="{{selected}}">{{text}}</li>{{/each}}</ul></div>',
+            template: template,
+            // 定位配置
+            align: {
+                baseXY: [0, '100%']
+            },
             // select 的参数
             value: '',
             length: 0,
@@ -59,10 +71,9 @@ define("#select/0.8.0/select-debug", ["$-debug", "#popup/0.9.6/dropdown-debug", 
             }
         },
 
-        // popup 绑定 trigger 无法在 disabled 阻止，所以全覆盖
         setup: function() {
             var that = this;
-            this.get('trigger').on('click', function(e) {
+            var trigger = this.get('trigger').on('click', function(e) {
                 e.preventDefault();
                 if (!that.get('disabled')) {
                     that.show();
@@ -75,10 +86,28 @@ define("#select/0.8.0/select-debug", ["$-debug", "#popup/0.9.6/dropdown-debug", 
             this.select('[data-selected=true]');
             this.set('length', options.length);
 
-            // 调用 dropdown
             this._tweakAlignDefaultValue();
-            // 调用 overlay
-            this._setupShim();
+
+            // 调用 overlay，点击 body 隐藏
+            this._blurHide(trigger);
+
+            Select.superclass.setup.call(this);
+        },
+
+        show: function() {
+            Select.superclass.show.call(this);
+            this._setPosition();
+        },
+
+        // borrow from dropdown
+        // 调整 align 属性的默认值, 在 trigger 下方
+        _tweakAlignDefaultValue: function() {
+            var align = this.get('align');
+            // 默认基准定位元素为 trigger
+            if (align.baseElement._id === 'VIEWPORT') {
+                align.baseElement = this.get('trigger');
+            }
+            this.set('align', align);
         },
 
         destroy: function() {
@@ -205,7 +234,6 @@ define("#select/0.8.0/select-debug", ["$-debug", "#popup/0.9.6/dropdown-debug", 
         var i, j, newModel = [], selectIndexArray = [];
         for (i = 0, l = model.length; i < l; i++) {
             var o = model[i];
-            o.defaultSelected = o.defaultSelected ? 'true' : 'false';
             if (o.selected) {
                 o.selected = o.defaultSelected = 'true';
                 selectIndexArray.push(i);
