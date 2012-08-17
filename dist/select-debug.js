@@ -1,10 +1,10 @@
-define("#select/0.8.0/select-debug", ["$-debug", "#overlay/0.9.9/overlay-debug", "#iframe-shim/0.9.3/iframe-shim-debug", "#position/0.9.2/position-debug", "#widget/0.9.16/widget-debug", "#base/0.9.16/base-debug", "#events/0.9.1/events-debug", "#class/0.9.2/class-debug", "#widget/0.9.16/templatable-debug", "#handlebars/1.0.0/handlebars-debug"], function(require, exports, module) {
+define("#select/0.8.0/select-debug", ["#overlay/0.9.9/overlay-debug", "$-debug", "#position/1.0.0/position-debug", "#iframe-shim/1.0.0/iframe-shim-debug", "#widget/0.9.16/widget-debug", "#base/0.9.16/base-debug", "#events/0.9.1/events-debug", "#class/0.9.2/class-debug", "#widget/0.9.16/templatable-debug", "#handlebars/1.0.0/handlebars-debug"], function(require, exports, module) {
 
     var Overlay = require('#overlay/0.9.9/overlay-debug');
     var $ = require('$-debug');
     var Templatable = require('#widget/0.9.16/templatable-debug');
 
-    var template ='<div class="{{prefix}}"><ul class="{{prefix}}-content" data-role="content">{{#each select}}<li data-role="item" class="{{../prefix}}-item" data-value="{{value}}" data-defaultSelected="{{defaultSelected}}" data-selected="{{selected}}">{{text}}</li>{{/each}}</ul></div>';
+    var template = '<div class="{{prefix}}"><ul class="{{prefix}}-content" data-role="content">{{#each select}}<li data-role="item" class="{{../prefix}}-item" data-value="{{value}}" data-defaultSelected="{{defaultSelected}}" data-selected="{{selected}}">{{text}}</li>{{/each}}</ul></div>';
 
     var Select = Overlay.extend({
 
@@ -125,6 +125,10 @@ define("#select/0.8.0/select-debug", ["$-debug", "#overlay/0.9.9/overlay-debug",
         select: function(option) {
             var selectIndex = getSelectedIndex(option, this.options);
             this.set('selectedIndex', selectIndex);
+
+            var selector = this.options.eq(selectIndex);
+            this.trigger('change', selector);
+
             this.hide();
             return this;
         },
@@ -172,8 +176,6 @@ define("#select/0.8.0/select-debug", ["$-debug", "#overlay/0.9.9/overlay-debug",
             this.set('value', selector.attr('data-value'));
             this.get('trigger').html(selector.html());
             this.currentItem = selector;
-
-            this.trigger('change', selector);
         },
 
         _onRenderDisabled: function(val) {

@@ -88,14 +88,14 @@ define(function(require, exports, module) {
 
             this._tweakAlignDefaultValue();
 
-            // 调用 overlay，点击 body 隐藏
-            this._blurHide(trigger);
 
             Select.superclass.setup.call(this);
         },
 
         show: function() {
             Select.superclass.show.call(this);
+            // 调用 overlay，点击 body 隐藏
+            this._blurHide(this.get('trigger'));
             this._setPosition();
         },
 
