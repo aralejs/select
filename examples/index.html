@@ -6,8 +6,8 @@
 <title>Select</title>
 <link rel="stylesheet" href="http://aralejs.org/assets/base.css">
 <link rel="stylesheet" href="http://aralejs.org/assets/style.css">
-
 <script src="http://seajs.org/dist/sea.js"></script>
+
 <script src="http://aralejs.org/tools/seajs-helper.js"></script>
 
 <!--[if lt IE 9]>
@@ -27,8 +27,8 @@
 
 
         <nav role="navigation" id="nav">
-            <a class="icon-home" title="Home" href="/" id="logo">Home</a>
-            <a class="icon-github" href="https://github.com/aralejs/select">Code</a>
+            <a class="icon-home" target="_blank" title="Home" href="/" id="logo">Home</a>
+            <a id="code-link" class="icon-github" target="_blank" href="https://github.com/aralejs/select">Code</a>
         </nav>
     </div>
 </header>
@@ -84,7 +84,8 @@ function parseCity(type, prov) {
     color: #ccc;
 }
 </style>
-<p>基本使用，trigger 为 select，并默认选中 option2</p>
+
+<h2>基本使用，trigger 为 select，并默认选中 option2</h2>
 <p><select id="example1">
     <option value="option1">option1</option>
     <option value="option2" selected="selected">option2</option>
@@ -96,14 +97,7 @@ function parseCity(type, prov) {
 <span class="p">});</span>
 </pre></div>
 
-<script type="text/javascript">
-seajs.use(['../src/select'], function(Select) {
-    new Select({
-        trigger: '#example1'
-    }).render();
-});
-</script>
-<p>初始化可以传递一个 model</p>
+<h2>初始化可以传递一个 model</h2>
 <p><a href="#" id="example2">请选择</a></p>
 <div class="highlight"><pre><span class="nx">seajs</span><span class="p">.</span><span class="nx">use</span><span class="p">([</span><span class="s1">&#39;../src/select&#39;</span><span class="p">],</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Select</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">new</span> <span class="nx">Select</span><span class="p">({</span>
@@ -116,18 +110,7 @@ seajs.use(['../src/select'], function(Select) {
 <span class="p">});</span>
 </pre></div>
 
-<script type="text/javascript">
-seajs.use(['../src/select'], function(Select) {
-    new Select({
-        trigger: '#example2',
-        model: [
-            {value:'option1', text:'option1'},
-            {value:'option2', text:'option2', selected: true}
-        ]
-    }).render();
-});
-</script>
-<p>设置 select 为 disabled</p>
+<h2>设置 select 为 disabled</h2>
 <p><select id="example3">
     <option value="option1">option1</option>
     <option value="option2" selected="selected">option2</option>
@@ -152,25 +135,7 @@ seajs.use(['../src/select'], function(Select) {
 <span class="p">});</span>
 </pre></div>
 
-<script type="text/javascript">
-seajs.use(['../src/select','jquery'], function(Select, $) {
-    var example3 = new Select({
-        trigger: '#example3',
-        disabled: true
-    }).render();
-
-    $('#example3-disabled').click(function(e) {
-        e.preventDefault();
-        example3.set('disabled', true);
-    });
-
-    $('#example3-abled').click(function(e) {
-        e.preventDefault();
-        example3.set('disabled', false);
-    });
-});
-</script>
-<p>可以通过 select 接口去选择</p>
+<h2>可以通过 select 接口去选择</h2>
 <p><a href="#" id="example4">请选择</a>
 <a href="#" class="example4-select" data-value="1">选择1</a>
 <a href="#" class="example4-select" data-value="2">选择2</a>
@@ -195,26 +160,7 @@ seajs.use(['../src/select','jquery'], function(Select, $) {
 <span class="p">});</span>
 </pre></div>
 
-<script type="text/javascript">
-seajs.use(['../src/select','jquery'], function(Select, $) {
-    var example4 = new Select({
-        trigger: '#example4',
-        model: [
-            {value:'option1', text:'option1'},
-            {value:'option2', text:'option2'},
-            {value:'option3', text:'option3'},
-            {value:'option4', text:'option4'}
-        ]
-    }).render();
-
-    $('.example4-select').click(function(e) {
-        e.preventDefault();
-        var index = $(e.currentTarget).attr('data-value');
-        example4.select(index - 1);
-    });
-});
-</script>
-<p>提供 change 的事件</p>
+<h2>提供 change 的事件</h2>
 <p><a href="#" id="example5">请选择</a>
 <span id="example5-log"></span></p>
 <div class="highlight"><pre><span class="nx">seajs</span><span class="p">.</span><span class="nx">use</span><span class="p">([</span><span class="s1">&#39;../src/select&#39;</span><span class="p">,</span><span class="s1">&#39;jquery&#39;</span><span class="p">],</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Select</span><span class="p">,</span> <span class="nx">$</span><span class="p">)</span> <span class="p">{</span>
@@ -238,28 +184,7 @@ seajs.use(['../src/select','jquery'], function(Select, $) {
 <span class="p">});</span>
 </pre></div>
 
-<script type="text/javascript">
-seajs.use(['../src/select','jquery'], function(Select, $) {
-    var log = $('#example5-log');
-    new Select({
-        trigger: '#example5',
-        model: [
-            {value:'option1', text:'option1'},
-            {value:'option2', text:'option2'},
-            {value:'option3', text:'option3'},
-            {value:'option4', text:'option4'}
-        ]
-    }).on('change', function(target) {
-        log.html(
-            '已选择: value -> ' + 
-            target.attr('data-value') +
-            ' text -> ' +
-            target.html()
-        );
-    }).render();
-});
-</script>
-<p>支持 select 级联操作</p>
+<h2>支持 select 级联操作</h2>
 <p><select id="exampel5-1">
     <option value="WATER">水费</option>
     <option value="ELECTRIC">电费</option>
@@ -296,37 +221,6 @@ seajs.use(['../src/select','jquery'], function(Select, $) {
 <span class="p">});</span>
 </pre></div>
 
-<script type="text/javascript">
-seajs.use(['../src/select'], function(Select) {
-    var a1 = new Select({
-        trigger: '#exampel5-1'
-    }).on('change', function(target) {
-        var type = target.attr('data-value');
-        var model = parseProv(type);
-        console.log(model);
-        a2.syncModel(model);
-    });
-
-    var a2 = new Select({
-        trigger: '#exampel5-2',
-        model: parseProv('WATER')
-    }).on('change', function(target) {
-        var prov = target.attr('data-value');
-        var model = parseCity(a1.get('value'), prov);
-        a3.syncModel(model);
-    });
-
-    var a3 = new Select({
-        trigger: '#exampel5-3',
-        model: parseCity('WATER')
-    });
-
-    a1.render();
-    a2.render();
-    a3.render();
-});
-</script>
-
 </div>
 
     </div>
@@ -334,5 +228,8 @@ seajs.use(['../src/select'], function(Select) {
 <hr class="end">
 <link rel="stylesheet" href="http://aralejs.org/assets/pygments.css">
 <link rel="stylesheet" href="http://aralejs.org/assets/fontawesome/css/font-awesome.css">
+<script>
+    seajs.use('http://aralejs.org/tools/nico-helper.js');
+</script>
 </body>
 </html>
