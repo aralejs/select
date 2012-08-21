@@ -53,20 +53,20 @@ function parseCity(type, prov) {
     <option value="option2" selected="selected">option2</option>
 </select>
 
-```javascript
-seajs.use(['../src/select'], function(Select) {
+````javascript
+seajs.use(['select'], function(Select) {
     new Select({
         trigger: '#example1'
     }).render();
 });
-```
+````
 
 ## 初始化可以传递一个 model
 
 <a href="#" id="example2">请选择</a>
 
-```javascript
-seajs.use(['../src/select'], function(Select) {
+````javascript
+seajs.use(['select'], function(Select) {
     new Select({
         trigger: '#example2',
         model: [
@@ -75,7 +75,7 @@ seajs.use(['../src/select'], function(Select) {
         ]
     }).render();
 });
-```
+````
 
 ## 设置 select 为 disabled
 
@@ -86,8 +86,8 @@ seajs.use(['../src/select'], function(Select) {
 <a href="#" id="example3-abled" style="margin-left:20px;">设置 disabled=false</a>
 <a href="#" id="example3-disabled" style="margin-left:20px;">设置 disabled=true</a>
 
-```javascript
-seajs.use(['../src/select','jquery'], function(Select, $) {
+````javascript
+seajs.use(['select','jquery'], function(Select, $) {
     var example3 = new Select({
         trigger: '#example3',
         disabled: true
@@ -103,7 +103,7 @@ seajs.use(['../src/select','jquery'], function(Select, $) {
         example3.set('disabled', false);
     });
 });
-```
+````
 
 ## 可以通过 select 接口去选择
 
@@ -114,8 +114,8 @@ seajs.use(['../src/select','jquery'], function(Select, $) {
 <a href="#" class="example4-select" data-value="4">选择4</a>
 
 
-```javascript
-seajs.use(['../src/select','jquery'], function(Select, $) {
+````javascript
+seajs.use(['select','jquery'], function(Select, $) {
     var example4 = new Select({
         trigger: '#example4',
         model: [
@@ -132,15 +132,15 @@ seajs.use(['../src/select','jquery'], function(Select, $) {
         example4.select(index - 1);
     });
 });
-```
+````
 
 ## 提供 change 的事件
 
 <a href="#" id="example5">请选择</a>
 <span id="example5-log"></span>
 
-```javascript
-seajs.use(['../src/select','jquery'], function(Select, $) {
+````javascript
+seajs.use(['select','jquery'], function(Select, $) {
     var log = $('#example5-log');
     new Select({
         trigger: '#example5',
@@ -159,7 +159,7 @@ seajs.use(['../src/select','jquery'], function(Select, $) {
         );
     }).render();
 });
-```
+````
 
 ## 支持 select 级联操作
 
@@ -170,8 +170,8 @@ seajs.use(['../src/select','jquery'], function(Select, $) {
 <a href="#" id="exampel5-2">请选择</a>
 <a href="#" id="exampel5-3">请选择</a>
 
-```javascript
-seajs.use(['../src/select'], function(Select) {
+````javascript
+seajs.use(['select'], function(Select) {
     var a1 = new Select({
         trigger: '#exampel5-1'
     }).on('change', function(target) {
@@ -199,4 +199,4 @@ seajs.use(['../src/select'], function(Select) {
     a2.render();
     a3.render();
 });
-```
+````
