@@ -79,9 +79,8 @@ define("#select/0.9.0/select-debug", ["#overlay/0.9.9/overlay-debug", "$-debug",
                 // 如果 name 存在则创建隐藏域
                 var selectName = this.get('name');
                 if (selectName) {
-                    var input = $('<input type="text" id="select-' + selectName + '" name="' + selectName + '" />')
-                        .insertBefore(select)
-                        .hide();
+                    var input = $('<input type="hidden" id="select-' + selectName + '" name="' + selectName + '" />')
+                        .insertBefore(select);
                     this.set('selectSource', input);
                 }
 
@@ -110,6 +109,19 @@ define("#select/0.9.0/select-debug", ["#overlay/0.9.9/overlay-debug", "$-debug",
             this._blurHide(trigger);
 
             Select.superclass.setup.call(this);
+        },
+
+        render: function() {
+            Select.superclass.render.call(this);
+
+            // trigger 的宽度和浮层保持一致
+            var trigger = this.get('trigger');
+            var width = this.element.outerWidth();
+            var pl = parseInt(trigger.css('padding-left'), 10);
+            var pr = parseInt(trigger.css('padding-right'), 10);
+            var bl = parseInt(trigger.css('border-left'), 10);
+            var br = parseInt(trigger.css('border-right'), 10);
+            trigger.css('width', width - pl - pr - bl - br);
         },
 
         show: function() {
