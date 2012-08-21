@@ -22,6 +22,14 @@ function parseCity(type, prov) {
 </script>
 
 <style>
+.ui-select-trigger {
+    font-size:12px;
+    border: 1px solid #eee;
+    display:inline-block;
+    *display:inline;
+    zoom:1;
+    padding:5px;
+}
 .ui-select {
     border: 1px solid #eee;
 }
@@ -32,7 +40,6 @@ function parseCity(type, prov) {
 }
 .ui-select-item {
     padding: 5px 10px;
-    width: 80px;
     list-style: none;
 }
 .ui-select-selected {
@@ -164,17 +171,17 @@ seajs.use(['select','jquery'], function(Select, $) {
 
 ## 支持 select 级联操作
 
-<select id="exampel5-1">
+<select id="exampel6-1">
     <option value="WATER">水费</option>
     <option value="ELECTRIC">电费</option>
 </select>
-<a href="#" id="exampel5-2">请选择</a>
-<a href="#" id="exampel5-3">请选择</a>
+<a href="#" id="exampel6-2">请选择</a>
+<a href="#" id="exampel6-3">请选择</a>
 
 ````javascript
 seajs.use(['select'], function(Select) {
     var a1 = new Select({
-        trigger: '#exampel5-1'
+        trigger: '#exampel6-1'
     }).on('change', function(target) {
         var type = target.attr('data-value');
         var model = parseProv(type);
@@ -183,7 +190,7 @@ seajs.use(['select'], function(Select) {
     });
 
     var a2 = new Select({
-        trigger: '#exampel5-2',
+        trigger: '#exampel6-2',
         model: parseProv('WATER')
     }).on('change', function(target) {
         var prov = target.attr('data-value');
@@ -192,12 +199,39 @@ seajs.use(['select'], function(Select) {
     });
 
     var a3 = new Select({
-        trigger: '#exampel5-3',
+        trigger: '#exampel6-3',
         model: parseCity('WATER')
     });
 
     a1.render();
     a2.render();
     a3.render();
+});
+````
+
+# trigger 的宽度和浮层的宽度保持一致
+
+<a href="#" id="example7-1" class="ui-select-trigger">请选择</a>
+<a href="#" id="example7-2" class="ui-select-trigger">请选择</a>
+
+````javascript
+seajs.use(['select','jquery'], function(Select, $) {
+    new Select({
+        trigger: '#example7-1',
+        model: [
+            {value:'option1', text:'字比较少'},
+            {value:'option2', text:'字比较少'},
+            {value:'option3', text:'字比较少'}
+        ]
+    }).render();
+
+    new Select({
+        trigger: '#example7-2',
+        model: [
+            {value:'option1', text:'字好多多多多多多多'},
+            {value:'option2', text:'字比较多'},
+            {value:'option3', text:'字比较多'}
+        ]
+    }).render();
 });
 ````
