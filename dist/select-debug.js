@@ -1,4 +1,4 @@
-define("#select/0.8.0/select-debug", ["#overlay/0.9.9/overlay-debug", "$-debug", "#position/1.0.0/position-debug", "#iframe-shim/1.0.0/iframe-shim-debug", "#widget/1.0.0/widget-debug", "#base/1.0.0/base-debug", "#class/1.0.0/class-debug", "#events/1.0.0/events-debug", "#widget/1.0.0/templatable-debug", "#handlebars/1.0.0/handlebars-debug"], function(require, exports, module) {
+define("#select/0.9.0/select-debug", ["#overlay/0.9.9/overlay-debug", "$-debug", "#position/1.0.0/position-debug", "#iframe-shim/1.0.0/iframe-shim-debug", "#widget/1.0.0/widget-debug", "#base/1.0.0/base-debug", "#class/1.0.0/class-debug", "#events/1.0.0/events-debug", "#widget/1.0.0/templatable-debug", "#handlebars/1.0.0/handlebars-debug"], function(require, exports, module) {
 
     var Overlay = require('#overlay/0.9.9/overlay-debug');
     var $ = require('$-debug');
@@ -14,11 +14,13 @@ define("#select/0.8.0/select-debug", ["#overlay/0.9.9/overlay-debug", "$-debug",
             trigger: {
                 value: null, // required
                 getter: function(val) {
-                    return $(val);
+                    return $(val).eq(0);
                 }
             },
             prefix: 'ui-select',
             template: template,
+            // 表单项的 name 值
+            name:'',
             // 定位配置
             align: {
                 baseXY: [0, '100%']
@@ -56,6 +58,13 @@ define("#select/0.8.0/select-debug", ["#overlay/0.9.9/overlay-debug", "$-debug",
             // trigger 如果为其他 DOM，则由用户提供 model
             var select = this.get('trigger');
             if (select[0].tagName.toLowerCase() == 'select') {
+                // 初始化 name
+                // 如果 select 的 name 存在则覆盖 name 属性
+                var selectName = select.attr('name');
+                if (selectName) {
+                    this.set('name', selectName);
+                } 
+
                 // 替换之前把 select 保存起来
                 this.set('selectSource', select);
                 // 替换 trigger
@@ -67,6 +76,15 @@ define("#select/0.8.0/select-debug", ["#overlay/0.9.9/overlay-debug", "$-debug",
 
                 this.model = convertSelect(select[0], this.get('prefix'));
             } else {
+                // 如果 name 存在则创建隐藏域
+                var selectName = this.get('name');
+                if (selectName) {
+                    var input = $('<input type="text" name="' + selectName + '" />')
+                        .insertBefore(select)
+                        .hide();
+                    this.set('selectSource', input);
+                }
+
                 this.model = completeModel(this.model, this.get('prefix'));
             }
         },
@@ -126,8 +144,11 @@ define("#select/0.8.0/select-debug", ["#overlay/0.9.9/overlay-debug", "$-debug",
             var selectIndex = getSelectedIndex(option, this.options);
             this.set('selectedIndex', selectIndex);
 
-            var selector = this.options.eq(selectIndex);
-            this.trigger('change', selector);
+            // 如果不是原来选中的则触发 change 事件
+            if (this.get('selectedIndex') !== selectIndex) {
+                var selector = this.options.eq(selectIndex);
+                this.trigger('change', selector);
+            }
 
             this.hide();
             return this;
@@ -163,6 +184,10 @@ define("#select/0.8.0/select-debug", ["#overlay/0.9.9/overlay-debug", "$-debug",
             if (index == -1) return;
 
             var selector = this.options.eq(index);
+
+            // 设置原来的表单项
+            var select = this.get('selectSource');
+            select && (select[0].value = selector.attr('data-value'));
 
             // 处理之前选中的元素
             if (this.currentItem) {

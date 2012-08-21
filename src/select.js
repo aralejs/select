@@ -19,6 +19,8 @@ define(function(require, exports, module) {
             },
             prefix: 'ui-select',
             template: template,
+            // 表单项的 name 值
+            name:'',
             // 定位配置
             align: {
                 baseXY: [0, '100%']
@@ -56,6 +58,13 @@ define(function(require, exports, module) {
             // trigger 如果为其他 DOM，则由用户提供 model
             var select = this.get('trigger');
             if (select[0].tagName.toLowerCase() == 'select') {
+                // 初始化 name
+                // 如果 select 的 name 存在则覆盖 name 属性
+                var selectName = select.attr('name');
+                if (selectName) {
+                    this.set('name', selectName);
+                } 
+
                 // 替换之前把 select 保存起来
                 this.set('selectSource', select);
                 // 替换 trigger
@@ -67,6 +76,15 @@ define(function(require, exports, module) {
 
                 this.model = convertSelect(select[0], this.get('prefix'));
             } else {
+                // 如果 name 存在则创建隐藏域
+                var selectName = this.get('name');
+                if (selectName) {
+                    var input = $('<input type="text" id="select-' + selectName + '" name="' + selectName + '" />')
+                        .insertBefore(select)
+                        .hide();
+                    this.set('selectSource', input);
+                }
+
                 this.model = completeModel(this.model, this.get('prefix'));
             }
         },
@@ -166,6 +184,10 @@ define(function(require, exports, module) {
             if (index == -1) return;
 
             var selector = this.options.eq(index);
+
+            // 设置原来的表单项
+            var select = this.get('selectSource');
+            select && (select[0].value = selector.attr('data-value'));
 
             // 处理之前选中的元素
             if (this.currentItem) {

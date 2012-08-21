@@ -324,5 +324,30 @@ define(function(require) {
             expect(select.options.eq(0).hasClass('test-selected')).toBeTruthy();
             expect(select.options.eq(1).hasClass('test-selected')).toBeFalsy();
         });
+
+        test('select name', function() {
+            trigger = $('<select name="example" id="example"><option value="value1">text1</option><option value="value2" selected>text2</option></select>').appendTo(document.body);
+            select = new Select({
+                trigger: '#example',
+                prefix: 'test'
+            }).render();
+
+            expect(select.get('name')).toBe('example');
+        });
+
+        test('input name', function() {
+            trigger = $('<a href="#" id="example"></a>').appendTo(document.body);
+            select = new Select({
+                trigger: '#example',
+                model: [
+                    {value: 'value1', text: 'text1'},
+                    {value: 'value2', text: 'text2', selected: true}
+                ],
+                name:"example"
+            }).render();
+
+            expect(!$('#select-example')[0]).toBeFalsy();
+            expect($('#select-example').attr('name')).toBe('example');
+        });
     });
 });

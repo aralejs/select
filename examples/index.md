@@ -118,6 +118,7 @@ seajs.use(['select','jquery'], function(Select, $) {
 seajs.use(['select','jquery'], function(Select, $) {
     var example4 = new Select({
         trigger: '#example4',
+        name: 'example4',
         model: [
             {value:'option1', text:'option1'},
             {value:'option2', text:'option2'},
