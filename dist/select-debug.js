@@ -79,7 +79,7 @@ define("#select/0.9.0/select-debug", ["#overlay/0.9.9/overlay-debug", "$-debug",
                 // 如果 name 存在则创建隐藏域
                 var selectName = this.get('name');
                 if (selectName) {
-                    var input = $('<input type="text" name="' + selectName + '" />')
+                    var input = $('<input type="text" id="select-' + selectName + '" name="' + selectName + '" />')
                         .insertBefore(select)
                         .hide();
                     this.set('selectSource', input);
