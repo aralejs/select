@@ -7,9 +7,6 @@
         "templatable": "widget/1.0.0/templatable"
     },
     "devDependencies": {
-        "widget": "widget/0.9.16/widget",
-        "position": "position/0.9.2/position",
-        "iframe-shim": "iframe-shim/0.9.3/iframe-shim"
     },
     "output": {
         "select.js": "."

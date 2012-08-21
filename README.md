@@ -12,11 +12,13 @@
 * popup
 
 
-## Attribute & Property
+## 属性
 
 ### trigger
 
 trigger 可以为 select 或 其他任何 DOM。
+
+**注意：**trigger只能为一个 DOM，如果选出来多个会取第一个
 
 * 如果为 select，会将其隐藏并生成一个 a 标签放在原来的位置。
 * 如果为 DOM，则不做处理。
@@ -67,7 +69,7 @@ model 的格式为
 
 模拟 select 的值，设置 select 是否可点，等同于 `select.disabled`
 
-## Method
+## 方法
 
 ### select(item)
 
@@ -92,4 +94,18 @@ model 的格式为
 ### removeOption(item)
 
 // TODO
+
+## 事件
+
+### change
+
+当选择某项的时候会触发，手动设置 selectIndex 则不会触发。
+
+回调传回的参数为当前选中的项，为 jQuery 对象
+
+```
+.on('change', function(target) {
+    console.log(target.html());
+})
+```
 

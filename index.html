@@ -48,10 +48,11 @@
 <li>popup</li>
 </ul>
 
-<h2>Attribute &amp; Property</h2>
+<h2>属性</h2>
 
 <h3>trigger</h3>
 <p>trigger 可以为 select 或 其他任何 DOM。</p>
+<p><strong>注意：</strong>trigger只能为一个 DOM，如果选出来多个会取第一个</p>
 
 <ul>
 <li>如果为 select，会将其隐藏并生成一个 a 标签放在原来的位置。</li>
@@ -94,7 +95,7 @@
 <h3>disabled</h3>
 <p>模拟 select 的值，设置 select 是否可点，等同于 <code>select.disabled</code></p>
 
-<h2>Method</h2>
+<h2>方法</h2>
 
 <h3>select(item)</h3>
 <p>选中某项，<code>item</code> 支持三种</p>
@@ -116,6 +117,16 @@
 
 <h3>removeOption(item)</h3>
 <p>// TODO</p>
+
+<h2>事件</h2>
+
+<h3>change</h3>
+<p>当选择某项的时候会触发，手动设置 selectIndex 则不会触发。</p>
+<p>回调传回的参数为当前选中的项，为 jQuery 对象</p>
+
+<pre><code>.on('change', function(target) {
+    console.log(target.html());
+})</code></pre>
 
 </div>
 

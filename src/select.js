@@ -14,7 +14,7 @@ define(function(require, exports, module) {
             trigger: {
                 value: null, // required
                 getter: function(val) {
-                    return $(val);
+                    return $(val).eq(0);
                 }
             },
             prefix: 'ui-select',
@@ -126,8 +126,11 @@ define(function(require, exports, module) {
             var selectIndex = getSelectedIndex(option, this.options);
             this.set('selectedIndex', selectIndex);
 
-            var selector = this.options.eq(selectIndex);
-            this.trigger('change', selector);
+            // 如果不是原来选中的则触发 change 事件
+            if (this.get('selectedIndex') !== selectIndex) {
+                var selector = this.options.eq(selectIndex);
+                this.trigger('change', selector);
+            }
 
             this.hide();
             return this;
