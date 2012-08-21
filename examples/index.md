@@ -46,7 +46,7 @@ function parseCity(type, prov) {
 }
 </style>
 
-基本使用，trigger 为 select，并默认选中 option2
+## 基本使用，trigger 为 select，并默认选中 option2
 
 <select id="example1">
     <option value="option1">option1</option>
@@ -61,7 +61,7 @@ seajs.use(['../src/select'], function(Select) {
 });
 ```
 
-初始化可以传递一个 model
+## 初始化可以传递一个 model
 
 <a href="#" id="example2">请选择</a>
 
@@ -77,7 +77,7 @@ seajs.use(['../src/select'], function(Select) {
 });
 ```
 
-设置 select 为 disabled
+## 设置 select 为 disabled
 
 <select id="example3">
     <option value="option1">option1</option>
@@ -105,7 +105,7 @@ seajs.use(['../src/select','jquery'], function(Select, $) {
 });
 ```
 
-可以通过 select 接口去选择
+## 可以通过 select 接口去选择
 
 <a href="#" id="example4">请选择</a>
 <a href="#" class="example4-select" data-value="1">选择1</a>
@@ -134,7 +134,7 @@ seajs.use(['../src/select','jquery'], function(Select, $) {
 });
 ```
 
-提供 change 的事件
+## 提供 change 的事件
 
 <a href="#" id="example5">请选择</a>
 <span id="example5-log"></span>
@@ -161,7 +161,7 @@ seajs.use(['../src/select','jquery'], function(Select, $) {
 });
 ```
 
-支持 select 级联操作
+## 支持 select 级联操作
 
 <select id="exampel5-1">
     <option value="WATER">水费</option>
