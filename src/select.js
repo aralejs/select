@@ -79,9 +79,8 @@ define(function(require, exports, module) {
                 // 如果 name 存在则创建隐藏域
                 var selectName = this.get('name');
                 if (selectName) {
-                    var input = $('<input type="text" id="select-' + selectName + '" name="' + selectName + '" />')
-                        .insertBefore(select)
-                        .hide();
+                    var input = $('<input type="hidden" id="select-' + selectName + '" name="' + selectName + '" />')
+                        .insertBefore(select);
                     this.set('selectSource', input);
                 }
 
