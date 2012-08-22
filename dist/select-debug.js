@@ -14,7 +14,7 @@ define("#select/0.8.0/select-debug", ["#overlay/0.9.9/overlay-debug", "$-debug",
             trigger: {
                 value: null, // required
                 getter: function(val) {
-                    return $(val);
+                    return $(val).eq(0);
                 }
             },
             prefix: 'ui-select',
@@ -126,8 +126,11 @@ define("#select/0.8.0/select-debug", ["#overlay/0.9.9/overlay-debug", "$-debug",
             var selectIndex = getSelectedIndex(option, this.options);
             this.set('selectedIndex', selectIndex);
 
-            var selector = this.options.eq(selectIndex);
-            this.trigger('change', selector);
+            // 如果不是原来选中的则触发 change 事件
+            if (this.get('selectedIndex') !== selectIndex) {
+                var selector = this.options.eq(selectIndex);
+                this.trigger('change', selector);
+            }
 
             this.hide();
             return this;
@@ -248,7 +251,7 @@ define("#select/0.8.0/select-debug", ["#overlay/0.9.9/overlay-debug", "$-debug",
             // 如果有多个 selected 则选中最后一个
             selectIndexArray.pop();
             for (j = 0, ll = selectIndexArray.length; j < ll; j++) {
-                newModel[0].selected = 'false';
+                newModel[j].selected = 'false';
             }
         } else { //当所有都没有设置 selected 则默认设置第一个
             newModel[0].selected = 'true';
