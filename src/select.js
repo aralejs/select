@@ -122,6 +122,8 @@ define(function(require, exports, module) {
             var bl = parseInt(trigger.css('border-left'), 10);
             var br = parseInt(trigger.css('border-right'), 10);
             trigger.css('width', width - pl - pr - bl - br);
+
+            return this;
         },
 
         show: function() {

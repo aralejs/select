@@ -122,6 +122,8 @@ define("#select/0.9.0/select-debug", ["#overlay/0.9.9/overlay-debug", "$-debug",
             var bl = parseInt(trigger.css('border-left'), 10);
             var br = parseInt(trigger.css('border-right'), 10);
             trigger.css('width', width - pl - pr - bl - br);
+
+            return this;
         },
 
         show: function() {
