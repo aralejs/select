@@ -154,10 +154,11 @@ define(function(require, exports, module) {
 
         select: function(option) {
             var selectIndex = getSelectedIndex(option, this.options);
+            var oldSelectIndex = this.get('selectedIndex');
             this.set('selectedIndex', selectIndex);
 
             // 如果不是原来选中的则触发 change 事件
-            if (this.get('selectedIndex') !== selectIndex) {
+            if (oldSelectIndex !== selectIndex) {
                 var selector = this.options.eq(selectIndex);
                 this.trigger('change', selector);
             }
