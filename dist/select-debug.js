@@ -19,20 +19,21 @@ define("#select/0.9.0/select-debug", ["#overlay/0.9.9/overlay-debug", "$-debug",
             },
             prefix: 'ui-select',
             template: template,
-            // 表单项的 name 值
-            name:'',
             // 定位配置
             align: {
-                baseXY: [0, '100%']
+                baseXY: [0, '100%-1px']
             },
-            // select 的参数
+
+            // 原生 select 的属性
+            name: '',
             value: '',
             length: 0,
             selectedIndex: -1,
             multiple: false, // TODO
             disabled: false,
+
             // 以下不要覆盖
-            selectSource: null
+            selectSource: null // 原生表单项的引用，select/input
         },
 
         events: {
@@ -54,36 +55,43 @@ define("#select/0.9.0/select-debug", ["#overlay/0.9.9/overlay-debug", "$-debug",
         initAttrs: function(config, dataAttrsConfig) {
             Select.superclass.initAttrs.call(this, config, dataAttrsConfig);
 
-            // trigger 如果为 select 则根据 select 的结构生成
-            // trigger 如果为其他 DOM，则由用户提供 model
-            var select = this.get('trigger');
-            if (select[0].tagName.toLowerCase() == 'select') {
+            var trigger = this.get('trigger');
+            if (trigger[0].tagName.toLowerCase() == 'select') {
                 // 初始化 name
                 // 如果 select 的 name 存在则覆盖 name 属性
-                var selectName = select.attr('name');
+                var selectName = trigger.attr('name');
                 if (selectName) {
                     this.set('name', selectName);
-                } 
+                }
 
                 // 替换之前把 select 保存起来
-                this.set('selectSource', select);
+                this.set('selectSource', trigger);
                 // 替换 trigger
                 var triggerTemplate = '<a href="#" class="' +
                     this.get('prefix') + '-trigger"></a>';
                 var newTrigger = $(triggerTemplate);
                 this.set('trigger', newTrigger);
-                select.after(newTrigger).hide();
+                trigger.after(newTrigger).hide();
 
-                this.model = convertSelect(select[0], this.get('prefix'));
+                // trigger 如果为 select 则根据 select 的结构生成
+                this.model = convertSelect(trigger[0], this.get('prefix'));
+
             } else {
                 // 如果 name 存在则创建隐藏域
                 var selectName = this.get('name');
                 if (selectName) {
-                    var input = $('<input type="hidden" id="select-' + selectName + '" name="' + selectName + '" />')
-                        .insertBefore(select);
+                    var input = $('input[name=' + selectName + ']');
+                    if (!input[0]) {
+                        input = $(
+                            '<input type="hidden" id="select-' + selectName +
+                            '" name="' + selectName +
+                            '" />'
+                        ).insertBefore(trigger);
+                    }
                     this.set('selectSource', input);
                 }
 
+                // trigger 如果为其他 DOM，则由用户提供 model
                 this.model = completeModel(this.model, this.get('prefix'));
             }
         },
@@ -97,11 +105,11 @@ define("#select/0.9.0/select-debug", ["#overlay/0.9.9/overlay-debug", "$-debug",
                 }
             });
 
-            var options = this.options = this.$('[data-role=content]').children();
+            this.options = this.$('[data-role=content]').children();
             // 初始化 select 的参数
             // 必须在插入文档流后操作
             this.select('[data-selected=true]');
-            this.set('length', options.length);
+            this.set('length', this.options.length);
 
             this._tweakAlignDefaultValue();
 
@@ -129,6 +137,7 @@ define("#select/0.9.0/select-debug", ["#overlay/0.9.9/overlay-debug", "$-debug",
         show: function() {
             Select.superclass.show.call(this);
             this._setPosition();
+            return this;
         },
 
         // borrow from dropdown
@@ -144,11 +153,6 @@ define("#select/0.9.0/select-debug", ["#overlay/0.9.9/overlay-debug", "$-debug",
 
         destroy: function() {
             this.element.remove();
-            var select = this.get('selectSource');
-            if (select) {
-                this.get('trigger').remove();
-                select.show();
-            }
         },
 
         // 方法接口
@@ -173,10 +177,10 @@ define("#select/0.9.0/select-debug", ["#overlay/0.9.9/overlay-debug", "$-debug",
             this.model = completeModel(model, this.get('prefix'));
             this.renderPartial('[data-role=content]');
             // 渲染后重置 select 的属性
+            this.options = this.$('[data-role=content]').children();
+            this.set('length', this.options.length);
             this.set('selectedIndex', -1);
             this.set('value', '');
-            var options = this.options = this.$('[data-role=content]').children();
-            this.set('length', options.length);
 
             this.select('[data-selected=true]');
             return this;
@@ -198,11 +202,12 @@ define("#select/0.9.0/select-debug", ["#overlay/0.9.9/overlay-debug", "$-debug",
         _onRenderSelectedIndex: function(index) {
             if (index == -1) return;
 
-            var selector = this.options.eq(index);
+            var selector = this.options.eq(index),
+                value = selector.attr('data-value');
 
             // 设置原来的表单项
-            var select = this.get('selectSource');
-            select && (select[0].value = selector.attr('data-value'));
+            var source = this.get('selectSource');
+            source && (source[0].value = value);
 
             // 处理之前选中的元素
             if (this.currentItem) {
@@ -213,7 +218,7 @@ define("#select/0.9.0/select-debug", ["#overlay/0.9.9/overlay-debug", "$-debug",
             // 处理当前选中的元素
             selector.attr('data-selected', 'true')
                 .addClass(this.get('prefix') + '-selected');
-            this.set('value', selector.attr('data-value'));
+            this.set('value', value);
             this.get('trigger').html(selector.html());
             this.currentItem = selector;
         },
