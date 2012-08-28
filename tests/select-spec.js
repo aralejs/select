@@ -407,6 +407,23 @@ define(function(require) {
 
             expect(trigger.width()).toBe(180);
         });
-        
+
+        test('get option', function() {
+            trigger = $('<a href="#" id="example"></a>')
+                .appendTo(document.body);
+            select = new Select({
+                trigger: '#example',
+                model: [
+                    {value: 'value1', text: 'text1'},
+                    {value: 'value2', text: 'text2', selected: true},
+                    {value: 'value3', text: 'text3'}
+                ]
+            }).render();
+
+            var option = $('[data-selected=true]');
+            expect(select.getOption(2)[0]).toBe(select.options[2]);
+            expect(select.getOption('[data-selected=true]')[0]).toBe(select.options[1]);
+            expect(select.getOption(option)[0]).toBe(select.options[1]);
+        });
     });
 });

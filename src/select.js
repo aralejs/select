@@ -159,7 +159,7 @@ define(function(require, exports, module) {
         // --------
 
         select: function(option) {
-            var selectIndex = getSelectedIndex(option, this.options);
+            var selectIndex = getOptionIndex(option, this.options);
             var oldSelectIndex = this.get('selectedIndex');
             this.set('selectedIndex', selectIndex);
 
@@ -186,13 +186,17 @@ define(function(require, exports, module) {
             return this;
         },
 
-        getOption: function() {},
+        getOption: function(option) {
+            var index = getOptionIndex(option, this.options);
+            return this.options.eq(index);
+        },
 
-        addOption: function(item) {
+        addOption: function(option) {
             return this;
         },
 
-        removeOption: function(item) {
+        removeOption: function(option) {
+            var index = getOptionIndex(option, this.options);
             return this;
         },
 
@@ -301,7 +305,7 @@ define(function(require, exports, module) {
         return {select: newModel, prefix: prefix};
     }
 
-    function getSelectedIndex(option, options) {
+    function getOptionIndex(option, options) {
         var index;
         if ($.isNumeric(option)) { // 如果是索引
             index = option;
