@@ -55,26 +55,26 @@ define(function(require, exports, module) {
         initAttrs: function(config, dataAttrsConfig) {
             Select.superclass.initAttrs.call(this, config, dataAttrsConfig);
 
-            var select = this.get('trigger');
-            if (select[0].tagName.toLowerCase() == 'select') {
+            var trigger = this.get('trigger');
+            if (trigger[0].tagName.toLowerCase() == 'select') {
                 // 初始化 name
                 // 如果 select 的 name 存在则覆盖 name 属性
-                var selectName = select.attr('name');
+                var selectName = trigger.attr('name');
                 if (selectName) {
                     this.set('name', selectName);
                 }
 
                 // 替换之前把 select 保存起来
-                this.set('selectSource', select);
+                this.set('selectSource', trigger);
                 // 替换 trigger
                 var triggerTemplate = '<a href="#" class="' +
                     this.get('prefix') + '-trigger"></a>';
                 var newTrigger = $(triggerTemplate);
                 this.set('trigger', newTrigger);
-                select.after(newTrigger).hide();
+                trigger.after(newTrigger).hide();
 
                 // trigger 如果为 select 则根据 select 的结构生成
-                this.model = convertSelect(select[0], this.get('prefix'));
+                this.model = convertSelect(trigger[0], this.get('prefix'));
 
             } else {
                 // 如果 name 存在则创建隐藏域
@@ -86,7 +86,7 @@ define(function(require, exports, module) {
                             '<input type="hidden" id="select-' + selectName +
                             '" name="' + selectName +
                             '" />'
-                        ).insertBefore(select);
+                        ).insertBefore(trigger);
                     }
                     this.set('selectSource', input);
                 }
@@ -137,6 +137,7 @@ define(function(require, exports, module) {
         show: function() {
             Select.superclass.show.call(this);
             this._setPosition();
+            return this;
         },
 
         // borrow from dropdown
