@@ -197,6 +197,9 @@ define(function(require, exports, module) {
 
         removeOption: function(option) {
             var index = getOptionIndex(option, this.options);
+            this.options.eq(index).remove();
+            this.options = this.$('[data-role=content]').children();
+            this.set('length', this.options.length);
             return this;
         },
 

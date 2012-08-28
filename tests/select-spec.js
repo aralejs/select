@@ -425,5 +425,23 @@ define(function(require) {
             expect(select.getOption('[data-selected=true]')[0]).toBe(select.options[1]);
             expect(select.getOption(option)[0]).toBe(select.options[1]);
         });
+
+        test('remove option', function() {
+            trigger = $('<a href="#" id="example"></a>')
+                .appendTo(document.body);
+            select = new Select({
+                trigger: '#example',
+                model: [
+                    {value: 'value1', text: 'text1'},
+                    {value: 'value2', text: 'text2', selected: true},
+                    {value: 'value3', text: 'text3'}
+                ]
+            }).render();
+
+            var option = select.options[2];
+            select.removeOption('[data-selected=true]');
+            expect(select.get('length')).toBe(2);
+            expect(select.options[1]).toBe(option);
+        });
     });
 });
