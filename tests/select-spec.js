@@ -28,6 +28,7 @@ define(function(require) {
             expect(trigger.is(':hidden')).toBeTruthy();
             expect(select.get('trigger').html()).toBe('text1');
             expect(select.get('value')).toBe('value1');
+            expect(select.get('length')).toBe(2);
             expect(select.get('selectedIndex')).toBe(0);
             expect(select.currentItem[0]).toBe(select.element.find('[data-role=item]')[0]);
             expect(select.options.eq(0).attr('data-selected'))
@@ -293,6 +294,7 @@ define(function(require) {
 
             expect(select.get('trigger').html()).toBe('text4');
             expect(select.get('value')).toBe('value4');
+            expect(select.get('length')).toBe(2);
             expect(select.get('selectedIndex')).toBe(1);
             expect(select.currentItem[0]).toBe(select.element.find('[data-role=item]')[1]);
             expect(select.options.eq(0).attr('data-defaultSelected'))
@@ -317,6 +319,8 @@ define(function(require) {
 
             trigger.click();
             expect(select.element.is(':hidden')).toBeFalsy();
+            select.hide();
+            expect(select.element.is(':hidden')).toBeTruthy();
         });
 
         test('set disabled', function() {
@@ -384,5 +388,25 @@ define(function(require) {
             expect(!$('#select-example')[0]).toBeFalsy();
             expect($('#select-example').attr('name')).toBe('example');
         });
+
+        test('set trigger width', function() {
+            trigger = $('<a href="#" id="example"></a>')
+                .css({
+                    display: 'block',
+                    padding: '5px',
+                    border: '5px solid #ccc'
+                }).appendTo(document.body);
+            select = new Select({
+                trigger: '#example',
+                model: [
+                    {value: 'value1', text: 'text1'},
+                    {value: 'value2', text: 'text2', selected: true}
+                ],
+                width: '200px'
+            }).render();
+
+            expect(trigger.width()).toBe(180);
+        });
+        
     });
 });

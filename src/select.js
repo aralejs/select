@@ -177,10 +177,10 @@ define(function(require, exports, module) {
             this.model = completeModel(model, this.get('prefix'));
             this.renderPartial('[data-role=content]');
             // 渲染后重置 select 的属性
-            this.set('selectedIndex', -1);
-            this.set('value', '');
             this.options = this.$('[data-role=content]').children();
             this.set('length', this.options.length);
+            this.set('selectedIndex', -1);
+            this.set('value', '');
 
             this.select('[data-selected=true]');
             return this;
