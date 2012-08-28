@@ -152,11 +152,6 @@ define(function(require, exports, module) {
 
         destroy: function() {
             this.element.remove();
-            var select = this.get('selectSource');
-            if (select) {
-                this.get('trigger').remove();
-                select.show();
-            }
         },
 
         // 方法接口
@@ -206,11 +201,12 @@ define(function(require, exports, module) {
         _onRenderSelectedIndex: function(index) {
             if (index == -1) return;
 
-            var selector = this.options.eq(index);
+            var selector = this.options.eq(index),
+                value = selector.attr('data-value');
 
             // 设置原来的表单项
-            var select = this.get('selectSource');
-            select && (select[0].value = selector.attr('data-value'));
+            var source = this.get('selectSource');
+            source && (source[0].value = value);
 
             // 处理之前选中的元素
             if (this.currentItem) {
@@ -221,7 +217,7 @@ define(function(require, exports, module) {
             // 处理当前选中的元素
             selector.attr('data-selected', 'true')
                 .addClass(this.get('prefix') + '-selected');
-            this.set('value', selector.attr('data-value'));
+            this.set('value', value);
             this.get('trigger').html(selector.html());
             this.currentItem = selector;
         },
