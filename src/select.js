@@ -19,13 +19,12 @@ define(function(require, exports, module) {
             },
             prefix: 'ui-select',
             template: template,
-            // 表单项的 name 值
-            name:'',
             // 定位配置
             align: {
-                baseXY: [0, '100%']
+                baseXY: [0, '100%-1px']
             },
             // select 的参数
+            name:'',
             value: '',
             length: 0,
             selectedIndex: -1,
