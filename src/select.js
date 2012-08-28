@@ -23,15 +23,17 @@ define(function(require, exports, module) {
             align: {
                 baseXY: [0, '100%-1px']
             },
-            // select 的参数
-            name:'',
+
+            // 原生 select 的属性
+            name: '',
             value: '',
             length: 0,
             selectedIndex: -1,
             multiple: false, // TODO
             disabled: false,
+
             // 以下不要覆盖
-            selectSource: null
+            selectSource: null // 原生表单项的引用，select/input
         },
 
         events: {
@@ -53,8 +55,6 @@ define(function(require, exports, module) {
         initAttrs: function(config, dataAttrsConfig) {
             Select.superclass.initAttrs.call(this, config, dataAttrsConfig);
 
-            // trigger 如果为 select 则根据 select 的结构生成
-            // trigger 如果为其他 DOM，则由用户提供 model
             var select = this.get('trigger');
             if (select[0].tagName.toLowerCase() == 'select') {
                 // 初始化 name
@@ -62,7 +62,7 @@ define(function(require, exports, module) {
                 var selectName = select.attr('name');
                 if (selectName) {
                     this.set('name', selectName);
-                } 
+                }
 
                 // 替换之前把 select 保存起来
                 this.set('selectSource', select);
@@ -73,16 +73,25 @@ define(function(require, exports, module) {
                 this.set('trigger', newTrigger);
                 select.after(newTrigger).hide();
 
+                // trigger 如果为 select 则根据 select 的结构生成
                 this.model = convertSelect(select[0], this.get('prefix'));
+
             } else {
                 // 如果 name 存在则创建隐藏域
                 var selectName = this.get('name');
                 if (selectName) {
-                    var input = $('<input type="hidden" id="select-' + selectName + '" name="' + selectName + '" />')
-                        .insertBefore(select);
+                    var input = $('input[name=' + selectName + ']');
+                    if (!input[0]) {
+                        input = $(
+                            '<input type="hidden" id="select-' + selectName +
+                            '" name="' + selectName +
+                            '" />'
+                        ).insertBefore(select);
+                    }
                     this.set('selectSource', input);
                 }
 
+                // trigger 如果为其他 DOM，则由用户提供 model
                 this.model = completeModel(this.model, this.get('prefix'));
             }
         },
@@ -96,11 +105,11 @@ define(function(require, exports, module) {
                 }
             });
 
-            var options = this.options = this.$('[data-role=content]').children();
+            this.options = this.$('[data-role=content]').children();
             // 初始化 select 的参数
             // 必须在插入文档流后操作
             this.select('[data-selected=true]');
-            this.set('length', options.length);
+            this.set('length', this.options.length);
 
             this._tweakAlignDefaultValue();
 
@@ -174,8 +183,8 @@ define(function(require, exports, module) {
             // 渲染后重置 select 的属性
             this.set('selectedIndex', -1);
             this.set('value', '');
-            var options = this.options = this.$('[data-role=content]').children();
-            this.set('length', options.length);
+            this.options = this.$('[data-role=content]').children();
+            this.set('length', this.options.length);
 
             this.select('[data-selected=true]');
             return this;
