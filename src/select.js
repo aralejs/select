@@ -80,7 +80,7 @@ define(function(require, exports, module) {
                 // 如果 name 存在则创建隐藏域
                 var selectName = this.get('name');
                 if (selectName) {
-                    var input = $('input[name=' + selectName + ']');
+                    var input = $('input[name=' + selectName + ']').eq(0);
                     if (!input[0]) {
                         input = $(
                             '<input type="hidden" id="select-' + selectName +
