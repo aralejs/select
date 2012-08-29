@@ -5,11 +5,52 @@
 
 ---
 
-
 ## 模块依赖
 
 * jquery
 * popup
+
+## 使用方法
+
+### trigger 为 select
+
+html 片段
+
+```
+<select id="city" name="city">
+    <option value="value1">text1</option>
+    <option value="value2">text2</option>
+</select>
+```
+
+javascript 片段
+
+```
+new Select({
+    trigger: '#city'
+}).render()
+```
+
+### trigger 为其他 DOM
+
+html 片段
+
+```
+<a href="#" id="city"></a>
+```
+
+javascript 片段
+
+```
+new Select({
+    trigger: '#city',
+    name: 'city',
+    model: [
+        {value:'value1', text: 'text1'},
+        {value:'value2', text: 'text2'}
+    ]
+}).render();
+```
 
 
 ## 属性
@@ -21,7 +62,7 @@ trigger 可以为 select 或 其他任何 DOM。
 **注意：**trigger只能为一个 DOM，如果选出来多个会取第一个
 
 * 如果为 select，会将其隐藏并生成一个 a 标签放在原来的位置。
-* 如果为 DOM，则不做处理。
+* 如果为 DOM，实例化的时候则需要提供 model 作为数据源
 
 ### model
 
@@ -49,17 +90,23 @@ model 的格式为
 
 样式前缀，默认为 `ui-select`
 
+### name
+
+模拟 select 的属性，表单项需要的 name 值，等同于 `select.name`
+
+**注意**：如果 trigger 不是 select，那么会先在页面找 name 的 input，找不到再创建一个。
+
 ### value
 
-模拟 select 的值，获取被选中 option 的 value 值，等同于 `select.value`
+模拟 select 的属性，获取被选中 option 的 value 值，等同于 `select.value`
 
 ### length
 
-模拟 select 的值，获取 option 的个数，等同于 `select.length`
+模拟 select 的属性，获取 option 的个数，等同于 `select.length`
 
-### selectIndex
+### selectedIndex
 
-模拟 select 的值，获取被选中 option 的索引值，等同于 `select.selectIndex`
+模拟 select 的属性，获取被选中 option 的索引值，等同于 `select.selectedIndex`
 
 ### multiple
 
@@ -67,44 +114,52 @@ model 的格式为
 
 ### disabled
 
-模拟 select 的值，设置 select 是否可点，等同于 `select.disabled`
+模拟 select 的属性，设置 select 是否可点，等同于 `select.disabled`
 
 ## 方法
 
-### select(item)
+### .select(option)
 
-选中某项，`item` 支持三种
+选中某项，`option` 支持三种
 
 1. 列表索引，为 Number
 2. 选择器，为 String
 3. DOM，支持 DOM Element 和 jQuery 对象
 
-### syncModel(model)
+### .syncModel(model)
 
-重新渲染 select，model 为数据源，和上面的格式一致
+重新跟进给定的 demo 渲染 select
 
-### addOption(item)
+model 为数据源，和上面提到的 model 格式保持一致
 
-// TODO
+### .addOption(option)
 
-### getOption(item)
+将一个选项添加到最后，option 的格式为
 
-// TODO
+```
+{value: 'value1', text: 'text1'}
+```
 
-### removeOption(item)
+### .getOption(option)
 
-// TODO
+获取某个选项，参数和 `.select` 方法一致
+
+### .removeOption(option)
+
+删除某个选项，参数和 `.select` 方法一致
 
 ## 事件
 
 ### change
 
-当选择某项的时候会触发，手动设置 selectIndex 则不会触发。
+当选择某项的时候会触发，组件初始化不会触发此事件
 
 回调传回的参数为当前选中的项，为 jQuery 对象
 
 ```
-.on('change', function(target) {
+new Select({
+    trigger: ''
+}).on('change', function(target) {
     console.log(target.html());
 })
 ```
