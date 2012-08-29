@@ -227,7 +227,7 @@ define(function(require, exports, module) {
             source && (source[0].value = value);
 
             // 处理之前选中的元素
-            if (this.currentItem) {
+            if (this.currentItem[0]) {
                 this.currentItem.attr('data-selected', 'false')
                     .removeClass(this.get('prefix') + '-selected');
             }
