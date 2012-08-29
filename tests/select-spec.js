@@ -365,7 +365,8 @@ define(function(require) {
         });
 
         test('attr name when trigger is select', function() {
-            trigger = $('<select name="example" id="example"><option value="value1">text1</option><option value="value2" selected>text2</option></select>').appendTo(document.body);
+            trigger = $('<select name="example" id="example"><option value="value1">text1</option><option value="value2" selected>text2</option></select>')
+                .appendTo(document.body);
             select = new Select({
                 trigger: '#example',
                 prefix: 'test'
@@ -375,14 +376,15 @@ define(function(require) {
         });
 
         test('attr name when trigger is DOM', function() {
-            trigger = $('<a href="#" id="example"></a>').appendTo(document.body);
+            trigger = $('<a href="#" id="example"></a>')
+                .appendTo(document.body);
             select = new Select({
                 trigger: '#example',
                 model: [
                     {value: 'value1', text: 'text1'},
                     {value: 'value2', text: 'text2', selected: true}
                 ],
-                name:"example"
+                name: 'example'
             }).render();
 
             expect(!$('#select-example')[0]).toBeFalsy();
@@ -422,7 +424,8 @@ define(function(require) {
 
             var option = $('[data-selected=true]');
             expect(select.getOption(2)[0]).toBe(select.options[2]);
-            expect(select.getOption('[data-selected=true]')[0]).toBe(select.options[1]);
+            expect(select.getOption('[data-selected=true]')[0])
+                .toBe(select.options[1]);
             expect(select.getOption(option)[0]).toBe(select.options[1]);
         });
 
