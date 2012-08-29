@@ -80,7 +80,7 @@ define("#select/0.9.0/select-debug", ["#overlay/0.9.9/overlay-debug", "$-debug",
                 // 如果 name 存在则创建隐藏域
                 var selectName = this.get('name');
                 if (selectName) {
-                    var input = $('input[name=' + selectName + ']');
+                    var input = $('input[name=' + selectName + ']').eq(0);
                     if (!input[0]) {
                         input = $(
                             '<input type="hidden" id="select-' + selectName +
@@ -159,7 +159,7 @@ define("#select/0.9.0/select-debug", ["#overlay/0.9.9/overlay-debug", "$-debug",
         // --------
 
         select: function(option) {
-            var selectIndex = getSelectedIndex(option, this.options);
+            var selectIndex = getOptionIndex(option, this.options);
             var oldSelectIndex = this.get('selectedIndex');
             this.set('selectedIndex', selectIndex);
 
@@ -186,13 +186,36 @@ define("#select/0.9.0/select-debug", ["#overlay/0.9.9/overlay-debug", "$-debug",
             return this;
         },
 
-        getOption: function() {},
+        getOption: function(option) {
+            var index = getOptionIndex(option, this.options);
+            return this.options.eq(index);
+        },
 
-        addOption: function(item) {
+        addOption: function(option) {
+            var model = this.model.select;
+            model.push(option);
+            this.syncModel(model);
             return this;
         },
 
-        removeOption: function(item) {
+        removeOption: function(option) {
+            var removedIndex = getOptionIndex(option, this.options),
+                oldIndex = this.get('selectedIndex'),
+                removedOption = this.options.eq(removedIndex);
+
+            // 删除 option，更新属性
+            removedOption.remove();
+            this.options = this.$('[data-role=content]').children();
+            this.set('length', this.options.length);
+
+            // 如果被删除的是当前选中的，则选中第一个
+            if (removedIndex === oldIndex) {
+                this.set('selectedIndex', 0);
+
+            // 如果被删除的在选中的前面，则选中的索引向前移动一格
+            } else if (removedIndex < oldIndex) {
+                this.set('selectedIndex', oldIndex - 1);
+            }
             return this;
         },
 
@@ -203,15 +226,21 @@ define("#select/0.9.0/select-debug", ["#overlay/0.9.9/overlay-debug", "$-debug",
             if (index == -1) return;
 
             var selector = this.options.eq(index),
+                currentItem = this.currentItem,
                 value = selector.attr('data-value');
+
+            // 如果两个 DOM 相同则不再处理
+            if (currentItem && selector[0] == currentItem[0]) {
+                return;
+            }
 
             // 设置原来的表单项
             var source = this.get('selectSource');
             source && (source[0].value = value);
 
             // 处理之前选中的元素
-            if (this.currentItem) {
-                this.currentItem.attr('data-selected', 'false')
+            if (currentItem) {
+                currentItem.attr('data-selected', 'false')
                     .removeClass(this.get('prefix') + '-selected');
             }
 
@@ -301,7 +330,7 @@ define("#select/0.9.0/select-debug", ["#overlay/0.9.9/overlay-debug", "$-debug",
         return {select: newModel, prefix: prefix};
     }
 
-    function getSelectedIndex(option, options) {
+    function getOptionIndex(option, options) {
         var index;
         if ($.isNumeric(option)) { // 如果是索引
             index = option;
