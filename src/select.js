@@ -192,6 +192,9 @@ define(function(require, exports, module) {
         },
 
         addOption: function(option) {
+            var model = this.model.select;
+            model.push(option);
+            this.syncModel(model);
             return this;
         },
 

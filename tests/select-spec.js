@@ -464,5 +464,24 @@ define(function(require) {
             expect(select.get('selectedIndex')).toBe(0);
             expect(select.options[1]).toBe(option);
         });
+
+        test('add option', function() {
+            trigger = $('<a href="#" id="example"></a>')
+                .appendTo(document.body);
+            select = new Select({
+                trigger: '#example',
+                model: [
+                    {value: 'value1', text: 'text1'},
+                    {value: 'value2', text: 'text2', selected: true},
+                    {value: 'value3', text: 'text3'}
+                ]
+            }).render();
+            select.addOption({value: 'value4', text: 'text4'});
+
+            var option = select.options.eq(3);
+            expect(select.get('length')).toBe(4);
+            expect(option.attr('data-value')).toBe('value4');
+            expect(option.html()).toBe('text4');
+        });
     });
 });
