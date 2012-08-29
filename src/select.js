@@ -196,8 +196,18 @@ define(function(require, exports, module) {
         },
 
         removeOption: function(option) {
-            var index = getOptionIndex(option, this.options);
-            this.options.eq(index).remove();
+            var index = getOptionIndex(option, this.options),
+                removed = this.options.eq(index);
+
+            // 如果被删除的是当前选中的，则选中第一个
+            if (removed.attr('data-selected') === 'true') {
+                this.set('selectedIndex', 0);
+            } else {
+
+            }
+
+            // 删除 option，更新属性
+            removed.remove();
             this.options = this.$('[data-role=content]').children();
             this.set('length', this.options.length);
             return this;

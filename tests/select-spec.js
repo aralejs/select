@@ -433,6 +433,23 @@ define(function(require) {
                 trigger: '#example',
                 model: [
                     {value: 'value1', text: 'text1'},
+                    {value: 'value2', text: 'text2'},
+                    {value: 'value3', text: 'text3', selected: true}
+                ]
+            }).render();
+
+            select.removeOption(0);
+            expect(select.get('length')).toBe(2);
+            expect(select.get('selectedIndex')).toBe(1);
+        });
+
+        test('remove selected option', function() {
+            trigger = $('<a href="#" id="example"></a>')
+                .appendTo(document.body);
+            select = new Select({
+                trigger: '#example',
+                model: [
+                    {value: 'value1', text: 'text1'},
                     {value: 'value2', text: 'text2', selected: true},
                     {value: 'value3', text: 'text3'}
                 ]
@@ -441,6 +458,7 @@ define(function(require) {
             var option = select.options[2];
             select.removeOption('[data-selected=true]');
             expect(select.get('length')).toBe(2);
+            expect(select.get('selectedIndex')).toBe(0);
             expect(select.options[1]).toBe(option);
         });
     });
