@@ -196,20 +196,23 @@ define(function(require, exports, module) {
         },
 
         removeOption: function(option) {
-            var index = getOptionIndex(option, this.options),
-                removed = this.options.eq(index);
-
-            // 如果被删除的是当前选中的，则选中第一个
-            if (removed.attr('data-selected') === 'true') {
-                this.set('selectedIndex', 0);
-            } else {
-
-            }
+            var removedIndex = getOptionIndex(option, this.options),
+                oldIndex = this.get('selectedIndex'),
+                removedOption = this.options.eq(removedIndex);
 
             // 删除 option，更新属性
-            removed.remove();
+            removedOption.remove();
             this.options = this.$('[data-role=content]').children();
             this.set('length', this.options.length);
+
+            // 如果被删除的是当前选中的，则选中第一个
+            if (removedIndex === oldIndex) {
+                this.set('selectedIndex', 0);
+
+            // 如果被删除的在选中的前面，则选中的索引向前移动一格
+            } else if (removedIndex < oldIndex) {
+                this.set('selectedIndex', oldIndex - 1);
+            }
             return this;
         },
 
@@ -220,15 +223,21 @@ define(function(require, exports, module) {
             if (index == -1) return;
 
             var selector = this.options.eq(index),
+                currentItem = this.currentItem,
                 value = selector.attr('data-value');
+
+            // 如果两个 DOM 相同则不再处理
+            if (currentItem && selector[0] == currentItem[0]) {
+                return;
+            }
 
             // 设置原来的表单项
             var source = this.get('selectSource');
             source && (source[0].value = value);
 
             // 处理之前选中的元素
-            if (this.currentItem[0]) {
-                this.currentItem.attr('data-selected', 'false')
+            if (currentItem) {
+                currentItem.attr('data-selected', 'false')
                     .removeClass(this.get('prefix') + '-selected');
             }
 
