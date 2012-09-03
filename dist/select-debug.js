@@ -127,8 +127,8 @@ define("#select/0.9.0/select-debug", ["#overlay/0.9.9/overlay-debug", "$-debug",
             var width = this.element.outerWidth();
             var pl = parseInt(trigger.css('padding-left'), 10);
             var pr = parseInt(trigger.css('padding-right'), 10);
-            var bl = parseInt(trigger.css('border-left'), 10);
-            var br = parseInt(trigger.css('border-right'), 10);
+            var bl = parseInt(trigger.css('border-left-width'), 10);
+            var br = parseInt(trigger.css('border-right-width'), 10);
             trigger.css('width', width - pl - pr - bl - br);
 
             return this;
