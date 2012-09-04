@@ -86,7 +86,7 @@ model 的格式为
 
 生成组件的模版，数据源为 model。
 
-### prefix
+### classPrefix   _(0.9.0 修改，之前为 prefix)_
 
 样式前缀，默认为 `ui-select`
 
