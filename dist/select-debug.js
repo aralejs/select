@@ -4,7 +4,7 @@ define("#select/0.9.0/select-debug", ["#overlay/0.9.9/overlay-debug", "$-debug",
     var $ = require('$-debug');
     var Templatable = require('#widget/1.0.0/templatable-debug');
 
-    var template = '<div class="{{prefix}}"><ul class="{{prefix}}-content" data-role="content">{{#each select}}<li data-role="item" class="{{../prefix}}-item" data-value="{{value}}" data-defaultSelected="{{defaultSelected}}" data-selected="{{selected}}">{{text}}</li>{{/each}}</ul></div>';
+    var template = '<div class="{{classPrefix}}"><ul class="{{classPrefix}}-content" data-role="content">{{#each select}}<li data-role="item" class="{{../classPrefix}}-item" data-value="{{value}}" data-defaultSelected="{{defaultSelected}}" data-selected="{{selected}}">{{text}}</li>{{/each}}</ul></div>';
 
     var Select = Overlay.extend({
 
@@ -17,7 +17,7 @@ define("#select/0.9.0/select-debug", ["#overlay/0.9.9/overlay-debug", "$-debug",
                     return $(val).eq(0);
                 }
             },
-            prefix: 'ui-select',
+            classPrefix: 'ui-select',
             template: template,
             // 定位配置
             align: {
@@ -42,10 +42,10 @@ define("#select/0.9.0/select-debug", ["#overlay/0.9.9/overlay-debug", "$-debug",
                 this.select(target);
             },
             'mouseenter [data-role=item]': function(e) {
-                $(e.currentTarget).addClass(this.get('prefix') + '-hover');
+                $(e.currentTarget).addClass(this.get('classPrefix') + '-hover');
             },
             'mouseleave [data-role=item]': function(e) {
-                $(e.currentTarget).removeClass(this.get('prefix') + '-hover');
+                $(e.currentTarget).removeClass(this.get('classPrefix') + '-hover');
             }
         },
 
@@ -68,13 +68,13 @@ define("#select/0.9.0/select-debug", ["#overlay/0.9.9/overlay-debug", "$-debug",
                 this.set('selectSource', trigger);
                 // 替换 trigger
                 var triggerTemplate = '<a href="#" class="' +
-                    this.get('prefix') + '-trigger"></a>';
+                    this.get('classPrefix') + '-trigger"></a>';
                 var newTrigger = $(triggerTemplate);
                 this.set('trigger', newTrigger);
                 trigger.after(newTrigger).hide();
 
                 // trigger 如果为 select 则根据 select 的结构生成
-                this.model = convertSelect(trigger[0], this.get('prefix'));
+                this.model = convertSelect(trigger[0], this.get('classPrefix'));
 
             } else {
                 // 如果 name 存在则创建隐藏域
@@ -92,7 +92,7 @@ define("#select/0.9.0/select-debug", ["#overlay/0.9.9/overlay-debug", "$-debug",
                 }
 
                 // trigger 如果为其他 DOM，则由用户提供 model
-                this.model = completeModel(this.model, this.get('prefix'));
+                this.model = completeModel(this.model, this.get('classPrefix'));
             }
         },
 
@@ -174,7 +174,7 @@ define("#select/0.9.0/select-debug", ["#overlay/0.9.9/overlay-debug", "$-debug",
         },
 
         syncModel: function(model) {
-            this.model = completeModel(model, this.get('prefix'));
+            this.model = completeModel(model, this.get('classPrefix'));
             this.renderPartial('[data-role=content]');
             // 渲染后重置 select 的属性
             this.options = this.$('[data-role=content]').children();
@@ -241,19 +241,19 @@ define("#select/0.9.0/select-debug", ["#overlay/0.9.9/overlay-debug", "$-debug",
             // 处理之前选中的元素
             if (currentItem) {
                 currentItem.attr('data-selected', 'false')
-                    .removeClass(this.get('prefix') + '-selected');
+                    .removeClass(this.get('classPrefix') + '-selected');
             }
 
             // 处理当前选中的元素
             selector.attr('data-selected', 'true')
-                .addClass(this.get('prefix') + '-selected');
+                .addClass(this.get('classPrefix') + '-selected');
             this.set('value', value);
             this.get('trigger').html(selector.html());
             this.currentItem = selector;
         },
 
         _onRenderDisabled: function(val) {
-            var className = this.get('prefix') + '-disabled';
+            var className = this.get('classPrefix') + '-disabled';
             var trigger = this.get('trigger');
             trigger[(val ? 'addClass' : 'removeClass')](className);
         }
@@ -279,7 +279,7 @@ define("#select/0.9.0/select-debug", ["#overlay/0.9.9/overlay-debug", "$-debug",
     //   {value: 'value2', text: 'text2',
     //      defaultSelected: true, selected: true}
     // ]
-    function convertSelect(select, prefix) {
+    function convertSelect(select, classPrefix) {
         var i, model = [], options = select.options,
             l = options.length, hasDefaultSelect = false;
         for (i = 0; i < l; i++) {
@@ -302,11 +302,11 @@ define("#select/0.9.0/select-debug", ["#overlay/0.9.9/overlay-debug", "$-debug",
         if (!hasDefaultSelect) {
             newModel[0].selected = 'true';
         }
-        return {select: model, prefix: prefix};
+        return {select: model, classPrefix: classPrefix};
     }
 
     // 补全 model 对象
-    function completeModel(model, prefix) {
+    function completeModel(model, classPrefix) {
         var i, j, newModel = [], selectIndexArray = [];
         for (i = 0, l = model.length; i < l; i++) {
             var o = model[i];
@@ -327,7 +327,7 @@ define("#select/0.9.0/select-debug", ["#overlay/0.9.9/overlay-debug", "$-debug",
         } else { //当所有都没有设置 selected 则默认设置第一个
             newModel[0].selected = 'true';
         }
-        return {select: newModel, prefix: prefix};
+        return {select: newModel, classPrefix: classPrefix};
     }
 
     function getOptionIndex(option, options) {
