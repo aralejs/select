@@ -164,3 +164,7 @@ new Select({
 })
 ```
 
+## 问题讨论
+
+- `ui-select-item` 避免设置 height [#13](https://github.com/aralejs/select/issues/13)
+- trigger 和 template 的字体保持一致，不然宽度可能有不对齐的情况

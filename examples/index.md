@@ -25,13 +25,12 @@ function parseCity(type, prov) {
 .ui-select-trigger {
     font-size:12px;
     border: 1px solid #eee;
-    display:inline-block;
-    *display:inline;
-    zoom:1;
-    padding:5px;
+    padding:5px 10px;
+    font-family:tahoma;
 }
 .ui-select {
     border: 1px solid #eee;
+    font-family:tahoma;
 }
 .ui-select-content {
     padding: 2px 0;
@@ -39,6 +38,7 @@ function parseCity(type, prov) {
     background: #fff;
 }
 .ui-select-item {
+    font-size:12px;
     padding: 5px 10px;
     list-style: none;
 }
@@ -219,7 +219,7 @@ seajs.use(['select','jquery'], function(Select, $) {
     new Select({
         trigger: '#example7-1',
         model: [
-            {value:'option1', text:'字比较少'},
+            {value:'option1', text:'aaaaaaaaaaaaaaaa'},
             {value:'option2', text:'字比较少'},
             {value:'option3', text:'字比较少'}
         ]
@@ -228,7 +228,7 @@ seajs.use(['select','jquery'], function(Select, $) {
     new Select({
         trigger: '#example7-2',
         model: [
-            {value:'option1', text:'字好多多多多多多多'},
+            {value:'option1', text:'字好多多aaa多多多多多'},
             {value:'option2', text:'字比较多'},
             {value:'option3', text:'字比较多'}
         ]
