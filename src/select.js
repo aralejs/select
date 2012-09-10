@@ -121,16 +121,7 @@ define(function(require, exports, module) {
 
         render: function() {
             Select.superclass.render.call(this);
-
-            // trigger 的宽度和浮层保持一致
-            var trigger = this.get('trigger');
-            var width = this.element.outerWidth();
-            var pl = parseInt(trigger.css('padding-left'), 10);
-            var pr = parseInt(trigger.css('padding-right'), 10);
-            var bl = parseInt(trigger.css('border-left-width'), 10);
-            var br = parseInt(trigger.css('border-right-width'), 10);
-            trigger.css('width', width - pl - pr - bl - br);
-
+            this._setTriggerWidth();
             return this;
         },
 
@@ -138,6 +129,17 @@ define(function(require, exports, module) {
             Select.superclass.show.call(this);
             this._setPosition();
             return this;
+        },
+
+        // trigger 的宽度和浮层保持一致
+        _setTriggerWidth: function() {
+            var trigger = this.get('trigger');
+            var width = this.element.outerWidth();
+            var pl = parseInt(trigger.css('padding-left'), 10);
+            var pr = parseInt(trigger.css('padding-right'), 10);
+            var bl = parseInt(trigger.css('border-left-width'), 10);
+            var br = parseInt(trigger.css('border-right-width'), 10);
+            trigger.css('width', width - pl - pr - bl - br);
         },
 
         // borrow from dropdown
@@ -181,8 +183,10 @@ define(function(require, exports, module) {
             this.set('length', this.options.length);
             this.set('selectedIndex', -1);
             this.set('value', '');
-
             this.select('[data-selected=true]');
+
+            // 重新设置 trigger 宽度
+            this._setTriggerWidth();
             return this;
         },
 
