@@ -345,11 +345,11 @@ define(function(require) {
             expect(select.element.is(':hidden')).toBeFalsy();
         });
 
-        test('set prefix', function() {
+        test('set classPrefix', function() {
             trigger = $('<select id="example"><option value="value1">text1</option><option value="value2" selected>text2</option></select>').appendTo(document.body);
             select = new Select({
                 trigger: '#example',
-                prefix: 'test'
+                classPrefix: 'test'
             }).render();
 
             expect(select.element.hasClass('test')).toBeTruthy();
@@ -368,8 +368,7 @@ define(function(require) {
             trigger = $('<select name="example" id="example"><option value="value1">text1</option><option value="value2" selected>text2</option></select>')
                 .appendTo(document.body);
             select = new Select({
-                trigger: '#example',
-                prefix: 'test'
+                trigger: '#example'
             }).render();
 
             expect(select.get('name')).toBe('example');
