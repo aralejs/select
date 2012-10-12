@@ -4,8 +4,8 @@
     "tag": "widget",
     "dependencies": {
         "$": "$",
-        "overlay": "0.9.9",
-        "templatable": "widget/1.0.0/templatable"
+        "overlay": "0.9.10",
+        "templatable": "widget/1.0.2/templatable"
     },
     "devDependencies": {
     },
