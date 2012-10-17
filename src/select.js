@@ -154,6 +154,7 @@ define(function(require, exports, module) {
         },
 
         destroy: function() {
+            Select.superclass.destroy.call(this);
             this.element.remove();
         },
 
