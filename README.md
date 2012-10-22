@@ -1,13 +1,8 @@
 # Select
 
-模拟 select 的组件
+模拟 select 的组件。
 
 ---
-
-## 模块依赖
-
-* jquery
-* popup
 
 ## 使用方法
 
