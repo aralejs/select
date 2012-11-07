@@ -154,8 +154,8 @@ define(function(require, exports, module) {
         },
 
         destroy: function() {
-            Select.superclass.destroy.call(this);
             this.element.remove();
+            Select.superclass.destroy.call(this);
         },
 
         // 方法接口
