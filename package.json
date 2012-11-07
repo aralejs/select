@@ -4,6 +4,14 @@
     "root": "arale",
     "description": "模拟 select 的组件",
     "tag": "widget",
+    "homepage": "http://aralejs.org/select",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/aralejs/select.git"
+    },
+    "bugs": {
+        "url": "https://github.com/aralejs/select/issues"
+    },
     "dependencies": {
         "$": "$",
         "overlay": "arale/overlay/0.9.12/overlay",
