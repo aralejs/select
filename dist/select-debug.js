@@ -154,8 +154,8 @@ define("#select/0.9.0/select-debug", ["#overlay/0.9.11/overlay-debug", "$-debug"
         },
 
         destroy: function() {
-            Select.superclass.destroy.call(this);
             this.element.remove();
+            Select.superclass.destroy.call(this);
         },
 
         // 方法接口
