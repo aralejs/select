@@ -98,12 +98,14 @@ define(function(require, exports, module) {
 
         setup: function() {
             var that = this;
-            var trigger = this.get('trigger').on('click', function(e) {
-                e.preventDefault();
-                if (!that.get('disabled')) {
-                    that.show();
-                }
-            });
+            var trigger = this.get('trigger')
+                .on('click', {self: this}, this._trigger_click)
+                .on('mouseenter', function(e) {
+                    trigger.addClass(that.get('classPrefix') + '-trigger-hover');
+                })
+                .on('mouseleave', function(e) {
+                    trigger.removeClass(that.get('classPrefix') + '-trigger-hover');
+                });
 
             this.options = this.$('[data-role=content]').children();
             // 初始化 select 的参数
@@ -151,6 +153,14 @@ define(function(require, exports, module) {
                 align.baseElement = this.get('trigger');
             }
             this.set('align', align);
+        },
+
+        _trigger_click: function(e) {
+            var self = e.data.self;
+            e.preventDefault();
+            if (!self.get('disabled')) {
+                self.show();
+            }
         },
 
         destroy: function() {
