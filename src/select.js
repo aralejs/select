@@ -263,7 +263,15 @@ define(function(require, exports, module) {
             selector.attr('data-selected', 'true')
                 .addClass(this.get('classPrefix') + '-selected');
             this.set('value', value);
-            this.get('trigger').html(selector.html());
+
+            // 填入选中内容，位置先找 "data-role"="trigger-content"，再找 trigger
+            var trigger = this.get('trigger');
+            var triggerContent = trigger.find('[data-role=trigger-content]');
+            if (triggerContent.length) {
+                triggerContent.html(selector.html());
+            } else {
+                trigger.html(selector.html());
+            }
             this.currentItem = selector;
         },
 
