@@ -1,6 +1,8 @@
 # HISTORY
 
-## 0.9.0 [milestone](https://github.com/aralejs/select/issues?milestone=1&page=1&state=closed)
+---
+
+### 0.9.0 [milestone](https://github.com/aralejs/select/issues?milestone=1&page=1&state=closed)
 
 - `[feature]` [#4](https://github.com/aralejs/select/issues/4) 支持操作 option
 - `[feature]` [#8](https://github.com/aralejs/select/issues/8) 支持表单项
@@ -8,6 +10,6 @@
 - `[feature]` [#11](https://github.com/aralejs/select/issues/11) firefox css('border') 失效
 - `[feature]` [#15](https://github.com/aralejs/select/issues/15) destroy的bug
 
-## 0.8.0
+### 0.8.0
 
 - `[feature]` 初始化

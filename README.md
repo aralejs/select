@@ -1,5 +1,7 @@
 # Select
 
+---
+
 模拟 select 的组件。
 
 ---
@@ -10,7 +12,7 @@
 
 html 片段
 
-```
+```html
 <select id="city" name="city">
     <option value="value1">text1</option>
     <option value="value2">text2</option>
@@ -19,7 +21,7 @@ html 片段
 
 javascript 片段
 
-```
+```js
 new Select({
     trigger: '#city'
 }).render()
@@ -29,13 +31,13 @@ new Select({
 
 html 片段
 
-```
+```html
 <a href="#" id="city"></a>
 ```
 
 javascript 片段
 
-```
+```js
 new Select({
     trigger: '#city',
     name: 'city',
@@ -47,9 +49,9 @@ new Select({
 ```
 
 
-## 属性
+## 配置说明
 
-### trigger
+### trigger *element*
 
 trigger 可以为 select 或 其他任何 DOM。
 
@@ -58,7 +60,7 @@ trigger 可以为 select 或 其他任何 DOM。
 * 如果为 select，会将其隐藏并生成一个 a 标签放在原来的位置。
 * 如果为 DOM，实例化的时候则需要提供 model 作为数据源
 
-### model
+### model *object*
 
 model 的来源有两处
 
@@ -76,37 +78,37 @@ model 的格式为
 
 `value` `text` `selected` 均为 option 的属性
 
-### template
+### template *string*
 
 生成组件的模版，数据源为 model。
 
-### classPrefix   _(0.9.0 修改，之前为 prefix)_
+### classPrefix *string* _(0.9.0 修改，之前为 prefix)_
 
 样式前缀，默认为 `ui-select`
 
-### name
+### name *string*
 
 模拟 select 的属性，表单项需要的 name 值，等同于 `select.name`
 
 **注意**：如果 trigger 不是 select，那么会先在页面找 name 的 input，找不到再创建一个。
 
-### value
+### value *string*
 
 模拟 select 的属性，获取被选中 option 的 value 值，等同于 `select.value`
 
-### length
+### length *number*
 
 模拟 select 的属性，获取 option 的个数，等同于 `select.length`
 
-### selectedIndex
+### selectedIndex *number*
 
 模拟 select 的属性，获取被选中 option 的索引值，等同于 `select.selectedIndex`
 
-### multiple
+### multiple *boolean*
 
 // TODO
 
-### disabled
+### disabled *boolean*
 
 模拟 select 的属性，设置 select 是否可点，等同于 `select.disabled`
 
