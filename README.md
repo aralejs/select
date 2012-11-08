@@ -60,6 +60,8 @@ trigger 可以为 select 或 其他任何 DOM。
 * 如果为 select，会将其隐藏并生成一个 a 标签放在原来的位置。
 * 如果为 DOM，实例化的时候则需要提供 model 作为数据源
 
+如果 trigger 比较复杂，可以选择 DOM 自定义结构，而且需要设置 `data-role="trigger-content"` 来指定填入内容的位置。
+
 ### model *object*
 
 model 的来源有两处
