@@ -330,7 +330,7 @@ define(function(require, exports, module) {
 
     // 补全 model 对象
     function completeModel(model, classPrefix) {
-        var i, j, newModel = [], selectIndexArray = [];
+        var i, j, l, ll, newModel = [], selectIndexArray = [];
         for (i = 0, l = model.length; i < l; i++) {
             var o = model[i];
             if (o.selected) {

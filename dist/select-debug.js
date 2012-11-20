@@ -1,10 +1,10 @@
-define("arale/select/0.9.0/select-debug", ["arale/overlay/0.9.12/overlay-debug", "$-debug", "arale/position/1.0.0/position-debug", "arale/iframe-shim/1.0.0/iframe-shim-debug", "arale/widget/1.0.2/widget-debug", "arale/base/1.0.1/base-debug", "arale/class/1.0.0/class-debug", "arale/events/1.0.0/events-debug", "arale/widget/1.0.2/templatable-debug", "gallery/handlebars/1.0.0/handlebars-debug"], function(require, exports, module) {
+define("arale/select/1.0.0/select-debug", ["arale/overlay/0.9.12/overlay-debug", "$-debug", "arale/position/1.0.0/position-debug", "arale/iframe-shim/1.0.0/iframe-shim-debug", "arale/widget/1.0.2/widget-debug", "arale/base/1.0.1/base-debug", "arale/class/1.0.0/class-debug", "arale/events/1.0.0/events-debug", "arale/widget/1.0.2/templatable-debug", "gallery/handlebars/1.0.0/handlebars-debug"], function(require, exports, module) {
 
     var Overlay = require('arale/overlay/0.9.12/overlay-debug');
     var $ = require('$-debug');
     var Templatable = require('arale/widget/1.0.2/templatable-debug');
 
-    var template = '<div class="{{classPrefix}}"><ul class="{{classPrefix}}-content" data-role="content">{{#each select}}<li data-role="item" class="{{../classPrefix}}-item" data-value="{{value}}" data-defaultSelected="{{defaultSelected}}" data-selected="{{selected}}">{{text}}</li>{{/each}}</ul></div>';
+    var template = '<div class="{{classPrefix}}"> <ul class="{{classPrefix}}-content" data-role="content"> {{#each select}} <li data-role="item" class="{{../classPrefix}}-item" data-value="{{value}}" data-defaultSelected="{{defaultSelected}}" data-selected="{{selected}}">{{text}}</li> {{/each}} </ul> </div>';
 
     var Select = Overlay.extend({
 
@@ -98,12 +98,14 @@ define("arale/select/0.9.0/select-debug", ["arale/overlay/0.9.12/overlay-debug",
 
         setup: function() {
             var that = this;
-            var trigger = this.get('trigger').on('click', function(e) {
-                e.preventDefault();
-                if (!that.get('disabled')) {
-                    that.show();
-                }
-            });
+            var trigger = this.get('trigger')
+                .on('click', {self: this}, this._trigger_click)
+                .on('mouseenter', function(e) {
+                    trigger.addClass(that.get('classPrefix') + '-trigger-hover');
+                })
+                .on('mouseleave', function(e) {
+                    trigger.removeClass(that.get('classPrefix') + '-trigger-hover');
+                });
 
             this.options = this.$('[data-role=content]').children();
             // 初始化 select 的参数
@@ -151,6 +153,14 @@ define("arale/select/0.9.0/select-debug", ["arale/overlay/0.9.12/overlay-debug",
                 align.baseElement = this.get('trigger');
             }
             this.set('align', align);
+        },
+
+        _trigger_click: function(e) {
+            var self = e.data.self;
+            e.preventDefault();
+            if (!self.get('disabled')) {
+                self.show();
+            }
         },
 
         destroy: function() {
@@ -253,7 +263,15 @@ define("arale/select/0.9.0/select-debug", ["arale/overlay/0.9.12/overlay-debug",
             selector.attr('data-selected', 'true')
                 .addClass(this.get('classPrefix') + '-selected');
             this.set('value', value);
-            this.get('trigger').html(selector.html());
+
+            // 填入选中内容，位置先找 "data-role"="trigger-content"，再找 trigger
+            var trigger = this.get('trigger');
+            var triggerContent = trigger.find('[data-role=trigger-content]');
+            if (triggerContent.length) {
+                triggerContent.html(selector.html());
+            } else {
+                trigger.html(selector.html());
+            }
             this.currentItem = selector;
         },
 
@@ -312,7 +330,7 @@ define("arale/select/0.9.0/select-debug", ["arale/overlay/0.9.12/overlay-debug",
 
     // 补全 model 对象
     function completeModel(model, classPrefix) {
-        var i, j, newModel = [], selectIndexArray = [];
+        var i, j, l, ll, newModel = [], selectIndexArray = [];
         for (i = 0, l = model.length; i < l; i++) {
             var o = model[i];
             if (o.selected) {
