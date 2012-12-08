@@ -4,35 +4,37 @@
 
 ----
 
-<link rel="stylesheet" href="../src/select.css" />
-
 只能传入 DOM 和 model 初始化，不能通过 select，因为 select 框中指定多级数据很困难，所以通过 model 指定。
 
 trigger 为任意 DOM，但必须传入 model 数据。
 
-````html
-<a href="#" id="example2">请选择</a>
-````
+````iframe:200
+<link rel="stylesheet" href="http://static.alipayobjects.com/al/alice.base-1.2.css" />
+<link rel="stylesheet" href="../src/select.css" />
 
-````javascript
+<a href="#" id="example2">请选择</a>
+
+<script>
 seajs.use(['$', 'select'], function($, Select) {
-    new Select({
+    var s = new Select({
         trigger: '#example2',
         //disabled: true,
+        /*
         renderTrigger: function(selected) {
             var titles = [],
-                items = this.model.select;
+                options = this.model.select;
             var selectedIndex = this.get('selectedIndex');
             if (!(selectedIndex instanceof Array)) {
                 selectedIndex = [selectedIndex];
             }
             $.each(selectedIndex, function(i, v) {
-                titles.push(items[v].text);
-                items = items[v].items;
+                titles.push(options[v].text);
+                options = options[v].options;
             });
             //return selected.html();
             return titles.join('-');
         },
+        */
         model: [
             {
                 value:'all',
@@ -47,11 +49,11 @@ seajs.use(['$', 'select'], function($, Select) {
             {
                 value:'alipay',
                 text:'支付宝',
-                items: [
+                options: [
                     {
                         value: 'bizIn',
                         text: '付款',
-                        items: [
+                        options: [
                             {
                                 value: 'test',
                                 text: 'test'
@@ -77,7 +79,7 @@ seajs.use(['$', 'select'], function($, Select) {
                 value: 'cutom',
                 text: '自定义分类',
                 disabled: true,
-                items: [
+                options: [
                     {
                         value: 'huoshifei',
                         text: '伙食费'
@@ -90,6 +92,11 @@ seajs.use(['$', 'select'], function($, Select) {
             }
         ]
     }).render();
+
+    s.on('change', function(target) {
+        //console.log(target.get(0));
+    });
 });
+</script>
 ````
 

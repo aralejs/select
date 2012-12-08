@@ -31,14 +31,14 @@ define(function(require) {
             expect(select.get('length')).to.be(2);
             expect(select.get('selectedIndex')).to.be(0);
             expect(select.currentItem[0]).to.be(select.element.find('[data-role=item]')[0]);
-            expect(select.options.eq(0).attr('data-selected'))
-            .to.be('true');
-            expect(select.options.eq(0).attr('data-defaultSelected'))
-            .to.be('false');
-            expect(select.options.eq(1).attr('data-selected'))
-            .to.be('false');
-            expect(select.options.eq(1).attr('data-defaultSelected'))
-            .to.be('false');
+            expect(select.options.eq(0).data('selected'))
+            .to.be(true);
+            expect(select.options.eq(0).data('defaultSelected'))
+            .not.to.be(true);
+            expect(select.options.eq(1).data('selected'))
+            .not.to.be(true);
+            expect(select.options.eq(1).data('defaultSelected'))
+            .not.to.be(true);
         });
 
         describe('convert model', function() {
@@ -260,21 +260,22 @@ define(function(require) {
             expect(select.currentItem[0]).to.be(select.options.eq(1)[0]);
             expect(select.get('value')).to.be('value2');
             expect(select.get('trigger').html()).to.be('text2');
-            expect(select.options.eq(1).attr('data-selected'))
-                .to.be('true');
-            expect(select.options.eq(2).attr('data-selected'))
-                .to.be('false');
+            expect(select.options.eq(1).data('selected'))
+                .to.be(true);
+            expect(select.options.eq(2).data('selected'))
+                .not.to.be(true);
 
             var option = select.options[2];
             select.select(option);
+            console.log('selectedIndex', select.get('selectedIndex'), select.element.get(0), select.model);
 
             expect(select.currentItem[0]).to.be(option);
             expect(select.get('value')).to.be('value3');
             expect(select.get('trigger').html()).to.be('text3');
-            expect(select.options.eq(1).attr('data-selected'))
-                .to.be('false');
-            expect(select.options.eq(2).attr('data-selected'))
-                .to.be('true');
+            expect(select.options.eq(1).data('selected'))
+                .not.to.be(true);
+            expect(select.options.eq(2).data('selected'))
+                .to.be(true);
         });
 
         it('syncModel', function() {
