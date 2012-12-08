@@ -303,11 +303,15 @@ define(function(require, exports, module) {
             if (currentItem) {
                 currentItem.attr('data-selected', false)
                     .removeClass(this.get('classPrefix') + '-item-selected');
+                var m = getModelByIndex(getOptionIndex(currentItem, this.options), this.model.select);
+                m.selected = false;
             }
 
             // 处理当前选中的元素
             selected.attr('data-selected', true)
                 .addClass(this.get('classPrefix') + '-item-selected');
+            var m = getModelByIndex(index, this.model.select);
+            m.selected = true;
             this.set('value', value);
 
             // 填入选中内容，位置先找 "data-role"="trigger-content"，再找 trigger
@@ -464,5 +468,15 @@ define(function(require, exports, module) {
             options = $('ul', selected).children();
         });
         return selected;
+    }
+
+    function getModelByIndex(index, model) {
+        var indexes = index instanceof Array ? index : [index];
+        var m;
+        $.each(indexes, function(i, v) {
+            m = model[v];
+            model = m.options;
+        });
+        return m;
     }
 });
