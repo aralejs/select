@@ -17,11 +17,15 @@
     font-size:12px;
     padding: 5px 10px;
     list-style: none;
+    background: #fff;
 }
-.ui-select-selected {
+.ui-select-item-selected {
     background: red;
 }
-.ui-select-hover {
+.ui-select-item-hover {
+    background: #F47C02;
+}
+.ui-select-item-disabled {
     background: #ccc;
 }
 .ui-select-disabled {

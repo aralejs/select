@@ -1,3 +1,5 @@
+//TODO model 调整一下，现在传入的model被放在了 select 上
+//TODO 只要是多级的 model ，selected 不管是几级，都是数组
 define(function(require, exports, module) {
 
     var Overlay = require('overlay');
@@ -23,6 +25,11 @@ define(function(require, exports, module) {
             align: {
                 baseXY: [0, '100%-1px']
             },
+            // 指定如何渲染 trigger
+            renderTrigger: function(selectedItem) {
+                // normailly selectedItem is a li
+                return selectedItem.html();
+            },
 
             // 原生 select 的属性
             name: '',
@@ -38,14 +45,19 @@ define(function(require, exports, module) {
 
         events: {
             'click [data-role=item]': function(e) {
+                e.stopPropagation();
                 var target = $(e.currentTarget);
-                this.select(target);
+                if (target.attr('data-disabled') === undefined) {
+                    this.select(target);
+                }
             },
             'mouseenter [data-role=item]': function(e) {
-                $(e.currentTarget).addClass(this.get('classPrefix') + '-hover');
+                $(e.currentTarget).addClass(this.get('classPrefix') + '-item-hover');
+                $('>ul', e.currentTarget).show();
             },
             'mouseleave [data-role=item]': function(e) {
-                $(e.currentTarget).removeClass(this.get('classPrefix') + '-hover');
+                $(e.currentTarget).removeClass(this.get('classPrefix') + '-item-hover');
+                $('>ul', e.currentTarget).hide();
             }
         },
 
@@ -110,6 +122,9 @@ define(function(require, exports, module) {
             this.options = this.$('[data-role=content]').children();
             // 初始化 select 的参数
             // 必须在插入文档流后操作
+            if ($('[data-selected=true]', this.element).is($('[data-disabled]', this.element))) {
+                throw new Error('A disabled item cannot be selected, check your model.');
+            }
             this.select('[data-selected=true]');
             this.set('length', this.options.length);
 
@@ -129,7 +144,7 @@ define(function(require, exports, module) {
 
         show: function() {
             Select.superclass.show.call(this);
-            this._setPosition();
+            //this._setPosition();
             return this;
         },
 
@@ -240,8 +255,15 @@ define(function(require, exports, module) {
         _onRenderSelectedIndex: function(index) {
             if (index == -1) return;
 
-            var selector = this.options.eq(index),
-                currentItem = this.currentItem,
+            var indexes = index instanceof Array ? index : [index];
+            var selector, options = this.options;
+            $.each(indexes, function(i, v) {
+                selector = options.eq(v);
+                options = $('ul', selector).children();
+            });
+
+            //var selector = this.options.eq(index),
+            var currentItem = this.currentItem,
                 value = selector.attr('data-value');
 
             // 如果两个 DOM 相同则不再处理
@@ -261,16 +283,17 @@ define(function(require, exports, module) {
 
             // 处理当前选中的元素
             selector.attr('data-selected', 'true')
-                .addClass(this.get('classPrefix') + '-selected');
+                .addClass(this.get('classPrefix') + '-item-selected');
             this.set('value', value);
 
             // 填入选中内容，位置先找 "data-role"="trigger-content"，再找 trigger
             var trigger = this.get('trigger');
             var triggerContent = trigger.find('[data-role=trigger-content]');
+            var html = this.get('renderTrigger').call(this, selector);
             if (triggerContent.length) {
-                triggerContent.html(selector.html());
+                triggerContent.html(html);
             } else {
-                trigger.html(selector.html());
+                trigger.html(html);
             }
             this.currentItem = selector;
         },
@@ -298,7 +321,7 @@ define(function(require, exports, module) {
     //
     // [
     //   {value: 'value1', text: 'text1',
-    //      defaultSelected: false, selected: false}
+    //      defaultSelected: false, selected: false, disabled: true|false}
     //   {value: 'value2', text: 'text2',
     //      defaultSelected: true, selected: true}
     // ]
@@ -362,6 +385,22 @@ define(function(require, exports, module) {
         } else { // 如果是 DOM
             index = options.index(option);
         }
-        return index;
+
+        if (index < 0) {
+            $.each(options, function(i, item) {
+                item = $(item);
+                if (item.find(option).length > 0) {
+                    index = i;
+                    return false;
+                }
+            });
+            var subIndex = getOptionIndex(option, options.eq(index).children('ul').children());
+            if (!(subIndex instanceof Array)) {
+                subIndex = [subIndex];
+            }
+            return [index].concat(subIndex);
+        } else {
+            return index;
+        }
     }
 });
