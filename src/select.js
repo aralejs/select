@@ -52,7 +52,7 @@ define(function(require, exports, module) {
             'click [data-role=item]': function(e) {
                 e.stopPropagation();
                 var target = $(e.currentTarget);
-                if (!target.data('disabled')) {
+                if (target.attr('data-disabled') != 'true') {
                     this.select(target);
                 }
             },
@@ -197,7 +197,6 @@ define(function(require, exports, module) {
             $.each(this._overlays, function(i, o) {
                 o.destroy();
             });
-            delete this._overlays;
             this.element.remove();
             Select.superclass.destroy.call(this);
         },
@@ -288,7 +287,7 @@ define(function(require, exports, module) {
 
             //var selected = this.options.eq(index),
             var currentItem = this.currentItem,
-                value = selected.data('value');
+                value = selected.attr('data-value');
 
             // 如果两个 DOM 相同则不再处理
             if (currentItem && selected[0] == currentItem[0]) {
@@ -300,18 +299,19 @@ define(function(require, exports, module) {
             source && (source[0].value = value);
 
             // 处理之前选中的元素
-            if (currentItem) {
+            if (currentItem && this.element.has(currentItem)) {
                 currentItem.attr('data-selected', false)
                     .removeClass(this.get('classPrefix') + '-item-selected');
+                console.log('currentItem', currentItem.get(0));
                 var m = getModelByIndex(getOptionIndex(currentItem, this.options), this.model.select);
-                m.selected = false;
+                m && (m.selected = 'false');
             }
 
             // 处理当前选中的元素
-            selected.attr('data-selected', true)
+            selected.attr('data-selected', 'true')
                 .addClass(this.get('classPrefix') + '-item-selected');
             var m = getModelByIndex(index, this.model.select);
-            m.selected = true;
+            m.selected = 'true';
             this.set('value', value);
 
             // 填入选中内容，位置先找 "data-role"="trigger-content"，再找 trigger
@@ -385,18 +385,18 @@ define(function(require, exports, module) {
                 var field = fields[j];
                 o[field] = option[field];
             }
-            o.defaultSelected = option.defaultSelected ? true : false;
+            o.defaultSelected = option.defaultSelected ? 'true' : 'false';
             if (option.selected) {
-                o.selected = true;
+                o.selected = 'true';
                 hasDefaultSelect = true;
             } else {
-                o.selected = false;
+                o.selected = 'false';
             }
             model.push(o);
         }
         // 当所有都没有设置 selected，默认设置第一个
         if (!hasDefaultSelect) {
-            newModel[0].selected = true;
+            newModel[0].selected = 'true';
         }
         return {select: model, classPrefix: classPrefix};
     }
@@ -407,10 +407,10 @@ define(function(require, exports, module) {
         for (i = 0, l = model.length; i < l; i++) {
             var o = model[i];
             if (o.selected) {
-                o.selected = o.defaultSelected = true;
+                o.selected = o.defaultSelected = 'true';
                 selectIndexArray.push(i);
             } else {
-                o.selected = o.defaultSelected = false;
+                o.selected = o.defaultSelected = 'false';
             }
             newModel.push(o);
         }
@@ -418,10 +418,10 @@ define(function(require, exports, module) {
             // 如果有多个 selected 则选中最后一个
             selectIndexArray.pop();
             for (j = 0, ll = selectIndexArray.length; j < ll; j++) {
-                newModel[j].selected = false;
+                newModel[j].selected = 'false';
             }
         } else { //当所有都没有设置 selected 则默认设置第一个
-            newModel[0].selected = true;
+            newModel[0].selected = 'true';
         }
         return {select: newModel, classPrefix: classPrefix};
     }
@@ -430,14 +430,12 @@ define(function(require, exports, module) {
         var index;
         if ($.isNumeric(option)) { // 如果是索引
             index = option;
-        } else if (typeof option === 'string') { // 如果是选择器
+        } else { // 如果是选择器或者 DOM
             //index = options.index(options.parent().find(option));
             option = options.parent().find(option);
             if (option.length == 0) {
                 return -1;
             }
-            index = options.index(option);
-        } else { // 如果是 DOM
             index = options.index(option);
         }
 
@@ -471,6 +469,10 @@ define(function(require, exports, module) {
     }
 
     function getModelByIndex(index, model) {
+        console.log('getModelByIndex', index);
+        if (index == -1) {
+            return null;
+        }
         var indexes = index instanceof Array ? index : [index];
         var m;
         $.each(indexes, function(i, v) {
