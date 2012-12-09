@@ -412,7 +412,7 @@ define(function(require, exports, module) {
             } else {
                 o.selected = o.defaultSelected = 'false';
             }
-            if (o.options) {
+            if (o.options && o.options.length > 0) {
                 o.options = completeModel(o.options, classPrefix).options;
             }
             newModel.push(o);

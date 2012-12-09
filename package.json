@@ -22,5 +22,8 @@
     },
     "tests": [
         "select"
-    ]
+    ],
+    "deploy": {
+        "host": "assets.p46.alipay.net"
+    }
 }

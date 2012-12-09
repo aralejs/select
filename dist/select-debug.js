@@ -1,5 +1,3 @@
-//TODO model 调整一下，现在传入的model被放在了 select 上
-//TODO 只要是多级的 model ，selected 不管是几级，都是数组
 //TODO 动态的去 disable 某项
 define("arale/select/2.0.0/select-debug", ["arale/overlay/0.9.12/overlay-debug", "$-debug", "arale/position/1.0.0/position-debug", "arale/iframe-shim/1.0.0/iframe-shim-debug", "arale/widget/1.0.2/widget-debug", "arale/base/1.0.1/base-debug", "arale/class/1.0.0/class-debug", "arale/events/1.0.0/events-debug", "arale/widget/1.0.2/templatable-debug", "gallery/handlebars/1.0.0/handlebars-debug"], function(require, exports, module) {
 
@@ -7,7 +5,7 @@ define("arale/select/2.0.0/select-debug", ["arale/overlay/0.9.12/overlay-debug",
     var $ = require('$-debug');
     var Templatable = require('arale/widget/1.0.2/templatable-debug');
 
-    var template = '<div class="{{classPrefix}}"> <ul class="{{classPrefix}}-content" data-role="content"> {{#each select}} <li data-role="item" class="{{../classPrefix}}-item {{#if disabled}}{{../../classPrefix}}-item-disabled{{/if}}" data-value="{{value}}" {{#if defaultSelected}}data-defaultSelected{{/if}} {{#if selected}}data-selected{{/if}} {{#if disabled}}data-disabled{{/if}}>{{text}} {{#if items}} <ul style="display:none"> {{#each items}} <li data-role="item" class="{{../../../classPrefix}}-item {{#if disabled}}{{../../../../classPrefix}}-item-disabled{{/if}}" data-value="{{value}}" {{#if defaultSelected}}data-defaultSelected{{/if}} {{#if selected}}data-selected{{/if}} {{#if disabled}}data-disabled{{/if}}>{{text}} {{#if items}} <ul style="display:none"> {{#each items}} <li data-role="item" class="{{../../../../../classPrefix}}-item {{#if disabled}}{{../../../../../../classPrefix}}-item-disabled{{/if}}" data-value="{{value}}" {{#if defaultSelected}}data-defaultSelected{{/if}} {{#if selected}}data-selected{{/if}} {{#if disabled}}data-disabled{{/if}}>{{text}}</li> {{/each}} </ul> {{/if}} </li> {{/each}} </ul> {{/if}} </li> {{/each}} </ul> </div>';
+    var template = '<div class="{{classPrefix}}"> <ul class="{{classPrefix}}-content" data-role="content"> {{#each options}} <li data-role="item" class="{{../classPrefix}}-item {{#if disabled}}{{../../classPrefix}}-item-disabled{{/if}}" data-value="{{value}}" data-default-selected="{{defaultSelected}}" data-selected="{{selected}}" data-disabled="{{disabled}}">{{text}} {{#if options}} <ul style="display:none"> {{#each options}} <li data-role="item" class="{{../../../classPrefix}}-item {{#if disabled}}{{../../../../classPrefix}}-item-disabled{{/if}}" data-value="{{value}}" data-default-selected="{{defaultSelected}}" data-selected="{{selected}}" data-disabled="{{disabled}}">{{text}} {{#if options}} <ul style="display:none"> {{#each options}} <li data-role="item" class="{{../../../../../classPrefix}}-item {{#if disabled}}{{../../../../../../classPrefix}}-item-disabled{{/if}}" data-value="{{value}}" data-default-selected="{{defaultSelected}}" data-selected="{{selected}}" data-disabled={{disabled}}>{{text}}</li> {{/each}} </ul> {{/if}} </li> {{/each}} </ul> {{/if}} </li> {{/each}} </ul> </div>';
 
     var Select = Overlay.extend({
 
@@ -41,7 +39,7 @@ define("arale/select/2.0.0/select-debug", ["arale/overlay/0.9.12/overlay-debug",
             value: '',
             length: 0,
             selectedIndex: -1,
-            multiple: false, // TODO
+            multiple: false,
             disabled: false,
 
             // 以下不要覆盖
@@ -52,7 +50,7 @@ define("arale/select/2.0.0/select-debug", ["arale/overlay/0.9.12/overlay-debug",
             'click [data-role=item]': function(e) {
                 e.stopPropagation();
                 var target = $(e.currentTarget);
-                if (target.attr('data-disabled') === undefined) {
+                if (target.attr('data-disabled') != 'true') {
                     this.select(target);
                 }
             },
@@ -132,12 +130,13 @@ define("arale/select/2.0.0/select-debug", ["arale/overlay/0.9.12/overlay-debug",
                 });
 
             this.options = this.$('[data-role=content]').children();
+            this.set('multiple', isMulitple(this.model.options));
             // 初始化 select 的参数
             // 必须在插入文档流后操作
-            if ($('[data-selected]', this.element).is($('[data-disabled]', this.element))) {
+            if ($('[data-selected=true]', this.element).is($('[data-disabled=true]', this.element))) {
                 throw new Error('A disabled item cannot be selected, check your model.');
             }
-            this.select('[data-selected]');
+            this.select('[data-selected=true]');
             this.set('length', this.options.length);
 
             this._tweakAlignDefaultValue();
@@ -197,7 +196,6 @@ define("arale/select/2.0.0/select-debug", ["arale/overlay/0.9.12/overlay-debug",
             $.each(this._overlays, function(i, o) {
                 o.destroy();
             });
-            delete this._overlays;
             this.element.remove();
             Select.superclass.destroy.call(this);
         },
@@ -206,7 +204,7 @@ define("arale/select/2.0.0/select-debug", ["arale/overlay/0.9.12/overlay-debug",
         // --------
 
         select: function(option) {
-            var selectIndex = getOptionIndex(option, this.options);
+            var selectIndex = getOptionIndex(option, this.options, this.get('multiple'));
             var oldSelectIndex = this.get('selectedIndex');
             this.set('selectedIndex', selectIndex);
 
@@ -222,14 +220,14 @@ define("arale/select/2.0.0/select-debug", ["arale/overlay/0.9.12/overlay-debug",
 
         syncModel: function(model) {
             this.model = completeModel(model, this.get('classPrefix'));
-            console.log(this.model);
+            this.set('multiple', isMulitple(this.model.options));
             this.renderPartial('[data-role=content]');
             // 渲染后重置 select 的属性
             this.options = this.$('[data-role=content]').children();
             this.set('length', this.options.length);
             this.set('selectedIndex', -1);
             this.set('value', '');
-            this.select('[data-selected]');
+            this.select('[data-selected=true]');
 
             // 重新设置 trigger 宽度
             this._setTriggerWidth();
@@ -237,20 +235,21 @@ define("arale/select/2.0.0/select-debug", ["arale/overlay/0.9.12/overlay-debug",
         },
 
         getOption: function(option) {
-            var index = getOptionIndex(option, this.options);
+            var index = getOptionIndex(option, this.options, this.get('multiple'));
             //return this.options.eq(index);
             return getItemByIndex(index, this.options);
         },
 
+        // TODO 如果是多级的 addOption 需要变化一下
         addOption: function(option) {
-            var model = this.model.select;
+            var model = this.model.options;
             model.push(option);
             this.syncModel(model);
             return this;
         },
 
         removeOption: function(option) {
-            var removedIndex = getOptionIndex(option, this.options),
+            var removedIndex = getOptionIndex(option, this.options, this.get('multiple')),
                 oldIndex = this.get('selectedIndex'),
                 //removedOption = this.options.eq(removedIndex);
                 removedOption = getItemByIndex(removedIndex, this.options);
@@ -285,7 +284,6 @@ define("arale/select/2.0.0/select-debug", ["arale/overlay/0.9.12/overlay-debug",
                 options = $('ul', selected).children();
             });
             */
-
             var selected = getItemByIndex(index, this.options);
 
             //var selected = this.options.eq(index),
@@ -302,21 +300,24 @@ define("arale/select/2.0.0/select-debug", ["arale/overlay/0.9.12/overlay-debug",
             source && (source[0].value = value);
 
             // 处理之前选中的元素
-            if (currentItem) {
-                currentItem.removeAttr('data-selected')
+            if (currentItem && this.element.has(currentItem)) {
+                currentItem.attr('data-selected', false)
                     .removeClass(this.get('classPrefix') + '-item-selected');
+                var m = getModelByIndex(getOptionIndex(currentItem, this.options, this.get('multiple')), this.model.options);
+                m && (m.selected = 'false');
             }
 
             // 处理当前选中的元素
-            selected.attr('data-selected', '')
+            selected.attr('data-selected', 'true')
                 .addClass(this.get('classPrefix') + '-item-selected');
+            var m = getModelByIndex(index, this.model.options);
+            m.selected = 'true';
             this.set('value', value);
 
             // 填入选中内容，位置先找 "data-role"="trigger-content"，再找 trigger
             var trigger = this.get('trigger');
             var triggerContent = trigger.find('[data-role=trigger-content]');
             var html = this.get('renderTrigger').call(this, selected);
-            //console.log('html', html, selected.get(0));
             if (triggerContent.length) {
                 triggerContent.html(html);
             } else {
@@ -379,12 +380,12 @@ define("arale/select/2.0.0/select-debug", ["arale/overlay/0.9.12/overlay-debug",
             l = options.length, hasDefaultSelect = false;
         for (i = 0; i < l; i++) {
             var j, o = {}, option = options[i];
-            var fields = ['text', 'value', 'defaultSelected', 'selected'];
+            var fields = ['text', 'value', 'defaultSelected', 'selected', 'disabled'];
             for (j in fields) {
                 var field = fields[j];
                 o[field] = option[field];
             }
-            o.defaultSelected = option.defaultSelected ? true : false;
+            o.defaultSelected = option.defaultSelected ? 'true' : 'false';
             if (option.selected) {
                 o.selected = 'true';
                 hasDefaultSelect = true;
@@ -397,44 +398,49 @@ define("arale/select/2.0.0/select-debug", ["arale/overlay/0.9.12/overlay-debug",
         if (!hasDefaultSelect) {
             newModel[0].selected = 'true';
         }
-        return {select: model, classPrefix: classPrefix};
+        return {options: model, classPrefix: classPrefix};
     }
 
     // 补全 model 对象
     function completeModel(model, classPrefix) {
-        var i, j, l, ll, newModel = [], selectIndexArray = [];
+        var i, j, l, ll, newModel = [], selectedArray = [];
         for (i = 0, l = model.length; i < l; i++) {
             var o = model[i];
             if (o.selected) {
-                o.selected = o.defaultSelected = true;
-                selectIndexArray.push(i);
+                o.selected = o.defaultSelected = 'true';
+                selectedArray.push(o);
             } else {
-                o.selected = o.defaultSelected = false;
+                o.selected = o.defaultSelected = 'false';
+            }
+            if (o.options && o.options.length > 0) {
+                o.options = completeModel(o.options, classPrefix).options;
             }
             newModel.push(o);
         }
-        if (selectIndexArray.length > 0) {
+        if (selectedArray.length > 0) {
             // 如果有多个 selected 则选中最后一个
-            selectIndexArray.pop();
-            for (j = 0, ll = selectIndexArray.length; j < ll; j++) {
-                newModel[j].selected = false;
+            selectedArray.pop();
+            for (j = 0, ll = selectedArray.length; j < ll; j++) {
+                selectedArray[j].selected = 'false';
             }
         } else { //当所有都没有设置 selected 则默认设置第一个
-            newModel[0].selected = true;
+            newModel[0].selected = 'true';
         }
-        return {select: newModel, classPrefix: classPrefix};
+        return {options: newModel, classPrefix: classPrefix};
     }
 
-    function getOptionIndex(option, options) {
+    function getOptionIndex(option, options, multi) {
         var index;
         if ($.isNumeric(option)) { // 如果是索引
             index = option;
-        } else if (typeof option === 'string') { // 如果是选择器
-            index = options.index(options.parent().find(option));
-        } else { // 如果是 DOM
+        } else { // 如果是选择器或者 DOM
+            //index = options.index(options.parent().find(option));
+            option = options.parent().find(option);
+            if (option.length == 0) {
+                return multi ? [] : -1;
+            }
             index = options.index(option);
         }
-        console.log(option);
 
         if (index < 0) {
             $.each(options, function(i, item) {
@@ -444,13 +450,13 @@ define("arale/select/2.0.0/select-debug", ["arale/overlay/0.9.12/overlay-debug",
                     return false;
                 }
             });
-            var subIndex = getOptionIndex(option, options.eq(index).children('ul').children());
+            var subIndex = getOptionIndex(option, options.eq(index).children('ul').children(), true);
             if (!(subIndex instanceof Array)) {
                 subIndex = [subIndex];
             }
             return [index].concat(subIndex);
         } else {
-            return index;
+            return multi ? [index] : index;
         }
     }
 
@@ -463,5 +469,29 @@ define("arale/select/2.0.0/select-debug", ["arale/overlay/0.9.12/overlay-debug",
             options = $('ul', selected).children();
         });
         return selected;
+    }
+
+    function getModelByIndex(index, model) {
+        if (index == -1) {
+            return null;
+        }
+        var indexes = index instanceof Array ? index : [index];
+        var m;
+        $.each(indexes, function(i, v) {
+            m = model[v];
+            model = m.options;
+        });
+        return m;
+    }
+
+    function isMulitple(model) {
+        var b = false;
+        $.each(model, function(i, v) {
+            if ($.isArray(v.options) && v.options.length > 0) {
+                b = true;
+                return false;
+            }
+        });
+        return b;
     }
 });
