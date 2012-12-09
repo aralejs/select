@@ -1,6 +1,6 @@
 <div class="{{classPrefix}}">
     <ul class="{{classPrefix}}-content" data-role="content">
-        {{#each select}}
+        {{#each options}}
         <li data-role="item" class="{{../classPrefix}}-item {{#if disabled}}{{../../classPrefix}}-item-disabled{{/if}}" data-value="{{value}}" data-default-selected="{{defaultSelected}}" data-selected="{{selected}}" data-disabled="{{disabled}}">{{text}}
             {{#if options}}
                 <ul style="display:none">

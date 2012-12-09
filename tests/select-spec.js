@@ -48,7 +48,7 @@ define(function(require) {
                     trigger: '#example'
                 }).render();
 
-                var model = select.model.select;
+                var model = select.model.options;
                 expect(model[0].defaultSelected).to.be('false');
                 expect(model[0].selected).to.be('true');
                 expect(model[0].value).to.be('value1');
@@ -75,7 +75,7 @@ define(function(require) {
                     trigger: '#example'
                 }).render();
 
-                var model = select.model.select;
+                var model = select.model.options;
                 expect(model[0].defaultSelected).to.be('false');
                 expect(model[0].selected).to.be('false');
                 expect(model[0].value).to.be('value1');
@@ -92,7 +92,7 @@ define(function(require) {
                     trigger: '#example'
                 }).render();
 
-                var model = select.model.select;
+                var model = select.model.options;
                 expect(model[0].defaultSelected).to.be('true');
                 expect(model[0].selected).to.be('false');
                 expect(model[0].value).to.be('value1');
@@ -113,7 +113,7 @@ define(function(require) {
                     ]
                 }).render();
 
-                var model = select.model.select;
+                var model = select.model.options;
                 expect(model[0].defaultSelected).to.be('false');
                 expect(model[0].selected).to.be('true');
                 expect(model[0].value).to.be('value1');
@@ -134,7 +134,7 @@ define(function(require) {
                     ]
                 }).render();
 
-                var model = select.model.select;
+                var model = select.model.options;
                 expect(model[0].defaultSelected).to.be('false');
                 expect(model[0].selected).to.be('false');
                 expect(model[0].value).to.be('value1');
@@ -155,7 +155,7 @@ define(function(require) {
                     ]
                 }).render();
 
-                var model = select.model.select;
+                var model = select.model.options;
                 expect(model[0].defaultSelected).to.be('true');
                 expect(model[0].selected).to.be('false');
                 expect(model[0].value).to.be('value1');

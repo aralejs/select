@@ -1,5 +1,5 @@
 //TODO model 调整一下，现在传入的model被放在了 select 上
-//TODO 只要是多级的 model ，selected 不管是几级，都是数组
+//TODO 只要是多级的 model ，selectedIndex 不管是几级，都是数组
 //TODO 动态的去 disable 某项
 define(function(require, exports, module) {
 
@@ -240,8 +240,9 @@ define(function(require, exports, module) {
             return getItemByIndex(index, this.options);
         },
 
+        // TODO 如果是多级的 addOption 需要变化一下
         addOption: function(option) {
-            var model = this.model.select;
+            var model = this.model.options;
             model.push(option);
             this.syncModel(model);
             return this;
@@ -302,14 +303,14 @@ define(function(require, exports, module) {
             if (currentItem && this.element.has(currentItem)) {
                 currentItem.attr('data-selected', false)
                     .removeClass(this.get('classPrefix') + '-item-selected');
-                var m = getModelByIndex(getOptionIndex(currentItem, this.options), this.model.select);
+                var m = getModelByIndex(getOptionIndex(currentItem, this.options), this.model.options);
                 m && (m.selected = 'false');
             }
 
             // 处理当前选中的元素
             selected.attr('data-selected', 'true')
                 .addClass(this.get('classPrefix') + '-item-selected');
-            var m = getModelByIndex(index, this.model.select);
+            var m = getModelByIndex(index, this.model.options);
             m.selected = 'true';
             this.set('value', value);
 
@@ -397,32 +398,35 @@ define(function(require, exports, module) {
         if (!hasDefaultSelect) {
             newModel[0].selected = 'true';
         }
-        return {select: model, classPrefix: classPrefix};
+        return {options: model, classPrefix: classPrefix};
     }
 
     // 补全 model 对象
     function completeModel(model, classPrefix) {
-        var i, j, l, ll, newModel = [], selectIndexArray = [];
+        var i, j, l, ll, newModel = [], selectedArray = [];
         for (i = 0, l = model.length; i < l; i++) {
             var o = model[i];
             if (o.selected) {
                 o.selected = o.defaultSelected = 'true';
-                selectIndexArray.push(i);
+                selectedArray.push(o);
             } else {
                 o.selected = o.defaultSelected = 'false';
             }
+            if (o.options) {
+                o.options = completeModel(o.options, classPrefix).options;
+            }
             newModel.push(o);
         }
-        if (selectIndexArray.length > 0) {
+        if (selectedArray.length > 0) {
             // 如果有多个 selected 则选中最后一个
-            selectIndexArray.pop();
-            for (j = 0, ll = selectIndexArray.length; j < ll; j++) {
-                newModel[j].selected = 'false';
+            selectedArray.pop();
+            for (j = 0, ll = selectedArray.length; j < ll; j++) {
+                selectedArray[j].selected = 'false';
             }
         } else { //当所有都没有设置 selected 则默认设置第一个
             newModel[0].selected = 'true';
         }
-        return {select: newModel, classPrefix: classPrefix};
+        return {options: newModel, classPrefix: classPrefix};
     }
 
     function getOptionIndex(option, options) {
