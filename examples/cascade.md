@@ -45,7 +45,7 @@ seajs.use(['select'], function(Select) {
     }).on('change', function(target) {
         var type = target.attr('data-value');
         var model = parseProv(type);
-        console.log(model);
+        console && console.log && console.log(model);
         a2.syncModel(model);
     });
 

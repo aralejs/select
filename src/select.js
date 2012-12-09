@@ -302,7 +302,6 @@ define(function(require, exports, module) {
             if (currentItem && this.element.has(currentItem)) {
                 currentItem.attr('data-selected', false)
                     .removeClass(this.get('classPrefix') + '-item-selected');
-                console.log('currentItem', currentItem.get(0));
                 var m = getModelByIndex(getOptionIndex(currentItem, this.options), this.model.select);
                 m && (m.selected = 'false');
             }
@@ -469,7 +468,6 @@ define(function(require, exports, module) {
     }
 
     function getModelByIndex(index, model) {
-        console.log('getModelByIndex', index);
         if (index == -1) {
             return null;
         }

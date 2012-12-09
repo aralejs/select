@@ -94,7 +94,7 @@ seajs.use(['$', 'select'], function($, Select) {
     }).render();
 
     s.on('change', function(target) {
-        //console.log(target.get(0));
+        console && console.log && console.log(target.get(0));
     });
 });
 </script>

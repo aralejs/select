@@ -277,7 +277,6 @@ define(function(require) {
 
             var option = select.options[2];
             select.select(option);
-            console.log('selectedIndex', select.get('selectedIndex'), select.element.get(0), select.model);
 
             expect(select.currentItem[0]).to.be(option);
             expect(select.get('value')).to.be('value3');
