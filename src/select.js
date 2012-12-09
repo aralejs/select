@@ -1,5 +1,3 @@
-//TODO model 调整一下，现在传入的model被放在了 select 上
-//TODO 只要是多级的 model ，selectedIndex 不管是几级，都是数组
 //TODO 动态的去 disable 某项
 define(function(require, exports, module) {
 
@@ -41,7 +39,7 @@ define(function(require, exports, module) {
             value: '',
             length: 0,
             selectedIndex: -1,
-            multiple: false, // TODO
+            multiple: false,
             disabled: false,
 
             // 以下不要覆盖
@@ -132,6 +130,7 @@ define(function(require, exports, module) {
                 });
 
             this.options = this.$('[data-role=content]').children();
+            this.set('multiple', isMulitple(this.model.options));
             // 初始化 select 的参数
             // 必须在插入文档流后操作
             if ($('[data-selected=true]', this.element).is($('[data-disabled=true]', this.element))) {
@@ -205,7 +204,7 @@ define(function(require, exports, module) {
         // --------
 
         select: function(option) {
-            var selectIndex = getOptionIndex(option, this.options);
+            var selectIndex = getOptionIndex(option, this.options, this.get('multiple'));
             var oldSelectIndex = this.get('selectedIndex');
             this.set('selectedIndex', selectIndex);
 
@@ -221,6 +220,7 @@ define(function(require, exports, module) {
 
         syncModel: function(model) {
             this.model = completeModel(model, this.get('classPrefix'));
+            this.set('multiple', isMulitple(this.model.options));
             this.renderPartial('[data-role=content]');
             // 渲染后重置 select 的属性
             this.options = this.$('[data-role=content]').children();
@@ -235,7 +235,7 @@ define(function(require, exports, module) {
         },
 
         getOption: function(option) {
-            var index = getOptionIndex(option, this.options);
+            var index = getOptionIndex(option, this.options, this.get('multiple'));
             //return this.options.eq(index);
             return getItemByIndex(index, this.options);
         },
@@ -249,7 +249,7 @@ define(function(require, exports, module) {
         },
 
         removeOption: function(option) {
-            var removedIndex = getOptionIndex(option, this.options),
+            var removedIndex = getOptionIndex(option, this.options, this.get('multiple')),
                 oldIndex = this.get('selectedIndex'),
                 //removedOption = this.options.eq(removedIndex);
                 removedOption = getItemByIndex(removedIndex, this.options);
@@ -303,7 +303,7 @@ define(function(require, exports, module) {
             if (currentItem && this.element.has(currentItem)) {
                 currentItem.attr('data-selected', false)
                     .removeClass(this.get('classPrefix') + '-item-selected');
-                var m = getModelByIndex(getOptionIndex(currentItem, this.options), this.model.options);
+                var m = getModelByIndex(getOptionIndex(currentItem, this.options, this.get('multiple')), this.model.options);
                 m && (m.selected = 'false');
             }
 
@@ -429,7 +429,7 @@ define(function(require, exports, module) {
         return {options: newModel, classPrefix: classPrefix};
     }
 
-    function getOptionIndex(option, options) {
+    function getOptionIndex(option, options, multi) {
         var index;
         if ($.isNumeric(option)) { // 如果是索引
             index = option;
@@ -437,7 +437,7 @@ define(function(require, exports, module) {
             //index = options.index(options.parent().find(option));
             option = options.parent().find(option);
             if (option.length == 0) {
-                return -1;
+                return multi ? [] : -1;
             }
             index = options.index(option);
         }
@@ -450,13 +450,13 @@ define(function(require, exports, module) {
                     return false;
                 }
             });
-            var subIndex = getOptionIndex(option, options.eq(index).children('ul').children());
+            var subIndex = getOptionIndex(option, options.eq(index).children('ul').children(), true);
             if (!(subIndex instanceof Array)) {
                 subIndex = [subIndex];
             }
             return [index].concat(subIndex);
         } else {
-            return index;
+            return multi ? [index] : index;
         }
     }
 
@@ -482,5 +482,16 @@ define(function(require, exports, module) {
             model = m.options;
         });
         return m;
+    }
+
+    function isMulitple(model) {
+        var b = false;
+        $.each(model, function(i, v) {
+            if ($.isArray(v.options) && v.options.length > 0) {
+                b = true;
+                return false;
+            }
+        });
+        return b;
     }
 });

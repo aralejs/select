@@ -95,6 +95,7 @@ seajs.use(['$', 'select'], function($, Select) {
 
     s.on('change', function(target) {
         console && console.log && console.log(target.get(0));
+        console && console.log && console.log(this.get('selectedIndex'));
     });
 });
 </script>
