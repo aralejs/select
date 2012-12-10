@@ -297,7 +297,12 @@ define("arale/select/2.0.0/select-debug", ["arale/overlay/0.9.12/overlay-debug",
 
             // 设置原来的表单项
             var source = this.get('selectSource');
-            source && (source[0].value = value);
+            if (source) {
+                var old_val = source.val();
+                source.val(value);
+                if (value !== old_val)
+                    $(source).trigger('change');
+            }
 
             // 处理之前选中的元素
             if (currentItem && this.element.has(currentItem)) {
