@@ -164,6 +164,7 @@ define("arale/select/2.0.0/select-debug", ["arale/overlay/0.9.12/overlay-debug",
 
         // trigger 的宽度和浮层保持一致
         _setTriggerWidth: function() {
+            console.log('_setTriggerWidth');
             var trigger = this.get('trigger');
             var width = this.element.outerWidth();
             var pl = parseInt(trigger.css('padding-left'), 10);
@@ -285,6 +286,7 @@ define("arale/select/2.0.0/select-debug", ["arale/overlay/0.9.12/overlay-debug",
             });
             */
             var selected = getItemByIndex(index, this.options);
+            console.log('selected', selected.get(0));
 
             //var selected = this.options.eq(index),
             var currentItem = this.currentItem,
@@ -306,7 +308,7 @@ define("arale/select/2.0.0/select-debug", ["arale/overlay/0.9.12/overlay-debug",
 
             // 处理之前选中的元素
             if (currentItem && this.element.has(currentItem)) {
-                currentItem.attr('data-selected', false)
+                currentItem.attr('data-selected', 'false')
                     .removeClass(this.get('classPrefix') + '-item-selected');
                 var m = getModelByIndex(getOptionIndex(currentItem, this.options, this.get('multiple')), this.model.options);
                 m && (m.selected = 'false');
@@ -323,6 +325,7 @@ define("arale/select/2.0.0/select-debug", ["arale/overlay/0.9.12/overlay-debug",
             var trigger = this.get('trigger');
             var triggerContent = trigger.find('[data-role=trigger-content]');
             var html = this.get('renderTrigger').call(this, selected);
+            console.log('html', html);
             if (triggerContent.length) {
                 triggerContent.html(html);
             } else {

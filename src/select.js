@@ -306,7 +306,7 @@ define(function(require, exports, module) {
 
             // 处理之前选中的元素
             if (currentItem && this.element.has(currentItem)) {
-                currentItem.attr('data-selected', false)
+                currentItem.attr('data-selected', 'false')
                     .removeClass(this.get('classPrefix') + '-item-selected');
                 var m = getModelByIndex(getOptionIndex(currentItem, this.options, this.get('multiple')), this.model.options);
                 m && (m.selected = 'false');
