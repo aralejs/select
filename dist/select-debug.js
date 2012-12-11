@@ -115,6 +115,7 @@ define("arale/select/2.0.0/select-debug", ["arale/overlay/0.9.12/overlay-debug",
 
                 // trigger 如果为其他 DOM，则由用户提供 model
                 this.model = completeModel(this.model, this.get('classPrefix'));
+                console.log('newModel', this.model);
             }
         },
 
@@ -133,6 +134,8 @@ define("arale/select/2.0.0/select-debug", ["arale/overlay/0.9.12/overlay-debug",
             this.set('multiple', isMulitple(this.model.options));
             // 初始化 select 的参数
             // 必须在插入文档流后操作
+console.log(this.element.html());
+console.log($('[data-selected=true]', this.element));
             if ($('[data-selected=true]', this.element).is($('[data-disabled=true]', this.element))) {
                 throw new Error('A disabled item cannot be selected, check your model.');
             }
@@ -164,7 +167,6 @@ define("arale/select/2.0.0/select-debug", ["arale/overlay/0.9.12/overlay-debug",
 
         // trigger 的宽度和浮层保持一致
         _setTriggerWidth: function() {
-            console.log('_setTriggerWidth');
             var trigger = this.get('trigger');
             var width = this.element.outerWidth();
             var pl = parseInt(trigger.css('padding-left'), 10);
@@ -286,7 +288,6 @@ define("arale/select/2.0.0/select-debug", ["arale/overlay/0.9.12/overlay-debug",
             });
             */
             var selected = getItemByIndex(index, this.options);
-            console.log('selected', selected.get(0));
 
             //var selected = this.options.eq(index),
             var currentItem = this.currentItem,
@@ -325,7 +326,6 @@ define("arale/select/2.0.0/select-debug", ["arale/overlay/0.9.12/overlay-debug",
             var trigger = this.get('trigger');
             var triggerContent = trigger.find('[data-role=trigger-content]');
             var html = this.get('renderTrigger').call(this, selected);
-            console.log('html', html);
             if (triggerContent.length) {
                 triggerContent.html(html);
             } else {
@@ -410,8 +410,12 @@ define("arale/select/2.0.0/select-debug", ["arale/overlay/0.9.12/overlay-debug",
     }
 
     // 补全 model 对象
-    function completeModel(model, classPrefix) {
-        var i, j, l, ll, newModel = [], selectedArray = [];
+    function completeModel(model, classPrefix, selectedArray) {
+        var i, j, l, ll, newModel = [], isFirst = false;
+        if (!selectedArray) {
+            selectedArray = [];
+            isFirst = true;
+        }
         for (i = 0, l = model.length; i < l; i++) {
             var o = model[i];
             if (o.selected) {
@@ -421,18 +425,20 @@ define("arale/select/2.0.0/select-debug", ["arale/overlay/0.9.12/overlay-debug",
                 o.selected = o.defaultSelected = 'false';
             }
             if (o.options && o.options.length > 0) {
-                o.options = completeModel(o.options, classPrefix).options;
+                o.options = completeModel(o.options, classPrefix, selectedArray).options;
             }
             newModel.push(o);
         }
-        if (selectedArray.length > 0) {
-            // 如果有多个 selected 则选中最后一个
-            selectedArray.pop();
-            for (j = 0, ll = selectedArray.length; j < ll; j++) {
-                selectedArray[j].selected = 'false';
+        if (isFirst) {
+            if (selectedArray.length > 0) {
+                // 如果有多个 selected 则选中最后一个
+                selectedArray.pop();
+                for (j = 0, ll = selectedArray.length; j < ll; j++) {
+                    selectedArray[j].selected = 'false';
+                }
+            } else { //当所有都没有设置 selected 则默认设置第一个
+                newModel[0].selected = 'true';
             }
-        } else { //当所有都没有设置 selected 则默认设置第一个
-            newModel[0].selected = 'true';
         }
         return {options: newModel, classPrefix: classPrefix};
     }

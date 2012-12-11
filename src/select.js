@@ -407,8 +407,12 @@ define(function(require, exports, module) {
     }
 
     // 补全 model 对象
-    function completeModel(model, classPrefix) {
-        var i, j, l, ll, newModel = [], selectedArray = [];
+    function completeModel(model, classPrefix, selectedArray) {
+        var i, j, l, ll, newModel = [], isFirst = false;
+        if (!selectedArray) {
+            selectedArray = [];
+            isFirst = true;
+        }
         for (i = 0, l = model.length; i < l; i++) {
             var o = model[i];
             if (o.selected) {
@@ -418,18 +422,20 @@ define(function(require, exports, module) {
                 o.selected = o.defaultSelected = 'false';
             }
             if (o.options && o.options.length > 0) {
-                o.options = completeModel(o.options, classPrefix).options;
+                o.options = completeModel(o.options, classPrefix, selectedArray).options;
             }
             newModel.push(o);
         }
-        if (selectedArray.length > 0) {
-            // 如果有多个 selected 则选中最后一个
-            selectedArray.pop();
-            for (j = 0, ll = selectedArray.length; j < ll; j++) {
-                selectedArray[j].selected = 'false';
+        if (isFirst) {
+            if (selectedArray.length > 0) {
+                // 如果有多个 selected 则选中最后一个
+                selectedArray.pop();
+                for (j = 0, ll = selectedArray.length; j < ll; j++) {
+                    selectedArray[j].selected = 'false';
+                }
+            } else { //当所有都没有设置 selected 则默认设置第一个
+                newModel[0].selected = 'true';
             }
-        } else { //当所有都没有设置 selected 则默认设置第一个
-            newModel[0].selected = 'true';
         }
         return {options: newModel, classPrefix: classPrefix};
     }
