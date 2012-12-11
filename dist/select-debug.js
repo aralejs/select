@@ -115,7 +115,6 @@ define("arale/select/2.0.0/select-debug", ["arale/overlay/0.9.12/overlay-debug",
 
                 // trigger 如果为其他 DOM，则由用户提供 model
                 this.model = completeModel(this.model, this.get('classPrefix'));
-                console.log('newModel', this.model);
             }
         },
 
@@ -134,8 +133,6 @@ define("arale/select/2.0.0/select-debug", ["arale/overlay/0.9.12/overlay-debug",
             this.set('multiple', isMulitple(this.model.options));
             // 初始化 select 的参数
             // 必须在插入文档流后操作
-console.log(this.element.html());
-console.log($('[data-selected=true]', this.element));
             if ($('[data-selected=true]', this.element).is($('[data-disabled=true]', this.element))) {
                 throw new Error('A disabled item cannot be selected, check your model.');
             }
