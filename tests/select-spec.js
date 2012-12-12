@@ -33,12 +33,12 @@ define(function(require) {
             expect(select.currentItem[0]).to.be(select.element.find('[data-role=item]')[0]);
             expect(select.options.eq(0).attr('data-selected'))
             .to.be('true');
-            expect(select.options.eq(0).attr('data-defaultSelected'))
-            .to.be('false');
+            expect(select.options.eq(0).attr('data-default-selected'))
+            .not.to.be('true');
             expect(select.options.eq(1).attr('data-selected'))
-            .to.be('false');
-            expect(select.options.eq(1).attr('data-defaultSelected'))
-            .to.be('false');
+            .not.to.be('true');
+            expect(select.options.eq(1).attr('data-default-selected'))
+            .not.to.be('true');
         });
 
         describe('convert model', function() {
@@ -48,13 +48,23 @@ define(function(require) {
                     trigger: '#example'
                 }).render();
 
-                var model = select.model.select;
+                var model = select.model.options;
                 expect(model[0].defaultSelected).to.be('false');
                 expect(model[0].selected).to.be('true');
                 expect(model[0].value).to.be('value1');
                 expect(model[0].text).to.be('text1');
                 expect(model[1].defaultSelected).to.be('false');
                 expect(model[1].selected).to.be('false');
+                expect(model[1].value).to.be('value2');
+                expect(model[1].text).to.be('text2');
+
+                select.select(1);
+                expect(model[0].defaultSelected).to.be('false');
+                expect(model[0].selected).to.be('false');
+                expect(model[0].value).to.be('value1');
+                expect(model[0].text).to.be('text1');
+                expect(model[1].defaultSelected).to.be('false');
+                expect(model[1].selected).to.be('true');
                 expect(model[1].value).to.be('value2');
                 expect(model[1].text).to.be('text2');
             });
@@ -65,7 +75,7 @@ define(function(require) {
                     trigger: '#example'
                 }).render();
 
-                var model = select.model.select;
+                var model = select.model.options;
                 expect(model[0].defaultSelected).to.be('false');
                 expect(model[0].selected).to.be('false');
                 expect(model[0].value).to.be('value1');
@@ -82,7 +92,7 @@ define(function(require) {
                     trigger: '#example'
                 }).render();
 
-                var model = select.model.select;
+                var model = select.model.options;
                 expect(model[0].defaultSelected).to.be('true');
                 expect(model[0].selected).to.be('false');
                 expect(model[0].value).to.be('value1');
@@ -103,7 +113,7 @@ define(function(require) {
                     ]
                 }).render();
 
-                var model = select.model.select;
+                var model = select.model.options;
                 expect(model[0].defaultSelected).to.be('false');
                 expect(model[0].selected).to.be('true');
                 expect(model[0].value).to.be('value1');
@@ -124,7 +134,7 @@ define(function(require) {
                     ]
                 }).render();
 
-                var model = select.model.select;
+                var model = select.model.options;
                 expect(model[0].defaultSelected).to.be('false');
                 expect(model[0].selected).to.be('false');
                 expect(model[0].value).to.be('value1');
@@ -145,7 +155,7 @@ define(function(require) {
                     ]
                 }).render();
 
-                var model = select.model.select;
+                var model = select.model.options;
                 expect(model[0].defaultSelected).to.be('true');
                 expect(model[0].selected).to.be('false');
                 expect(model[0].value).to.be('value1');
@@ -297,11 +307,11 @@ define(function(require) {
             expect(select.get('length')).to.be(2);
             expect(select.get('selectedIndex')).to.be(1);
             expect(select.currentItem[0]).to.be(select.element.find('[data-role=item]')[1]);
-            expect(select.options.eq(0).attr('data-defaultSelected'))
+            expect(select.options.eq(0).attr('data-default-selected'))
                 .to.be('false');
             expect(select.options.eq(0).attr('data-selected'))
                 .to.be('false');
-            expect(select.options.eq(1).attr('data-defaultSelected'))
+            expect(select.options.eq(1).attr('data-default-selected'))
                 .to.be('true');
             expect(select.options.eq(1).attr('data-selected'))
                 .to.be('true');
@@ -356,12 +366,12 @@ define(function(require) {
             expect(select.get('trigger').hasClass('test-trigger')).to.be(true);
             expect(select.$('.test-content').length).to.be(1);
             expect(select.$('.test-item').length).to.be(2);
-            expect(select.options.eq(0).hasClass('test-selected')).to.be(false);
-            expect(select.options.eq(1).hasClass('test-selected')).to.be(true);
+            expect(select.options.eq(0).hasClass('test-item-selected')).to.be(false);
+            expect(select.options.eq(1).hasClass('test-item-selected')).to.be(true);
 
             select.select(0);
-            expect(select.options.eq(0).hasClass('test-selected')).to.be(true);
-            expect(select.options.eq(1).hasClass('test-selected')).to.be(false);
+            expect(select.options.eq(0).hasClass('test-item-selected')).to.be(true);
+            expect(select.options.eq(1).hasClass('test-item-selected')).to.be(false);
         });
 
         it('attr name when trigger is select', function() {
@@ -480,7 +490,7 @@ define(function(require) {
             var option = select.options.eq(3);
             expect(select.get('length')).to.be(4);
             expect(option.attr('data-value')).to.be('value4');
-            expect(option.html()).to.be('text4');
+            expect($.trim(option.html())).to.be('text4');
         });
     });
 });
