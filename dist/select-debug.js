@@ -48,6 +48,7 @@ define("arale/select/2.0.0/select-debug", ["arale/overlay/0.9.12/overlay-debug",
 
         events: {
             'click [data-role=item]': function(e) {
+                // 阻止事件冒泡，否则点击子菜单后，父级菜单也会被选中，而且后触发，表现出来就是子菜单无法选中
                 e.stopPropagation();
                 var target = $(e.currentTarget);
                 if (target.attr('data-disabled') != 'true') {
@@ -295,14 +296,6 @@ define("arale/select/2.0.0/select-debug", ["arale/overlay/0.9.12/overlay-debug",
                 return;
             }
 
-            // 设置原来的表单项
-            var source = this.get('selectSource');
-            if (source) {
-                var old_val = source.val();
-                source.val(value);
-                if (value !== old_val)
-                    $(source).trigger('change');
-            }
 
             // 处理之前选中的元素
             if (currentItem && this.element.has(currentItem)) {
@@ -328,6 +321,16 @@ define("arale/select/2.0.0/select-debug", ["arale/overlay/0.9.12/overlay-debug",
             } else {
                 trigger.html(html);
             }
+
+            // 设置原来的表单项
+            var source = this.get('selectSource');
+            if (source) {
+                var old_val = source.val();
+                source.val(value);
+                if (value !== old_val)
+                    $(source).trigger('change');
+            }
+
             this.currentItem = selected;
         },
 
