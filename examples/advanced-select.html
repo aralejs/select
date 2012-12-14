@@ -2,7 +2,7 @@
 <html lang="zh">
   <head>
     <meta charset="UTF-8">
-    <title>Arale - 初始化</title>
+    <title>Arale - 多层 select</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="nico 0.1.0-rc" />
     <link type="image/x-icon" href="../static/css/favicon.ico" rel="icon">
@@ -55,62 +55,77 @@
       <div id="content-wrapper">
         <div id="content">
 <article class="hentry">
-  <h1 class="entry-title">初始化</h1>
+  <h1 class="entry-title">多层 select</h1>
   <div class="entry-content">
     <p><link rel="stylesheet" href="../src/select.css" /></p>
-<h2 id="%E5%8F%AF%E4%BB%A5%E6%A0%B9%E6%8D%AE%E5%8E%9F%E7%94%9F%E7%9A%84-select-%E5%88%9D%E5%A7%8B%E5%8C%96">可以根据原生的 select 初始化</h2>
-<p>trigger 为 select，并默认选中 option2</p>
 
-<div class="nico-insert-code"><select id="example1">
-    <option value="option1">option1</option>
-    <option value="option2" selected="selected">option2</option>
-</select>
-</div>
-<div class="highlight"><pre><code class="xml"><span class="tag">&lt;<span class="title">select</span> <span class="attribute">id</span>=<span class="value">"example1"</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">option</span> <span class="attribute">value</span>=<span class="value">"option1"</span>&gt;</span>option1<span class="tag">&lt;/<span class="title">option</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">option</span> <span class="attribute">value</span>=<span class="value">"option2"</span> <span class="attribute">selected</span>=<span class="value">"selected"</span>&gt;</span>option2<span class="tag">&lt;/<span class="title">option</span>&gt;</span>
-<span class="tag">&lt;/<span class="title">select</span>&gt;</span>
-</code></pre></div>
-<script>
-seajs.use(['select'], function(Select) {
-    new Select({
-        trigger: '#example1'
-    }).render();
-});
-</script>
-<div class="highlight"><pre><code class="javascript">seajs.use([<span class="string">'select/1.0.0/select'</span>], <span class="keyword">function</span>(Select) {
-    <span class="keyword">new</span> Select({
-        trigger: <span class="string">'#example1'</span>
-    }).render();
-});
-</code></pre></div><h2 id="%E5%8F%AF%E7%9B%B4%E6%8E%A5%E4%BC%A0%E5%85%A5-dom-%E5%88%9D%E5%A7%8B%E5%8C%96">可直接传入 DOM 初始化</h2>
-<p>trigger 为任意 DOM，但必须传入 model 数据</p>
+<p><a href="#" id="example">请选择</a></p>
 
-<div class="nico-insert-code"><a href="#" id="example2">请选择</a>
-</div>
-<div class="highlight"><pre><code class="xml"><span class="tag">&lt;<span class="title">a</span> <span class="attribute">href</span>=<span class="value">"#"</span> <span class="attribute">id</span>=<span class="value">"example2"</span>&gt;</span>请选择<span class="tag">&lt;/<span class="title">a</span>&gt;</span>
-</code></pre></div>
 <script>
-seajs.use(['select'], function(Select) {
-    new Select({
-        trigger: '#example2',
+seajs.use(['$', 'advanced-select'], function($, AdvancedSelect) {
+    var s = new AdvancedSelect({
+        trigger: '#example',
+        //disabled: true,
         model: [
-            {value:'option1', text:'option1'},
-            {value:'option2', text:'option2', selected: true}
+            {
+                value:'all',
+                text:'所有交易',
+                defaultSelected: true
+            },
+            {
+                value:'taobao',
+                text:'淘宝购物',
+                selected: true
+            },
+            {
+                value:'alipay',
+                text:'支付宝',
+                options: [
+                    {
+                        value: 'bizIn',
+                        text: '付款',
+                        options: [
+                            {
+                                value: 'test',
+                                text: 'test'
+                            },
+                            {
+                                value: 'test2',
+                                text: 'test2',
+                                disabled: true
+                            },
+                            {
+                                value: 'test3',
+                                text: 'test3'
+                            }
+                        ]
+                    },
+                    {
+                        value: 'bizOut',
+                        text: '收款'
+                    }
+                ]
+            },
+            {
+                value: 'cutom',
+                text: '自定义分类',
+                disabled: true,
+                options: [
+                    {
+                        value: 'huoshifei',
+                        text: '伙食费'
+                    },
+                    {
+                        value: 'manage',
+                        text: '管理分离'
+                    }
+                ]
+            }
         ]
     }).render();
 });
 </script>
-<div class="highlight"><pre><code class="javascript">seajs.use([<span class="string">'select/1.0.0/select'</span>], <span class="keyword">function</span>(Select) {
-    <span class="keyword">new</span> Select({
-        trigger: <span class="string">'#example2'</span>,
-        model: [
-            {value:<span class="string">'option1'</span>, text:<span class="string">'option1'</span>},
-            {value:<span class="string">'option2'</span>, text:<span class="string">'option2'</span>, selected: <span class="literal">true</span>}
-        ]
-    }).render();
-});
-</code></pre></div>
+
   </div>
 </article>
 </div>

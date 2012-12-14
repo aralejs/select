@@ -1,0 +1,209 @@
+<!DOCTYPE HTML>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8">
+    <title>Arale - 其他操作</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="nico 0.1.0-rc" />
+    <link type="image/x-icon" href="../static/css/favicon.ico" rel="icon">
+    <link rel="stylesheet" href="../static/css/normalize.css" />
+    <link rel="stylesheet" href="../static/css/site.css" />
+    <link rel="stylesheet" href="../static/css/solarized.css" />
+    <script src="https://a.alipayobjects.com/seajs/1.2.1/sea.js"></script>
+    <script src="../static/js/arale-helper.js"></script>
+    <script src="../static/js/site.js"></script>
+<script>
+  (function() {
+    var data;
+    seajs._package = data = {"name":"select","version":"1.0.0","root":"arale","description":"模拟 select 的组件","tag":"widget","homepage":"http://aralejs.org/select","repository":{"type":"git","url":"https://github.com/aralejs/select.git"},"bugs":{"url":"https://github.com/aralejs/select/issues"},"dependencies":{"$":"$","overlay":"arale/overlay/0.9.12/overlay","templatable":"arale/widget/1.0.2/templatable"},"output":{"select.js":"."},"tests":["select"]}
+    data.dependencies && (delete data.dependencies['$'])
+    data.devDependencies && (delete data.devDependencies['$'])
+
+    seajs.config({ alias: data.dependencies })
+    seajs.config({ alias: data.devDependencies })
+    seajs.config({ alias: {"advanced-select":"../src/advanced-select.js","select":"../src/select.js"} })
+  })();
+</script>
+    <!--[if lt IE 9]>
+    <script src="../static/js/html5shiv.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div id="body-wrapper">
+      <aside id="sidebar-wrapper">
+        <h1><a href="../">Select</a><sup class="package-root"><a href="/">arale</a></sup></h1>
+        <p class="version">当前版本：<span>1.0.0</span></p>
+        <p class="description">模拟 select 的组件</p>
+        <a class="source" href="https://github.com/aralejs/select.git" target="_blank">View the Project</a>
+        <ul id="navigation" role="navigation">
+          <li><a href="../">文档</a></li>
+          <li><a href="../examples/advanced-select.html">演示</a></li>
+          <li><a href="../history.html">历史</a></li>
+          <li><a href="../tests/runner.html" target="_blank">用例</a></li>
+          <li><a href="https://github.com/aralejs/select/issues" target="_blank">讨论</a></li>
+        </ul>
+        
+<ol id="sidenav">
+  <li><a href="../examples/advanced-select.html">多层 select</a></li>
+  <li><a href="../examples/cascade.html">级联操作</a></li>
+  <li><a href="../examples/">初始化</a></li>
+  <li><a href="../examples/operate.html">其他操作</a></li>
+  <li><a href="../examples/trigger.html">trigger</a></li>
+</ol>
+
+      </aside>
+      <div id="content-wrapper">
+        <div id="content">
+<article class="hentry">
+  <h1 class="entry-title">其他操作</h1>
+  <div class="entry-content">
+    <p><link rel="stylesheet" href="../src/select.css" /></p>
+<h2 id="%E8%AE%BE%E7%BD%AE-select-%E4%B8%BA-disabled">设置 select 为 disabled</h2>
+<p><select id="example3">
+    <option value="option1">option1</option>
+    <option value="option2" selected="selected">option2</option>
+</select>
+<a href="#" id="example3-abled" style="margin-left:20px;">设置 disabled=false</a>
+<a href="#" id="example3-disabled" style="margin-left:20px;">设置 disabled=true</a></p>
+
+<script>
+seajs.use(['select','jquery'], function(Select, $) {
+    var example3 = new Select({
+        trigger: '#example3',
+        disabled: true
+    }).render();
+
+    $('#example3-disabled').click(function(e) {
+        e.preventDefault();
+        example3.set('disabled', true);
+    });
+
+    $('#example3-abled').click(function(e) {
+        e.preventDefault();
+        example3.set('disabled', false);
+    });
+});
+</script>
+<div class="highlight"><pre><code class="javascript">seajs.use([<span class="string">'select/1.0.0/select'</span>,<span class="string">'jquery'</span>], <span class="keyword">function</span>(Select, $) {
+    <span class="keyword">var</span> example3 = <span class="keyword">new</span> Select({
+        trigger: <span class="string">'#example3'</span>,
+        disabled: <span class="literal">true</span>
+    }).render();
+
+    $(<span class="string">'#example3-disabled'</span>).click(<span class="keyword">function</span>(e) {
+        e.preventDefault();
+        example3.set(<span class="string">'disabled'</span>, <span class="literal">true</span>);
+    });
+
+    $(<span class="string">'#example3-abled'</span>).click(<span class="keyword">function</span>(e) {
+        e.preventDefault();
+        example3.set(<span class="string">'disabled'</span>, <span class="literal">false</span>);
+    });
+});
+</code></pre></div><h2 id="%E5%8F%AF%E4%BB%A5%E9%80%9A%E8%BF%87-select-%E6%8E%A5%E5%8F%A3%E5%8E%BB%E9%80%89%E6%8B%A9">可以通过 select 接口去选择</h2>
+<p><a href="#" id="example4">请选择</a>
+<a href="#" class="example4-select" data-value="1">选择1</a>
+<a href="#" class="example4-select" data-value="2">选择2</a>
+<a href="#" class="example4-select" data-value="3">选择3</a>
+<a href="#" class="example4-select" data-value="4">选择4</a></p>
+
+<script>
+seajs.use(['select','jquery'], function(Select, $) {
+    var example4 = new Select({
+        trigger: '#example4',
+        name: 'example4',
+        model: [
+            {value:'option1', text:'option1'},
+            {value:'option2', text:'option2'},
+            {value:'option3', text:'option3'},
+            {value:'option4', text:'option4'}
+        ]
+    }).render();
+
+    $('.example4-select').click(function(e) {
+        e.preventDefault();
+        var index = $(e.currentTarget).attr('data-value');
+        example4.select(index - 1);
+    });
+});
+</script>
+<div class="highlight"><pre><code class="javascript">seajs.use([<span class="string">'select/1.0.0/select'</span>,<span class="string">'jquery'</span>], <span class="keyword">function</span>(Select, $) {
+    <span class="keyword">var</span> example4 = <span class="keyword">new</span> Select({
+        trigger: <span class="string">'#example4'</span>,
+        name: <span class="string">'example4'</span>,
+        model: [
+            {value:<span class="string">'option1'</span>, text:<span class="string">'option1'</span>},
+            {value:<span class="string">'option2'</span>, text:<span class="string">'option2'</span>},
+            {value:<span class="string">'option3'</span>, text:<span class="string">'option3'</span>},
+            {value:<span class="string">'option4'</span>, text:<span class="string">'option4'</span>}
+        ]
+    }).render();
+
+    $(<span class="string">'.example4-select'</span>).click(<span class="keyword">function</span>(e) {
+        e.preventDefault();
+        <span class="keyword">var</span> index = $(e.currentTarget).attr(<span class="string">'data-value'</span>);
+        example4.select(index - <span class="number">1</span>);
+    });
+});
+</code></pre></div><h2 id="%E6%8F%90%E4%BE%9B-change-%E7%9A%84%E4%BA%8B%E4%BB%B6">提供 change 的事件</h2>
+<p><a href="#" id="example5">请选择</a>
+<span id="example5-log"></span></p>
+
+<script>
+seajs.use(['select','jquery'], function(Select, $) {
+    var log = $('#example5-log');
+    new Select({
+        trigger: '#example5',
+        model: [
+            {value:'option1', text:'option1'},
+            {value:'option2', text:'option2'},
+            {value:'option3', text:'option3'},
+            {value:'option4', text:'option4'}
+        ]
+    }).on('change', function(target) {
+        log.html(
+            '已选择: value -> ' + 
+            target.attr('data-value') +
+            '; text -> ' +
+            target.html()
+        );
+    }).render();
+});
+</script>
+<div class="highlight"><pre><code class="javascript">seajs.use([<span class="string">'select/1.0.0/select'</span>,<span class="string">'jquery'</span>], <span class="keyword">function</span>(Select, $) {
+    <span class="keyword">var</span> log = $(<span class="string">'#example5-log'</span>);
+    <span class="keyword">new</span> Select({
+        trigger: <span class="string">'#example5'</span>,
+        model: [
+            {value:<span class="string">'option1'</span>, text:<span class="string">'option1'</span>},
+            {value:<span class="string">'option2'</span>, text:<span class="string">'option2'</span>},
+            {value:<span class="string">'option3'</span>, text:<span class="string">'option3'</span>},
+            {value:<span class="string">'option4'</span>, text:<span class="string">'option4'</span>}
+        ]
+    }).on(<span class="string">'change'</span>, <span class="keyword">function</span>(target) {
+        log.html(
+            <span class="string">'已选择: value -&gt; '</span> + 
+            target.attr(<span class="string">'data-value'</span>) +
+            <span class="string">'; text -&gt; '</span> +
+            target.html()
+        );
+    }).render();
+});
+</code></pre></div>
+  </div>
+</article>
+</div>
+      </div>
+    </div>
+    <div id="footer-wrapper">
+      <footer>
+      <p class="powered">
+        <a href="http://aralejs.org">Arale</a> •
+        <a href="http://seajs.org">SeaJS</a> •
+        <a href="https://github.com/spmjs/spm">spm</a> •
+        <a href="http://lab.lepture.com/nico/">nico</a>
+        </p>
+      </footer>
+    </div>
+  </body>
+</html>

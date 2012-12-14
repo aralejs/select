@@ -2,7 +2,7 @@
 <html lang="zh">
   <head>
     <meta charset="UTF-8">
-    <title>Arale - 初始化</title>
+    <title>Arale - trigger</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="nico 0.1.0-rc" />
     <link type="image/x-icon" href="../static/css/favicon.ico" rel="icon">
@@ -55,58 +55,77 @@
       <div id="content-wrapper">
         <div id="content">
 <article class="hentry">
-  <h1 class="entry-title">初始化</h1>
+  <h1 class="entry-title">trigger</h1>
   <div class="entry-content">
     <p><link rel="stylesheet" href="../src/select.css" /></p>
-<h2 id="%E5%8F%AF%E4%BB%A5%E6%A0%B9%E6%8D%AE%E5%8E%9F%E7%94%9F%E7%9A%84-select-%E5%88%9D%E5%A7%8B%E5%8C%96">可以根据原生的 select 初始化</h2>
-<p>trigger 为 select，并默认选中 option2</p>
+<h2 id="trigger-%E7%9A%84%E5%AE%BD%E5%BA%A6%E5%92%8C%E6%B5%AE%E5%B1%82%E7%9A%84%E5%AE%BD%E5%BA%A6%E4%BF%9D%E6%8C%81%E4%B8%80%E8%87%B4">trigger 的宽度和浮层的宽度保持一致</h2>
+<p><a href="#" id="example7-1" class="ui-select-trigger">请选择</a>
+<a href="#" id="example7-2" class="ui-select-trigger">请选择</a></p>
 
-<div class="nico-insert-code"><select id="example1">
-    <option value="option1">option1</option>
-    <option value="option2" selected="selected">option2</option>
-</select>
-</div>
-<div class="highlight"><pre><code class="xml"><span class="tag">&lt;<span class="title">select</span> <span class="attribute">id</span>=<span class="value">"example1"</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">option</span> <span class="attribute">value</span>=<span class="value">"option1"</span>&gt;</span>option1<span class="tag">&lt;/<span class="title">option</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">option</span> <span class="attribute">value</span>=<span class="value">"option2"</span> <span class="attribute">selected</span>=<span class="value">"selected"</span>&gt;</span>option2<span class="tag">&lt;/<span class="title">option</span>&gt;</span>
-<span class="tag">&lt;/<span class="title">select</span>&gt;</span>
-</code></pre></div>
 <script>
-seajs.use(['select'], function(Select) {
+seajs.use(['select','jquery'], function(Select, $) {
     new Select({
-        trigger: '#example1'
-    }).render();
-});
-</script>
-<div class="highlight"><pre><code class="javascript">seajs.use([<span class="string">'select/1.0.0/select'</span>], <span class="keyword">function</span>(Select) {
-    <span class="keyword">new</span> Select({
-        trigger: <span class="string">'#example1'</span>
-    }).render();
-});
-</code></pre></div><h2 id="%E5%8F%AF%E7%9B%B4%E6%8E%A5%E4%BC%A0%E5%85%A5-dom-%E5%88%9D%E5%A7%8B%E5%8C%96">可直接传入 DOM 初始化</h2>
-<p>trigger 为任意 DOM，但必须传入 model 数据</p>
-
-<div class="nico-insert-code"><a href="#" id="example2">请选择</a>
-</div>
-<div class="highlight"><pre><code class="xml"><span class="tag">&lt;<span class="title">a</span> <span class="attribute">href</span>=<span class="value">"#"</span> <span class="attribute">id</span>=<span class="value">"example2"</span>&gt;</span>请选择<span class="tag">&lt;/<span class="title">a</span>&gt;</span>
-</code></pre></div>
-<script>
-seajs.use(['select'], function(Select) {
-    new Select({
-        trigger: '#example2',
+        trigger: '#example7-1',
         model: [
-            {value:'option1', text:'option1'},
-            {value:'option2', text:'option2', selected: true}
+            {value:'option1', text:'aaaaaaaaaaaaaaaa'},
+            {value:'option2', text:'字比较少'},
+            {value:'option3', text:'字比较少'}
+        ]
+    }).render();
+
+    new Select({
+        trigger: '#example7-2',
+        model: [
+            {value:'option1', text:'字好多多aaa多多多多多'},
+            {value:'option2', text:'字比较多'},
+            {value:'option3', text:'字比较多'}
         ]
     }).render();
 });
 </script>
-<div class="highlight"><pre><code class="javascript">seajs.use([<span class="string">'select/1.0.0/select'</span>], <span class="keyword">function</span>(Select) {
+<div class="highlight"><pre><code class="javascript">seajs.use([<span class="string">'select/1.0.0/select'</span>,<span class="string">'jquery'</span>], <span class="keyword">function</span>(Select, $) {
     <span class="keyword">new</span> Select({
-        trigger: <span class="string">'#example2'</span>,
+        trigger: <span class="string">'#example7-1'</span>,
+        model: [
+            {value:<span class="string">'option1'</span>, text:<span class="string">'aaaaaaaaaaaaaaaa'</span>},
+            {value:<span class="string">'option2'</span>, text:<span class="string">'字比较少'</span>},
+            {value:<span class="string">'option3'</span>, text:<span class="string">'字比较少'</span>}
+        ]
+    }).render();
+
+    <span class="keyword">new</span> Select({
+        trigger: <span class="string">'#example7-2'</span>,
+        model: [
+            {value:<span class="string">'option1'</span>, text:<span class="string">'字好多多aaa多多多多多'</span>},
+            {value:<span class="string">'option2'</span>, text:<span class="string">'字比较多'</span>},
+            {value:<span class="string">'option3'</span>, text:<span class="string">'字比较多'</span>}
+        ]
+    }).render();
+});
+</code></pre></div><h2 id="%E8%87%AA%E5%AE%9A%E4%B9%89-trigger">自定义 trigger</h2>
+<p>需要指定 <code>data-role=&quot;trigger-content&quot;</code>，否则会覆盖整个 trigger 的内容</p>
+
+<div class="nico-insert-code"><a href="#" id="example8"><span data-role="trigger-content"></span><span>x</span></a>
+</div>
+<div class="highlight"><pre><code class="xml"><span class="tag">&lt;<span class="title">a</span> <span class="attribute">href</span>=<span class="value">"#"</span> <span class="attribute">id</span>=<span class="value">"example8"</span>&gt;</span><span class="tag">&lt;<span class="title">span</span> <span class="attribute">data-role</span>=<span class="value">"trigger-content"</span>&gt;</span><span class="tag">&lt;/<span class="title">span</span>&gt;</span><span class="tag">&lt;<span class="title">span</span>&gt;</span>x<span class="tag">&lt;/<span class="title">span</span>&gt;</span><span class="tag">&lt;/<span class="title">a</span>&gt;</span>
+</code></pre></div>
+<script>
+seajs.use(['select','jquery'], function(Select, $) {
+    new Select({
+        trigger: '#example8',
+        model: [
+            {value:'option1', text:'option1'},
+            {value:'option2', text:'option2'}
+        ]
+    }).render();
+});
+</script>
+<div class="highlight"><pre><code class="javascript">seajs.use([<span class="string">'select/1.0.0/select'</span>,<span class="string">'jquery'</span>], <span class="keyword">function</span>(Select, $) {
+    <span class="keyword">new</span> Select({
+        trigger: <span class="string">'#example8'</span>,
         model: [
             {value:<span class="string">'option1'</span>, text:<span class="string">'option1'</span>},
-            {value:<span class="string">'option2'</span>, text:<span class="string">'option2'</span>, selected: <span class="literal">true</span>}
+            {value:<span class="string">'option2'</span>, text:<span class="string">'option2'</span>}
         ]
     }).render();
 });

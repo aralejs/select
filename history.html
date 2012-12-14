@@ -1,0 +1,109 @@
+<!DOCTYPE HTML>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8">
+    <title>Select - HISTORY</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="nico 0.1.0-rc" />
+    <link type="image/x-icon" href="./static/css/favicon.ico" rel="icon">
+    <link rel="stylesheet" href="./static/css/normalize.css" />
+    <link rel="stylesheet" href="./static/css/site.css" />
+    <link rel="stylesheet" href="./static/css/solarized.css" />
+    <script src="https://a.alipayobjects.com/seajs/1.2.1/sea.js"></script>
+    <script src="./static/js/arale-helper.js"></script>
+    <script src="./static/js/site.js"></script>
+<script>
+  (function() {
+    var data;
+    seajs._package = data = {"name":"select","version":"1.0.0","root":"arale","description":"模拟 select 的组件","tag":"widget","homepage":"http://aralejs.org/select","repository":{"type":"git","url":"https://github.com/aralejs/select.git"},"bugs":{"url":"https://github.com/aralejs/select/issues"},"dependencies":{"$":"$","overlay":"arale/overlay/0.9.12/overlay","templatable":"arale/widget/1.0.2/templatable"},"output":{"select.js":"."},"tests":["select"]}
+    data.dependencies && (delete data.dependencies['$'])
+    data.devDependencies && (delete data.devDependencies['$'])
+
+    seajs.config({ alias: data.dependencies })
+    seajs.config({ alias: data.devDependencies })
+    seajs.config({ alias: {"advanced-select":"./src/advanced-select.js","select":"./src/select.js"} })
+  })();
+</script>
+    <!--[if lt IE 9]>
+    <script src="./static/js/html5shiv.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div id="body-wrapper">
+      <aside id="sidebar-wrapper">
+        <h1><a href="./">Select</a><sup class="package-root"><a href="/">arale</a></sup></h1>
+        <p class="version">当前版本：<span>1.0.0</span></p>
+        <p class="description">模拟 select 的组件</p>
+        <a class="source" href="https://github.com/aralejs/select.git" target="_blank">View the Project</a>
+        <ul id="navigation" role="navigation">
+          <li><a href="./">文档</a></li>
+          <li><a href="./examples/advanced-select.html">演示</a></li>
+          <li><a href="./history.html">历史</a></li>
+          <li><a href="./tests/runner.html" target="_blank">用例</a></li>
+          <li><a href="https://github.com/aralejs/select/issues" target="_blank">讨论</a></li>
+        </ul>
+        
+ 
+      </aside>
+      <div id="content-wrapper">
+        <div id="content">
+<article class="hentry">
+  <h1 class="entry-title">HISTORY</h1>
+  <div class="meta">2012-11-08</div>
+  <div class="entry-content">
+    <h3 id="0-9-0-a-href-https-github-com-aralejs-select-issues-milestone-1-amp-page-1-amp-state-closed-milestone-a">0.9.0 <a href="https://github.com/aralejs/select/issues?milestone=1&amp;page=1&amp;state=closed">milestone</a></h3>
+<ul>
+<li><code>[feature]</code> <a href="https://github.com/aralejs/select/issues/4">#4</a> 支持操作 option</li>
+<li><code>[feature]</code> <a href="https://github.com/aralejs/select/issues/8">#8</a> 支持表单项</li>
+<li><code>[feature]</code> <a href="https://github.com/aralejs/select/issues/9">#9</a> trigger 和浮层应该等宽</li>
+<li><code>[feature]</code> <a href="https://github.com/aralejs/select/issues/11">#11</a> firefox css(&#39;border&#39;) 失效</li>
+<li><code>[feature]</code> <a href="https://github.com/aralejs/select/issues/15">#15</a> destroy的bug</li>
+</ul>
+<h3 id="0-8-0">0.8.0</h3>
+<ul>
+<li><code>[feature]</code> 初始化</li>
+</ul>
+
+  </div>
+</article>
+<script>
+seajs.use('$', function($) {
+    $('#content code').each(function(index, item) {
+        item = $(item);
+        var matcher = item.html().match(/^tag:(.+)/i);
+        if (matcher) {
+            item.parent().css('padding-left', '150px');
+            item.replaceWith('<span class="history-tag history-tag-'+matcher[1]+'">'+matcher[1]+'</span>');
+        }
+    });
+});
+</script>
+<style>
+#content p {
+    border-top: 1px dashed #CCCCCC;
+    font-size: 16px;
+    margin: 12px 0;
+    padding: 12px 0 0 0;
+    position: relative;
+}
+#content h2 {
+    margin-top: 60px;
+    font-family: Georgia;
+    border-bottom: none;
+}
+</style>
+</div>
+      </div>
+    </div>
+    <div id="footer-wrapper">
+      <footer>
+      <p class="powered">
+        <a href="http://aralejs.org">Arale</a> •
+        <a href="http://seajs.org">SeaJS</a> •
+        <a href="https://github.com/spmjs/spm">spm</a> •
+        <a href="http://lab.lepture.com/nico/">nico</a>
+        </p>
+      </footer>
+    </div>
+  </body>
+</html>
