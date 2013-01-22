@@ -2,6 +2,10 @@
 
 ---
 
+### 1.0.0
+
+- `[improve]` [#30](https://github.com/aralejs/select/issues/30) 支持解析 html
+
 ### 0.9.0 [milestone](https://github.com/aralejs/select/issues?milestone=1&page=1&state=closed)
 
 - `[feature]` [#4](https://github.com/aralejs/select/issues/4) 支持操作 option
