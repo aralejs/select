@@ -178,8 +178,8 @@ define(function(require, exports, module) {
 
             // 如果不是原来选中的则触发 change 事件
             if (oldSelectIndex !== selectIndex) {
-                var selector = this.options.eq(selectIndex);
-                this.trigger('change', selector);
+                var selected = this.options.eq(selectIndex);
+                this.trigger('change', selected);
             }
 
             this.hide();
@@ -240,12 +240,12 @@ define(function(require, exports, module) {
         _onRenderSelectedIndex: function(index) {
             if (index == -1) return;
 
-            var selector = this.options.eq(index),
+            var selected = this.options.eq(index),
                 currentItem = this.currentItem,
-                value = selector.attr('data-value');
+                value = selected.attr('data-value');
 
             // 如果两个 DOM 相同则不再处理
-            if (currentItem && selector[0] == currentItem[0]) {
+            if (currentItem && selected[0] == currentItem[0]) {
                 return;
             }
 
@@ -260,7 +260,7 @@ define(function(require, exports, module) {
             }
 
             // 处理当前选中的元素
-            selector.attr('data-selected', 'true')
+            selected.attr('data-selected', 'true')
                 .addClass(this.get('classPrefix') + '-selected');
             this.set('value', value);
 
@@ -268,17 +268,21 @@ define(function(require, exports, module) {
             var trigger = this.get('trigger');
             var triggerContent = trigger.find('[data-role=trigger-content]');
             if (triggerContent.length) {
-                triggerContent.html(selector.html());
+                triggerContent.html(selected.html());
             } else {
-                trigger.html(selector.html());
+                trigger.html(selected.html());
             }
-            this.currentItem = selector;
+            this.currentItem = selected;
         },
 
         _onRenderDisabled: function(val) {
             var className = this.get('classPrefix') + '-disabled';
             var trigger = this.get('trigger');
             trigger[(val ? 'addClass' : 'removeClass')](className);
+
+            // trigger event
+            var selected = this.options.eq(this.get('selectedIndex'));
+            this.trigger('disabledChange', selected, val);
         }
     });
 

@@ -150,7 +150,7 @@ model 为数据源，和上面提到的 model 格式保持一致
 
 ### change
 
-当选择某项的时候会触发，组件初始化不会触发此事件
+当选择某项的时候会触发，组件**初始化不会触发此事件**
 
 回调传回的参数为当前选中的项，为 jQuery 对象
 
@@ -161,6 +161,18 @@ new Select({
     console.log(target.html());
 })
 ```
+
+### disabledChange
+
+在 disabled 状态变化时会触发这个事件，在初始化的时候也会触发此事件。
+
+```
+.on('disabledChange', function(target, status) {
+    console.log(target.html());
+})
+```
+
+target 为当前选中的项，status 为变化后的 disabled 状态
 
 ## 问题讨论
 

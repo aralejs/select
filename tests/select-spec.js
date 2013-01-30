@@ -482,5 +482,29 @@ define(function(require) {
             expect(option.attr('data-value')).to.be('value4');
             expect(option.html()).to.be('text4');
         });
+
+        it('disabledChange', function() {
+            trigger = $('<a href="#" id="example"></a>')
+                .appendTo(document.body);
+            var spy = sinon.spy();
+            select = new Select({
+                trigger: '#example',
+                model: [
+                    {value: 'value1', text: 'text1'},
+                    {value: 'value2', text: 'text2', selected: true},
+                    {value: 'value3', text: 'text3'}
+                ]
+            }).on('disabledChange', spy);
+
+            var selected = select.options.eq(1);
+            select.render();
+            expect(spy).to.be.called.once();
+            expect(spy).to.be.called.withArgs(selected, false);
+
+            select.set('disabled', true);
+            console.log(spy.callCount)
+            expect(spy).to.be.called.twice();
+            expect(spy).to.be.called.withArgs(selected, true);
+        });
     });
 });

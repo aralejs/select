@@ -91,4 +91,3 @@ seajs.use(['select','jquery'], function(Select, $) {
     }).render();
 });
 ````
-
