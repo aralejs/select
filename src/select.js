@@ -100,10 +100,10 @@ define(function(require, exports, module) {
             var that = this;
             var trigger = this.get('trigger')
                 .on('click', {self: this}, this._trigger_click)
-                .on('mouseenter', function(e) {
+                .on('mouseenter', function() {
                     trigger.addClass(that.get('classPrefix') + '-trigger-hover');
                 })
-                .on('mouseleave', function(e) {
+                .on('mouseleave', function() {
                     trigger.removeClass(that.get('classPrefix') + '-trigger-hover');
                 });
 
