@@ -8,6 +8,8 @@
 
 `tag:improved` [#30](https://github.com/aralejs/select/issues/30) 支持解析 html
 
+`tag:improved` [#17](https://github.com/aralejs/select/issues/17) 支持 triggerTemplate
+
 ## 0.9.1
 
 `tag:improved` 升级 overlay 到 0.9.13
