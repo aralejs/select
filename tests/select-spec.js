@@ -1,6 +1,6 @@
 define(function(require) {
 
-    var $ = require('jquery');
+    var $ = require('$');
     var Select = require('../src/select');
 
     describe('select', function() {
