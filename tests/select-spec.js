@@ -502,7 +502,7 @@ define(function(require) {
             expect(spy).to.be.called.withArgs(selected, false);
 
             select.set('disabled', true);
-            console.log(spy.callCount)
+            // console.log(spy.callCount)
             expect(spy).to.be.called.twice();
             expect(spy).to.be.called.withArgs(selected, true);
         });
