@@ -157,9 +157,11 @@ define("arale/select/0.9.2/select-debug", [ "arale/overlay/0.9.13/overlay-debug"
             // 渲染后重置 select 的属性
             this.options = this.$("[data-role=content]").children();
             this.set("length", this.options.length);
-            //this.set('selectedIndex', -1);
+            this.set("selectedIndex", -1);
             this.set("value", "");
-            this.select("[data-selected=true]");
+            var selectIndex = getOptionIndex("[data-selected=true]", this.options);
+            var oldSelectIndex = this.get("selectedIndex");
+            this.set("selectedIndex", selectIndex);
             // 重新设置 trigger 宽度
             this._setTriggerWidth();
             return this;
