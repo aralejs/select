@@ -18,7 +18,7 @@ define(function(require) {
             }
         });
 
-        it('normal use', function(done) {
+        it('normal use', function() {
             trigger = $('<select id="example"><option value="value1">text1</option><option value="value2">text2</option></select>').appendTo(document.body);
             select = new Select({
                 trigger: '#example'
@@ -39,11 +39,6 @@ define(function(require) {
             .to.be('false');
             expect(select.options.eq(1).attr('data-defaultSelected'))
             .to.be('false');
-            a = 1;
-            b = 2;
-            setTimeout(function() {
-               done();
-            }, 100)
         });
 
         describe('convert model', function() {
@@ -503,13 +498,13 @@ define(function(require) {
 
             var selected = select.options.eq(1);
             select.render();
-            //expect(spy).to.be.called.once();
-            //expect(spy).to.be.called.withArgs(selected, false);
+            expect(spy).to.be.called.once();
+            expect(spy).to.be.called.withArgs(selected, false);
 
             select.set('disabled', true);
             // console.log(spy.callCount)
-            //expect(spy).to.be.called.twice();
-            //expect(spy).to.be.called.withArgs(selected, true);
+            expect(spy).to.be.called.twice();
+            expect(spy).to.be.called.withArgs(selected, true);
         });
     });
 });
