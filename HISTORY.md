@@ -2,6 +2,10 @@
 
 ---
 
+## 0.9.3
+
+升级 iframe-shim 到 1.0.1
+
 ## 0.9.2
 
 `tag:new` [#31](https://github.com/aralejs/select/issues/31) 增加 disabledChange 事件
