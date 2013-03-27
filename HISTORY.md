@@ -4,7 +4,9 @@
 
 ## 0.9.3
 
-升级 iframe-shim 到 1.0.1
+`tag:changed` 升级 overlay 到 1.0.1
+
+`tag:changed` 升级 widget 到 1.0.3
 
 ## 0.9.2
 
