@@ -1,7 +1,9 @@
 define(function(require) {
 
     var $ = require('$');
-    var Select = require('../src/select');
+    var sinon = require('sinon');
+    var expect = require('puerh');
+    var Select = require('select');
 
     describe('select', function() {
 

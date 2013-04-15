@@ -3,7 +3,7 @@
   "name": "select",
   "version": "0.9.3",
   "description": "模拟 select 的组件",
-  "tag": "widget",
+  "keywords": ["widget"],
   "homepage": "http://aralejs.org/select",
   "repository": {
     "type": "git",
@@ -17,6 +17,9 @@
       "$": "$",
       "overlay": "arale/overlay/1.0.1/overlay",
       "templatable": "arale/widget/1.0.3/templatable"
+    },
+    "devAlias": {
+      "puerh": "popomore/puerh/0.1.0/puerh"
     },
     "output": ["./select.js"] 
   },
