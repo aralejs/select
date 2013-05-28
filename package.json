@@ -1,7 +1,7 @@
 {
   "family": "arale",
   "name": "select",
-  "version": "0.9.3",
+  "version": "1.0.0",
   "description": "模拟 select 的组件",
   "keywords": ["widget"],
   "homepage": "http://aralejs.org/select",
@@ -15,8 +15,8 @@
   "spm": {
     "alias": {
       "$": "$",
-      "overlay": "arale/overlay/1.0.1/overlay",
-      "templatable": "arale/widget/1.0.3/templatable"
+      "overlay": "arale/overlay/1.1.0/overlay",
+      "templatable": "arale/templatable/0.9.0/templatable"
     },
     "devAlias": {
       "puerh": "popomore/puerh/0.1.0/puerh"

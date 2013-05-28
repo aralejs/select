@@ -2,11 +2,18 @@
 
 ---
 
+## 1.0.0
+
+`tag:improved` 升级 overlay 到 1.1.0
+
+`tag:improved` 对 templatable 的依赖从 arale/widget/1.0.3/templatable 升级到 arale/templatable/0.9.0/templatable 。
+
+
 ## 0.9.3
 
-`tag:changed` 升级 overlay 到 1.0.1
+`tag:improved` 升级 overlay 到 1.0.1
 
-`tag:changed` 升级 widget 到 1.0.3
+`tag:improved` 升级 widget 到 1.0.3
 
 ## 0.9.2
 

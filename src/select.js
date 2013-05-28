@@ -74,8 +74,7 @@ define(function(require, exports, module) {
                 trigger.after(newTrigger).hide();
 
                 // trigger 如果为 select 则根据 select 的结构生成
-                this.model = convertSelect(trigger[0], this.get('classPrefix'));
-
+                this.set("model", convertSelect(trigger[0], this.get('classPrefix')));
             } else {
                 // 如果 name 存在则创建隐藏域
                 var selectName = this.get('name');
@@ -92,7 +91,7 @@ define(function(require, exports, module) {
                 }
 
                 // trigger 如果为其他 DOM，则由用户提供 model
-                this.model = completeModel(this.model, this.get('classPrefix'));
+                this.set("model", completeModel(this.get("model"), this.get('classPrefix')));
             }
         },
 
@@ -124,12 +123,6 @@ define(function(require, exports, module) {
         render: function() {
             Select.superclass.render.call(this);
             this._setTriggerWidth();
-            return this;
-        },
-
-        show: function() {
-            Select.superclass.show.call(this);
-            this._setPosition();
             return this;
         },
 
@@ -187,7 +180,7 @@ define(function(require, exports, module) {
         },
 
         syncModel: function(model) {
-            this.model = completeModel(model, this.get('classPrefix'));
+            this.set("model", completeModel(model, this.get('classPrefix')));
             this.renderPartial('[data-role=content]');
             // 渲染后重置 select 的属性
             this.options = this.$('[data-role=content]').children();
@@ -210,7 +203,7 @@ define(function(require, exports, module) {
         },
 
         addOption: function(option) {
-            var model = this.model.select;
+            var model = this.get("model").select;
             model.push(option);
             this.syncModel(model);
             return this;

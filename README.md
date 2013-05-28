@@ -2,6 +2,9 @@
 
 ---
 
+[![Build Status](https://secure.travis-ci.org/aralejs/select.png)](https://travis-ci.org/aralejs/select)
+[![Coverage Status](https://coveralls.io/repos/aralejs/select/badge.png?branch=master)](https://coveralls.io/r/aralejs/select)
+
 模拟 select 的组件。
 
 ---

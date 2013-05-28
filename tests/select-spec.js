@@ -20,7 +20,7 @@ define(function(require) {
             }
         });
 
-        it('normal use', function() {
+        it('normal use', function(done) {
             trigger = $('<select id="example"><option value="value1">text1</option><option value="value2">text2</option></select>').appendTo(document.body);
             select = new Select({
                 trigger: '#example'
@@ -41,6 +41,18 @@ define(function(require) {
             .to.be('false');
             expect(select.options.eq(1).attr('data-defaultSelected'))
             .to.be('false');
+
+            select.get("trigger").mouseenter();
+            setTimeout(function() {
+                expect(select.get("trigger").hasClass(select.get('classPrefix') + '-trigger-hover')).to.be(true);
+
+                select.get("trigger").mouseleave();
+                setTimeout(function() {
+                    expect(select.get("trigger").hasClass(select.get('classPrefix') + '-trigger-hover')).to.be(false);
+
+                }, 80);
+                done();
+            }, 80);
         });
 
         describe('convert model', function() {
@@ -50,7 +62,7 @@ define(function(require) {
                     trigger: '#example'
                 }).render();
 
-                var model = select.model.select;
+                var model = select.get("model").select;
                 expect(model[0].defaultSelected).to.be('false');
                 expect(model[0].selected).to.be('true');
                 expect(model[0].value).to.be('value1');
@@ -67,7 +79,7 @@ define(function(require) {
                     trigger: '#example'
                 }).render();
 
-                var model = select.model.select;
+                var model = select.get("model").select;
                 expect(model[0].defaultSelected).to.be('false');
                 expect(model[0].selected).to.be('false');
                 expect(model[0].value).to.be('value1');
@@ -84,7 +96,7 @@ define(function(require) {
                     trigger: '#example'
                 }).render();
 
-                var model = select.model.select;
+                var model = select.get("model").select;
                 expect(model[0].defaultSelected).to.be('true');
                 expect(model[0].selected).to.be('false');
                 expect(model[0].value).to.be('value1');
@@ -105,7 +117,7 @@ define(function(require) {
                     ]
                 }).render();
 
-                var model = select.model.select;
+                var model = select.get("model").select;
                 expect(model[0].defaultSelected).to.be('false');
                 expect(model[0].selected).to.be('true');
                 expect(model[0].value).to.be('value1');
@@ -126,7 +138,7 @@ define(function(require) {
                     ]
                 }).render();
 
-                var model = select.model.select;
+                var model = select.get("model").select;
                 expect(model[0].defaultSelected).to.be('false');
                 expect(model[0].selected).to.be('false');
                 expect(model[0].value).to.be('value1');
@@ -147,7 +159,7 @@ define(function(require) {
                     ]
                 }).render();
 
-                var model = select.model.select;
+                var model = select.get("model").select;
                 expect(model[0].defaultSelected).to.be('true');
                 expect(model[0].selected).to.be('false');
                 expect(model[0].value).to.be('value1');

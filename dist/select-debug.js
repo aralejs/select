@@ -1,7 +1,7 @@
-define("arale/select/0.9.3/select-debug", [ "arale/overlay/1.0.1/overlay-debug", "$-debug", "arale/position/1.0.0/position-debug", "arale/iframe-shim/1.0.1/iframe-shim-debug", "arale/widget/1.0.3/widget-debug", "arale/base/1.0.1/base-debug", "arale/class/1.0.0/class-debug", "arale/events/1.0.0/events-debug", "arale/widget/1.0.3/templatable-debug", "gallery/handlebars/1.0.0/handlebars-debug", "./select-debug.tpl" ], function(require, exports, module) {
-    var Overlay = require("arale/overlay/1.0.1/overlay-debug");
+define("arale/select/1.0.0/select-debug", [ "arale/overlay/1.1.0/overlay-debug", "$-debug", "arale/position/1.0.0/position-debug", "arale/iframe-shim/1.0.1/iframe-shim-debug", "arale/widget/1.1.0/widget-debug", "arale/base/1.1.0/base-debug", "arale/class/1.0.0/class-debug", "arale/events/1.1.0/events-debug", "arale/templatable/0.9.0/templatable-debug", "gallery/handlebars/1.0.1/handlebars-debug", "./select-debug.tpl" ], function(require, exports, module) {
+    var Overlay = require("arale/overlay/1.1.0/overlay-debug");
     var $ = require("$-debug");
-    var Templatable = require("arale/widget/1.0.3/templatable-debug");
+    var Templatable = require("arale/templatable/0.9.0/templatable-debug");
     var template = require("./select-debug.tpl");
     var Select = Overlay.extend({
         Implements: Templatable,
@@ -62,7 +62,7 @@ define("arale/select/0.9.3/select-debug", [ "arale/overlay/1.0.1/overlay-debug",
                 this.set("trigger", newTrigger);
                 trigger.after(newTrigger).hide();
                 // trigger 如果为 select 则根据 select 的结构生成
-                this.model = convertSelect(trigger[0], this.get("classPrefix"));
+                this.set("model", convertSelect(trigger[0], this.get("classPrefix")));
             } else {
                 // 如果 name 存在则创建隐藏域
                 var selectName = this.get("name");
@@ -74,7 +74,7 @@ define("arale/select/0.9.3/select-debug", [ "arale/overlay/1.0.1/overlay-debug",
                     this.set("selectSource", input);
                 }
                 // trigger 如果为其他 DOM，则由用户提供 model
-                this.model = completeModel(this.model, this.get("classPrefix"));
+                this.set("model", completeModel(this.get("model"), this.get("classPrefix")));
             }
         },
         setup: function() {
@@ -99,11 +99,6 @@ define("arale/select/0.9.3/select-debug", [ "arale/overlay/1.0.1/overlay-debug",
         render: function() {
             Select.superclass.render.call(this);
             this._setTriggerWidth();
-            return this;
-        },
-        show: function() {
-            Select.superclass.show.call(this);
-            this._setPosition();
             return this;
         },
         // trigger 的宽度和浮层保持一致
@@ -152,7 +147,7 @@ define("arale/select/0.9.3/select-debug", [ "arale/overlay/1.0.1/overlay-debug",
             return this;
         },
         syncModel: function(model) {
-            this.model = completeModel(model, this.get("classPrefix"));
+            this.set("model", completeModel(model, this.get("classPrefix")));
             this.renderPartial("[data-role=content]");
             // 渲染后重置 select 的属性
             this.options = this.$("[data-role=content]").children();
@@ -171,7 +166,7 @@ define("arale/select/0.9.3/select-debug", [ "arale/overlay/1.0.1/overlay-debug",
             return this.options.eq(index);
         },
         addOption: function(option) {
-            var model = this.model.select;
+            var model = this.get("model").select;
             model.push(option);
             this.syncModel(model);
             return this;
@@ -317,4 +312,4 @@ define("arale/select/0.9.3/select-debug", [ "arale/overlay/1.0.1/overlay-debug",
     }
 });
 
-define("arale/select/0.9.3/select-debug.tpl", [], '<div class="{{classPrefix}}">\n    <ul class="{{classPrefix}}-content" data-role="content">\n        {{#each select}}\n        <li data-role="item" class="{{../classPrefix}}-item" data-value="{{value}}" data-defaultSelected="{{defaultSelected}}" data-selected="{{selected}}">{{{text}}}</li>\n        {{/each}}\n    </ul>\n</div>\n');
+define("arale/select/1.0.0/select-debug.tpl", [], '<div class="{{classPrefix}}">\n    <ul class="{{classPrefix}}-content" data-role="content">\n        {{#each select}}\n        <li data-role="item" class="{{../classPrefix}}-item" data-value="{{value}}" data-defaultSelected="{{defaultSelected}}" data-selected="{{selected}}">{{{text}}}</li>\n        {{/each}}\n    </ul>\n</div>\n');
