@@ -101,11 +101,11 @@ define(function(require, exports, module) {
             this.delegateEvents(trigger, "click", this._trigger_click);
 
             this.delegateEvents(trigger, 'mouseenter', function(e) {
-                    trigger.addClass(this.get('classPrefix') + '-trigger-hover');
-                });
+                trigger.addClass(this.get('classPrefix') + '-trigger-hover');
+            });
             this.delegateEvents(trigger, 'mouseleave', function(e) {
-                    trigger.removeClass(this.get('classPrefix') + '-trigger-hover');
-                });
+                trigger.removeClass(this.get('classPrefix') + '-trigger-hover');
+            });
 
             this.options = this.$('[data-role=content]').children();
             // 初始化 select 的参数
