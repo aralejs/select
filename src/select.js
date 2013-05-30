@@ -4,7 +4,7 @@ define(function(require, exports, module) {
     var $ = require('$');
     var Templatable = require('templatable');
 
-    var template = require('./select.tpl');
+    var template = require('./select.handlebars');
 
     var Select = Overlay.extend({
 

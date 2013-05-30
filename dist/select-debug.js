@@ -1,8 +1,8 @@
-define("arale/select/0.9.4/select-debug", [ "arale/overlay/1.1.0/overlay-debug", "$-debug", "arale/position/1.0.0/position-debug", "arale/iframe-shim/1.0.2/iframe-shim-debug", "arale/widget/1.1.0/widget-debug", "arale/base/1.1.0/base-debug", "arale/class/1.1.0/class-debug", "arale/events/1.1.0/events-debug", "arale/templatable/0.9.0/templatable-debug", "gallery/handlebars/1.0.2/handlebars-debug", "./select-debug.tpl" ], function(require, exports, module) {
+define("arale/select/0.9.4/select-debug", [ "arale/overlay/1.1.0/overlay-debug", "$-debug", "arale/position/1.0.0/position-debug", "arale/iframe-shim/1.0.2/iframe-shim-debug", "arale/widget/1.1.0/widget-debug", "arale/base/1.1.0/base-debug", "arale/class/1.1.0/class-debug", "arale/events/1.1.0/events-debug", "arale/templatable/0.9.0/templatable-debug", "gallery/handlebars/1.0.2/handlebars-debug", "./select-debug.handlebars" ], function(require, exports, module) {
     var Overlay = require("arale/overlay/1.1.0/overlay-debug");
     var $ = require("$-debug");
     var Templatable = require("arale/templatable/0.9.0/templatable-debug");
-    var template = require("./select-debug.tpl");
+    var template = require("./select-debug.handlebars");
     var Select = Overlay.extend({
         Implements: Templatable,
         attrs: {
@@ -312,4 +312,97 @@ define("arale/select/0.9.4/select-debug", [ "arale/overlay/1.1.0/overlay-debug",
     }
 });
 
-define("arale/select/0.9.4/select-debug.tpl", [], '<div class="{{classPrefix}}">\n    <ul class="{{classPrefix}}-content" data-role="content">\n        {{#each select}}\n        <li data-role="item" class="{{../classPrefix}}-item" data-value="{{value}}" data-defaultSelected="{{defaultSelected}}" data-selected="{{selected}}">{{{text}}}</li>\n        {{/each}}\n    </ul>\n</div>\n');
+define("arale/select/0.9.4/select-debug.handlebars", [ "handlebars-debug" ], function(require, exports, module) {
+    var Handlebars = require("handlebars-debug");
+    var template = Handlebars.template;
+    module.exports = template(function(Handlebars, depth0, helpers, partials, data) {
+        this.compilerInfo = [ 3, ">= 1.0.0-rc.4" ];
+        helpers = helpers || {};
+        for (var key in Handlebars.helpers) {
+            helpers[key] = helpers[key] || Handlebars.helpers[key];
+        }
+        data = data || {};
+        var buffer = "", stack1, functionType = "function", escapeExpression = this.escapeExpression, self = this;
+        function program1(depth0, data, depth1) {
+            var buffer = "", stack1, stack2;
+            buffer += '\n        <li data-role="item" class="' + escapeExpression((stack1 = depth1.classPrefix, 
+            typeof stack1 === functionType ? stack1.apply(depth0) : stack1)) + '-item" data-value="';
+            if (stack2 = helpers.value) {
+                stack2 = stack2.call(depth0, {
+                    hash: {},
+                    data: data
+                });
+            } else {
+                stack2 = depth0.value;
+                stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2;
+            }
+            buffer += escapeExpression(stack2) + '" data-defaultSelected="';
+            if (stack2 = helpers.defaultSelected) {
+                stack2 = stack2.call(depth0, {
+                    hash: {},
+                    data: data
+                });
+            } else {
+                stack2 = depth0.defaultSelected;
+                stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2;
+            }
+            buffer += escapeExpression(stack2) + '" data-selected="';
+            if (stack2 = helpers.selected) {
+                stack2 = stack2.call(depth0, {
+                    hash: {},
+                    data: data
+                });
+            } else {
+                stack2 = depth0.selected;
+                stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2;
+            }
+            buffer += escapeExpression(stack2) + '">';
+            if (stack2 = helpers.text) {
+                stack2 = stack2.call(depth0, {
+                    hash: {},
+                    data: data
+                });
+            } else {
+                stack2 = depth0.text;
+                stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2;
+            }
+            if (stack2 || stack2 === 0) {
+                buffer += stack2;
+            }
+            buffer += "</li>\n        ";
+            return buffer;
+        }
+        buffer += '<div class="';
+        if (stack1 = helpers.classPrefix) {
+            stack1 = stack1.call(depth0, {
+                hash: {},
+                data: data
+            });
+        } else {
+            stack1 = depth0.classPrefix;
+            stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1;
+        }
+        buffer += escapeExpression(stack1) + '">\n    <ul class="';
+        if (stack1 = helpers.classPrefix) {
+            stack1 = stack1.call(depth0, {
+                hash: {},
+                data: data
+            });
+        } else {
+            stack1 = depth0.classPrefix;
+            stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1;
+        }
+        buffer += escapeExpression(stack1) + '-content" data-role="content">\n        ';
+        stack1 = helpers.each.call(depth0, depth0.select, {
+            hash: {},
+            inverse: self.noop,
+            fn: self.programWithDepth(1, program1, data, depth0),
+            data: data
+        });
+        if (stack1 || stack1 === 0) {
+            buffer += stack1;
+        }
+        buffer += "\n    </ul>\n</div>\n";
+        return buffer;
+    });
+});
