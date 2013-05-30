@@ -1,4 +1,4 @@
-define("arale/select/1.0.0/select-debug", [ "arale/overlay/1.1.0/overlay-debug", "$-debug", "arale/position/1.0.0/position-debug", "arale/iframe-shim/1.0.1/iframe-shim-debug", "arale/widget/1.1.0/widget-debug", "arale/base/1.1.0/base-debug", "arale/class/1.0.0/class-debug", "arale/events/1.1.0/events-debug", "arale/templatable/0.9.0/templatable-debug", "gallery/handlebars/1.0.1/handlebars-debug", "./select-debug.tpl" ], function(require, exports, module) {
+define("arale/select/0.9.4/select-debug", [ "arale/overlay/1.1.0/overlay-debug", "$-debug", "arale/position/1.0.0/position-debug", "arale/iframe-shim/1.0.1/iframe-shim-debug", "arale/widget/1.1.0/widget-debug", "arale/base/1.1.0/base-debug", "arale/class/1.0.0/class-debug", "arale/events/1.1.0/events-debug", "arale/templatable/0.9.0/templatable-debug", "gallery/handlebars/1.0.1/handlebars-debug", "./select-debug.tpl" ], function(require, exports, module) {
     var Overlay = require("arale/overlay/1.1.0/overlay-debug");
     var $ = require("$-debug");
     var Templatable = require("arale/templatable/0.9.0/templatable-debug");
@@ -78,13 +78,13 @@ define("arale/select/1.0.0/select-debug", [ "arale/overlay/1.1.0/overlay-debug",
             }
         },
         setup: function() {
-            var that = this;
-            var trigger = this.get("trigger").on("click", {
-                self: this
-            }, this._trigger_click).on("mouseenter", function() {
-                trigger.addClass(that.get("classPrefix") + "-trigger-hover");
-            }).on("mouseleave", function() {
-                trigger.removeClass(that.get("classPrefix") + "-trigger-hover");
+            var trigger = this.get("trigger");
+            this.delegateEvents(trigger, "click", this._trigger_click);
+            this.delegateEvents(trigger, "mouseenter", function(e) {
+                trigger.addClass(this.get("classPrefix") + "-trigger-hover");
+            });
+            this.delegateEvents(trigger, "mouseleave", function(e) {
+                trigger.removeClass(this.get("classPrefix") + "-trigger-hover");
             });
             this.options = this.$("[data-role=content]").children();
             // 初始化 select 的参数
@@ -122,7 +122,7 @@ define("arale/select/1.0.0/select-debug", [ "arale/overlay/1.1.0/overlay-debug",
             this.set("align", align);
         },
         _trigger_click: function(e) {
-            var self = e.data.self;
+            var self = this;
             e.preventDefault();
             if (!self.get("disabled")) {
                 self.show();
@@ -312,4 +312,4 @@ define("arale/select/1.0.0/select-debug", [ "arale/overlay/1.1.0/overlay-debug",
     }
 });
 
-define("arale/select/1.0.0/select-debug.tpl", [], '<div class="{{classPrefix}}">\n    <ul class="{{classPrefix}}-content" data-role="content">\n        {{#each select}}\n        <li data-role="item" class="{{../classPrefix}}-item" data-value="{{value}}" data-defaultSelected="{{defaultSelected}}" data-selected="{{selected}}">{{{text}}}</li>\n        {{/each}}\n    </ul>\n</div>\n');
+define("arale/select/0.9.4/select-debug.tpl", [], '<div class="{{classPrefix}}">\n    <ul class="{{classPrefix}}-content" data-role="content">\n        {{#each select}}\n        <li data-role="item" class="{{../classPrefix}}-item" data-value="{{value}}" data-defaultSelected="{{defaultSelected}}" data-selected="{{selected}}">{{{text}}}</li>\n        {{/each}}\n    </ul>\n</div>\n');

@@ -96,14 +96,15 @@ define(function(require, exports, module) {
         },
 
         setup: function() {
-            var that = this;
-            var trigger = this.get('trigger')
-                .on('click', {self: this}, this._trigger_click)
-                .on('mouseenter', function() {
-                    trigger.addClass(that.get('classPrefix') + '-trigger-hover');
-                })
-                .on('mouseleave', function() {
-                    trigger.removeClass(that.get('classPrefix') + '-trigger-hover');
+            var trigger = this.get('trigger');
+
+            this.delegateEvents(trigger, "click", this._trigger_click);
+
+            this.delegateEvents(trigger, 'mouseenter', function(e) {
+                    trigger.addClass(this.get('classPrefix') + '-trigger-hover');
+                });
+            this.delegateEvents(trigger, 'mouseleave', function(e) {
+                    trigger.removeClass(this.get('classPrefix') + '-trigger-hover');
                 });
 
             this.options = this.$('[data-role=content]').children();
@@ -149,7 +150,7 @@ define(function(require, exports, module) {
         },
 
         _trigger_click: function(e) {
-            var self = e.data.self;
+            var self = this;
             e.preventDefault();
             if (!self.get('disabled')) {
                 self.show();
