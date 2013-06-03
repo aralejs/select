@@ -312,8 +312,8 @@ define("arale/select/0.9.4/select-debug", [ "arale/overlay/1.1.0/overlay-debug",
     }
 });
 
-define("arale/select/0.9.4/select-debug.handlebars", [ "handlebars-debug" ], function(require, exports, module) {
-    var Handlebars = require("handlebars-debug");
+define("arale/select/0.9.4/select-debug.handlebars", [ "gallery/handlebars/1.0.2/runtime-debug" ], function(require, exports, module) {
+    var Handlebars = require("gallery/handlebars/1.0.2/runtime-debug");
     var template = Handlebars.template;
     module.exports = template(function(Handlebars, depth0, helpers, partials, data) {
         this.compilerInfo = [ 3, ">= 1.0.0-rc.4" ];
