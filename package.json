@@ -1,29 +1,34 @@
 {
-  "family": "arale",
-  "name": "select",
-  "version": "0.9.4",
-  "description": "模拟 select 的组件",
-  "keywords": ["widget"],
-  "homepage": "http://aralejs.org/select",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/aralejs/select.git"
-  },
-  "bugs": {
-    "url": "https://github.com/aralejs/select/issues"
-  },
-  "spm": {
-    "alias": {
-      "$": "$",
-      "overlay": "arale/overlay/1.1.0/overlay",
-      "templatable": "arale/templatable/0.9.0/templatable"
+    "family": "arale",
+    "name": "select",
+    "version": "0.9.4",
+    "description": "模拟 select 的组件",
+    "keywords": ["widget"],
+    "homepage": "http://aralejs.org/select",
+    "author": "贯高 <sakura9515@gmail.com>",
+    "maintainers": [
+        "贯高 <sakura9515@gmail.com>",
+        "偏右 <afc163@gmail.com>"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/aralejs/select.git"
     },
-    "devAlias": {
-      "puerh": "popomore/puerh/0.1.0/puerh"
+    "bugs": {
+        "url": "https://github.com/aralejs/select/issues"
     },
-    "output": ["./select.js"] 
-  },
-  "tests": [
-      "select"
-  ]
+    "spm": {
+        "alias": {
+            "$": "$",
+            "overlay": "arale/overlay/1.1.0/overlay",
+            "templatable": "arale/templatable/0.9.0/templatable"
+        },
+        "devAlias": {
+            "puerh": "popomore/puerh/0.1.0/puerh"
+        },
+        "output": ["./select.js"]
+    },
+    "tests": [
+        "select"
+    ]
 }
