@@ -324,7 +324,7 @@ define(function(require, exports, module) {
         }
         // 当所有都没有设置 selected，默认设置第一个
         if (!hasDefaultSelect) {
-            newModel[0].selected = 'true';
+            model[0].selected = 'true';
         }
         return {select: model, classPrefix: classPrefix};
     }
