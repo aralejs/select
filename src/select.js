@@ -323,7 +323,7 @@ define(function(require, exports, module) {
             model.push(o);
         }
         // 当所有都没有设置 selected，默认设置第一个
-        if (!hasDefaultSelect) {
+        if (!hasDefaultSelect && model.length) {
             model[0].selected = 'true';
         }
         return {select: model, classPrefix: classPrefix};

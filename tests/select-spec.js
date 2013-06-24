@@ -170,6 +170,15 @@ define(function(require) {
                 expect(model[1].text).to.be('text2');
             });
 
+            it('no option', function() {
+                trigger = $('<select id="example"></select>').appendTo(document.body);
+                select = new Select({
+                    trigger: '#example'
+                }).render();
+
+                var model = select.get("model").select;
+                expect(model.length).to.be(0);
+            });
         });
 
         describe('select function', function() {
