@@ -260,7 +260,7 @@ define("arale/select/0.9.5/select-debug", [ "arale/overlay/1.1.0/overlay-debug",
             model.push(o);
         }
         // 当所有都没有设置 selected，默认设置第一个
-        if (!hasDefaultSelect) {
+        if (!hasDefaultSelect && model.length) {
             model[0].selected = "true";
         }
         return {
