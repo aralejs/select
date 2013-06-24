@@ -1,7 +1,7 @@
-define("arale/select/0.9.4/select-debug", [ "arale/overlay/1.1.0/overlay-debug", "$-debug", "arale/position/1.0.1/position-debug", "arale/iframe-shim/1.0.2/iframe-shim-debug", "arale/widget/1.1.0/widget-debug", "arale/base/1.1.0/base-debug", "arale/class/1.1.0/class-debug", "arale/events/1.1.0/events-debug", "arale/templatable/0.9.0/templatable-debug", "gallery/handlebars/1.0.2/handlebars-debug", "./select-debug.handlebars" ], function(require, exports, module) {
+define("arale/select/0.9.5/select-debug", [ "arale/overlay/1.1.0/overlay-debug", "$-debug", "arale/position/1.0.1/position-debug", "arale/iframe-shim/1.0.2/iframe-shim-debug", "arale/widget/1.1.0/widget-debug", "arale/base/1.1.0/base-debug", "arale/class/1.1.0/class-debug", "arale/events/1.1.0/events-debug", "arale/templatable/0.9.1/templatable-debug", "gallery/handlebars/1.0.2/handlebars-debug", "./select-debug.handlebars" ], function(require, exports, module) {
     var Overlay = require("arale/overlay/1.1.0/overlay-debug");
     var $ = require("$-debug");
-    var Templatable = require("arale/templatable/0.9.0/templatable-debug");
+    var Templatable = require("arale/templatable/0.9.1/templatable-debug");
     var template = require("./select-debug.handlebars");
     var Select = Overlay.extend({
         Implements: Templatable,
@@ -312,7 +312,7 @@ define("arale/select/0.9.4/select-debug", [ "arale/overlay/1.1.0/overlay-debug",
     }
 });
 
-define("arale/select/0.9.4/select-debug.handlebars", [ "gallery/handlebars/1.0.2/runtime-debug" ], function(require, exports, module) {
+define("arale/select/0.9.5/select-debug.handlebars", [ "gallery/handlebars/1.0.2/runtime-debug" ], function(require, exports, module) {
     var Handlebars = require("gallery/handlebars/1.0.2/runtime-debug");
     var template = Handlebars.template;
     module.exports = template(function(Handlebars, depth0, helpers, partials, data) {
