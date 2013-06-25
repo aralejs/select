@@ -6,7 +6,7 @@
 
 `tag:fixed` #38 修复 convertSelect 的错误
 
-`tag:improved` 更新 templatable@0.9.1
+`tag:improved` 升级 templatable 到 0.9.1, overlay 到 1.1.1
 
 
 ## 0.9.4
