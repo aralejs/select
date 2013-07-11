@@ -49,9 +49,8 @@ define(function(require) {
                 select.get("trigger").mouseleave();
                 setTimeout(function() {
                     expect(select.get("trigger").hasClass(select.get('classPrefix') + '-trigger-hover')).to.be(false);
-
+                    done();
                 }, 80);
-                done();
             }, 80);
         });
 
@@ -528,6 +527,33 @@ define(function(require) {
             // console.log(spy.callCount)
             expect(spy).to.be.called.twice();
             expect(spy).to.be.called.withArgs(selected, true);
+        });
+
+        it('model should clone', function() {
+            var example1 = $('<a href="#" id="example1"></a>')
+                .appendTo(document.body);
+            var example2 = $('<a href="#" id="example2"></a>')
+                .appendTo(document.body);
+
+            var model = [
+                {value: 'value1', text: 'text1'},
+                {value: 'value2', text: 'text2'}
+            ];
+
+            var select1 = new Select({
+                trigger: '#example1',
+                model: model
+            }).render();
+
+            var select2 = new Select({
+                trigger: '#example2',
+                model: model
+            }).render();
+
+            expect(select1.get('selectedIndex')).to.be(0);
+            expect(select2.get('selectedIndex')).to.be(0);
+            example1.remove();
+            example2.remove();
         });
     });
 });
