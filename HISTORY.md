@@ -2,6 +2,10 @@
 
 ---
 
+## 0.9.6
+
+`tag:fixed` #39 修复多个组件使用同一个 model 互相干扰的问题 
+
 ## 0.9.5
 
 `tag:fixed` #38 修复 convertSelect 的错误
