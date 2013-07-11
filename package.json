@@ -20,7 +20,7 @@
     "spm": {
         "alias": {
             "$": "$",
-            "overlay": "arale/overlay/1.1.0/overlay",
+            "overlay": "arale/overlay/1.1.1/overlay",
             "templatable": "arale/templatable/0.9.1/templatable"
         },
         "devAlias": {
