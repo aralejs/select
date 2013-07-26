@@ -20,7 +20,7 @@ define(function(require) {
             }
         });
 
-        it('normal use', function(done) {
+        it('normal use', function() {
             trigger = $('<select id="example"><option value="value1">text1</option><option value="value2">text2</option></select>').appendTo(document.body);
             select = new Select({
                 trigger: '#example'
@@ -43,15 +43,10 @@ define(function(require) {
             .to.be('false');
 
             select.get("trigger").mouseenter();
-            setTimeout(function() {
-                expect(select.get("trigger").hasClass(select.get('classPrefix') + '-trigger-hover')).to.be(true);
+            expect(select.get("trigger").hasClass(select.get('classPrefix') + '-trigger-hover')).to.be(true);
 
-                select.get("trigger").mouseleave();
-                setTimeout(function() {
-                    expect(select.get("trigger").hasClass(select.get('classPrefix') + '-trigger-hover')).to.be(false);
-                    done();
-                }, 80);
-            }, 80);
+            select.get("trigger").mouseleave();
+            expect(select.get("trigger").hasClass(select.get('classPrefix') + '-trigger-hover')).to.be(false);
         });
 
         describe('convert model', function() {
