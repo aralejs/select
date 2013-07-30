@@ -183,6 +183,8 @@ define(function(require, exports, module) {
         syncModel: function(model) {
             this.set("model", completeModel(model, this.get('classPrefix')));
             this.renderPartial('[data-role=content]');
+            // 同步原来的 select
+            syncSelect(this.get('selectSource'), model);
             // 渲染后重置 select 的属性
             this.options = this.$('[data-role=content]').children();
             this.set('length', this.options.length);
@@ -248,7 +250,13 @@ define(function(require, exports, module) {
 
             // 设置原来的表单项
             var source = this.get('selectSource');
-            source && (source[0].value = value);
+            if (source) {
+                if (source[0].tagName.toLowerCase() === 'select') {
+                    source[0].selectedIndex = index;
+                } else {
+                   source[0].value = value;
+                }
+            }
 
             // 处理之前选中的元素
             if (currentItem) {
@@ -364,5 +372,20 @@ define(function(require, exports, module) {
             index = options.index(option);
         }
         return index;
+    }
+
+    function syncSelect(select, model) {
+        if (!(select && select[0])) return;
+        select = select[0];
+        if (select.tagName.toLowerCase() === 'select') {
+            $(select).find('option').remove();
+            for (var i in model) {
+                var m  = model[i];
+                var option = document.createElement("option");
+                option.text = m.text;
+                option.value = m .value;
+                select.add(option);
+            }
+        }
     }
 });

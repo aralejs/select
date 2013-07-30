@@ -550,5 +550,44 @@ define(function(require) {
             example1.remove();
             example2.remove();
         });
+
+        it('sync selectSource when select', function() {
+            trigger = $('<select id="example"><option value="value1">text1</option><option value="value2">text2</option></select>')
+                .appendTo(document.body);
+            select = new Select({
+                trigger: '#example'
+            }).render();
+
+            select.set('selectedIndex', 1);
+            expect(select.get('selectSource')[0].value).to.be('value2');
+
+            select.syncModel([
+                {value: 'value3', text: 'text3'},
+                {value: 'value4', text: 'text4', selected: true}
+            ]);
+            expect(select.get('selectSource')[0].value).to.be('value4');
+        });
+
+        it('sync selectSource when link', function() {
+            trigger = $('<a href="#" id="example"></a>').appendTo(document.body);
+            select = new Select({
+                trigger: '#example',
+                name: 'city',
+                model: [
+                    {value: 'value1', text: 'text1'},
+                    {value: 'value2', text: 'text2'}
+                ]
+            }).render();
+
+            select.set('selectedIndex', 1);
+            expect(select.get('selectSource')[0].value).to.be('value2');
+
+            select.syncModel([
+                {value: 'value3', text: 'text3'},
+                {value: 'value4', text: 'text4', selected: true}
+            ]);
+            expect(select.get('selectSource')[0].value).to.be('value4');
+        });
+
     });
 });
