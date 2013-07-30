@@ -5,6 +5,7 @@
 ## 0.9.6
 
 `tag:fixed` #39 修复多个组件使用同一个 model 互相干扰的问题 
+`tag:fixed` #43 修复 syncModel 未同步 select 的问题 
 
 ## 0.9.5
 
