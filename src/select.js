@@ -71,6 +71,7 @@ define(function(require, exports, module) {
                     this.get('classPrefix') + '-trigger"></a>';
                 var newTrigger = $(triggerTemplate);
                 this.set('trigger', newTrigger);
+                this._initFromSelect = true;
                 trigger.after(newTrigger).hide();
 
                 // trigger 如果为 select 则根据 select 的结构生成
@@ -158,6 +159,9 @@ define(function(require, exports, module) {
         },
 
         destroy: function() {
+            if (this._initFromSelect) {
+                this.get('trigger').remove();
+            }
             this.element.remove();
             Select.superclass.destroy.call(this);
         },
