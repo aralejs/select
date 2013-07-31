@@ -1,7 +1,7 @@
 {
     "family": "arale",
     "name": "select",
-    "version": "0.9.5",
+    "version": "0.9.6",
     "description": "模拟 select 的组件",
     "keywords": ["widget"],
     "homepage": "http://aralejs.org/select",

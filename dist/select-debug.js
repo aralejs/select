@@ -1,4 +1,4 @@
-define("arale/select/0.9.5/select-debug", [ "arale/overlay/1.1.1/overlay-debug", "$-debug", "arale/position/1.0.1/position-debug", "arale/iframe-shim/1.0.2/iframe-shim-debug", "arale/widget/1.1.1/widget-debug", "arale/base/1.1.1/base-debug", "arale/class/1.1.0/class-debug", "arale/events/1.1.0/events-debug", "arale/templatable/0.9.1/templatable-debug", "gallery/handlebars/1.0.2/handlebars-debug", "./select-debug.handlebars" ], function(require, exports, module) {
+define("arale/select/0.9.6/select-debug", [ "arale/overlay/1.1.1/overlay-debug", "$-debug", "arale/position/1.0.1/position-debug", "arale/iframe-shim/1.0.2/iframe-shim-debug", "arale/widget/1.1.1/widget-debug", "arale/base/1.1.1/base-debug", "arale/class/1.1.0/class-debug", "arale/events/1.1.0/events-debug", "arale/templatable/0.9.1/templatable-debug", "gallery/handlebars/1.0.2/handlebars-debug", "./select-debug.handlebars" ], function(require, exports, module) {
     var Overlay = require("arale/overlay/1.1.1/overlay-debug");
     var $ = require("$-debug");
     var Templatable = require("arale/templatable/0.9.1/templatable-debug");
@@ -60,6 +60,7 @@ define("arale/select/0.9.5/select-debug", [ "arale/overlay/1.1.1/overlay-debug",
                 var triggerTemplate = '<a href="#" class="' + this.get("classPrefix") + '-trigger"></a>';
                 var newTrigger = $(triggerTemplate);
                 this.set("trigger", newTrigger);
+                this._initFromSelect = true;
                 trigger.after(newTrigger).hide();
                 // trigger 如果为 select 则根据 select 的结构生成
                 this.set("model", convertSelect(trigger[0], this.get("classPrefix")));
@@ -129,6 +130,9 @@ define("arale/select/0.9.5/select-debug", [ "arale/overlay/1.1.1/overlay-debug",
             }
         },
         destroy: function() {
+            if (this._initFromSelect) {
+                this.get("trigger").remove();
+            }
             this.element.remove();
             Select.superclass.destroy.call(this);
         },
@@ -149,6 +153,8 @@ define("arale/select/0.9.5/select-debug", [ "arale/overlay/1.1.1/overlay-debug",
         syncModel: function(model) {
             this.set("model", completeModel(model, this.get("classPrefix")));
             this.renderPartial("[data-role=content]");
+            // 同步原来的 select
+            syncSelect(this.get("selectSource"), model);
             // 渲染后重置 select 的属性
             this.options = this.$("[data-role=content]").children();
             this.set("length", this.options.length);
@@ -196,7 +202,13 @@ define("arale/select/0.9.5/select-debug", [ "arale/overlay/1.1.1/overlay-debug",
             }
             // 设置原来的表单项
             var source = this.get("selectSource");
-            source && (source[0].value = value);
+            if (source) {
+                if (source[0].tagName.toLowerCase() === "select") {
+                    source[0].selectedIndex = index;
+                } else {
+                    source[0].value = value;
+                }
+            }
             // 处理之前选中的元素
             if (currentItem) {
                 currentItem.attr("data-selected", "false").removeClass(this.get("classPrefix") + "-selected");
@@ -272,7 +284,7 @@ define("arale/select/0.9.5/select-debug", [ "arale/overlay/1.1.1/overlay-debug",
     function completeModel(model, classPrefix) {
         var i, j, l, ll, newModel = [], selectIndexArray = [];
         for (i = 0, l = model.length; i < l; i++) {
-            var o = model[i];
+            var o = $.extend({}, model[i]);
             if (o.selected) {
                 o.selected = o.defaultSelected = "true";
                 selectIndexArray.push(i);
@@ -310,9 +322,23 @@ define("arale/select/0.9.5/select-debug", [ "arale/overlay/1.1.1/overlay-debug",
         }
         return index;
     }
+    function syncSelect(select, model) {
+        if (!(select && select[0])) return;
+        select = select[0];
+        if (select.tagName.toLowerCase() === "select") {
+            $(select).find("option").remove();
+            for (var i in model) {
+                var m = model[i];
+                var option = document.createElement("option");
+                option.text = m.text;
+                option.value = m.value;
+                select.add(option);
+            }
+        }
+    }
 });
 
-define("arale/select/0.9.5/select-debug.handlebars", [ "gallery/handlebars/1.0.2/runtime-debug" ], function(require, exports, module) {
+define("arale/select/0.9.6/select-debug.handlebars", [ "gallery/handlebars/1.0.2/runtime-debug" ], function(require, exports, module) {
     var Handlebars = require("gallery/handlebars/1.0.2/runtime-debug");
     var template = Handlebars.template;
     module.exports = template(function(Handlebars, depth0, helpers, partials, data) {
