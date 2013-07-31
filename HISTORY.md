@@ -4,14 +4,17 @@
 
 ## 0.9.6
 
+`tag:changed` 升级 overlay 到 1.1.1
+
 `tag:fixed` #39 修复多个组件使用同一个 model 互相干扰的问题 
+
 `tag:fixed` #43 修复 syncModel 未同步 select 的问题 
 
 ## 0.9.5
 
 `tag:fixed` #38 修复 convertSelect 的错误
 
-`tag:improved` 升级 templatable 到 0.9.1, overlay 到 1.1.1
+`tag:improved` 升级 templatable 到 0.9.1
 
 
 ## 0.9.4
