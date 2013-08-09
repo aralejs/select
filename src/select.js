@@ -42,10 +42,10 @@ define(function(require, exports, module) {
                 this.select(target);
             },
             'mouseenter [data-role=item]': function(e) {
-                $(e.currentTarget).addClass(this.get('classPrefix') + '-hover');
+                $(e.currentTarget).addClass(getClassName(this.get('classPrefix'), 'hover'));
             },
             'mouseleave [data-role=item]': function(e) {
-                $(e.currentTarget).removeClass(this.get('classPrefix') + '-hover');
+                $(e.currentTarget).removeClass(getClassName(this.get('classPrefix'), 'hover'));
             }
         },
 
@@ -68,7 +68,7 @@ define(function(require, exports, module) {
                 this.set('selectSource', trigger);
                 // 替换 trigger
                 var triggerTemplate = '<a href="#" class="' +
-                    this.get('classPrefix') + '-trigger"></a>';
+                    getClassName(this.get('classPrefix'), 'trigger') + '"></a>';
                 var newTrigger = $(triggerTemplate);
                 this.set('trigger', newTrigger);
                 this._initFromSelect = true;
@@ -102,10 +102,10 @@ define(function(require, exports, module) {
             this.delegateEvents(trigger, "click", this._trigger_click);
 
             this.delegateEvents(trigger, 'mouseenter', function(e) {
-                trigger.addClass(this.get('classPrefix') + '-trigger-hover');
+                trigger.addClass(getClassName(this.get('classPrefix'), 'trigger-hover'));
             });
             this.delegateEvents(trigger, 'mouseleave', function(e) {
-                trigger.removeClass(this.get('classPrefix') + '-trigger-hover');
+                trigger.removeClass(getClassName(this.get('classPrefix'), 'trigger-hover'));
             });
 
             this.options = this.$('[data-role=content]').children();
@@ -265,12 +265,12 @@ define(function(require, exports, module) {
             // 处理之前选中的元素
             if (currentItem) {
                 currentItem.attr('data-selected', 'false')
-                    .removeClass(this.get('classPrefix') + '-selected');
+                    .removeClass(getClassName(this.get('classPrefix'), 'selected'));
             }
 
             // 处理当前选中的元素
             selected.attr('data-selected', 'true')
-                .addClass(this.get('classPrefix') + '-selected');
+                .addClass(getClassName(this.get('classPrefix'), 'selected'));
             this.set('value', value);
 
             // 填入选中内容，位置先找 "data-role"="trigger-content"，再找 trigger
@@ -285,7 +285,7 @@ define(function(require, exports, module) {
         },
 
         _onRenderDisabled: function(val) {
-            var className = this.get('classPrefix') + '-disabled';
+            var className = getClassName(this.get('classPrefix'), 'disabled');
             var trigger = this.get('trigger');
             trigger[(val ? 'addClass' : 'removeClass')](className);
 
@@ -391,5 +391,11 @@ define(function(require, exports, module) {
                 select.add(option);
             }
         }
+    }
+
+    // 获取 className ，如果 classPrefix 不设置，就返回 ''
+    function getClassName(classPrefix, className){
+        if(!classPrefix) return '';
+        return classPrefix + '-' + className;
     }
 });
