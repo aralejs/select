@@ -9,6 +9,12 @@ define(function(require, exports, module) {
     var Select = Overlay.extend({
 
         Implements: Templatable,
+        
+        templateHelpers: {
+        	has: function(val, options){
+        		return val == 'true' ? options.fn(this) : false;
+        	}
+        },
 
         attrs: {
             trigger: {
@@ -39,13 +45,21 @@ define(function(require, exports, module) {
         events: {
             'click [data-role=item]': function(e) {
                 var target = $(e.currentTarget);
-                this.select(target);
+                if(!target.data('disabled')){
+                    this.select(target);
+                }
             },
             'mouseenter [data-role=item]': function(e) {
-                $(e.currentTarget).addClass(getClassName(this.get('classPrefix'), 'hover'));
+                var target = $(e.currentTarget);
+                if(!target.data('disabled')){
+                    target.addClass(getClassName(this.get('classPrefix'), 'hover'));
+                }
             },
             'mouseleave [data-role=item]': function(e) {
-                $(e.currentTarget).removeClass(getClassName(this.get('classPrefix'), 'hover'));
+                var target = $(e.currentTarget);
+                if(!target.data('disabled')){
+                    target.removeClass(getClassName(this.get('classPrefix'), 'hover'));
+                }
             }
         },
 
@@ -305,22 +319,25 @@ define(function(require, exports, module) {
     // <select>
     //   <option value='value1'>text1</option>
     //   <option value='value2' selected>text2</option>
+    //   <option value='value3' disabled>text3</option>
     // </select>
     //
     // ------->
     //
     // [
     //   {value: 'value1', text: 'text1',
-    //      defaultSelected: false, selected: false}
+    //      defaultSelected: false, selected: false, disabled: false}
     //   {value: 'value2', text: 'text2',
-    //      defaultSelected: true, selected: true}
+    //      defaultSelected: true, selected: true, disabled: false}
+    //   {value: 'value3', text: 'text3',
+    //      defaultSelected: false, selected: false, disabled: true}
     // ]
     function convertSelect(select, classPrefix) {
         var i, model = [], options = select.options,
             l = options.length, hasDefaultSelect = false;
         for (i = 0; i < l; i++) {
             var j, o = {}, option = options[i];
-            var fields = ['text', 'value', 'defaultSelected', 'selected'];
+            var fields = ['text', 'value', 'defaultSelected', 'selected', 'disabled'];
             for (j in fields) {
                 var field = fields[j];
                 o[field] = option[field];
@@ -332,6 +349,7 @@ define(function(require, exports, module) {
             } else {
                 o.selected = 'false';
             }
+            o.disabled = option.disabled ? 'true' : 'false';
             model.push(o);
         }
         // 当所有都没有设置 selected，默认设置第一个
@@ -352,6 +370,7 @@ define(function(require, exports, module) {
             } else {
                 o.selected = o.defaultSelected = 'false';
             }
+            o.disabled = o.disabled ? 'true' : 'false';
             newModel.push(o);
         }
         if (selectIndexArray.length > 0) {
