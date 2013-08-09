@@ -14,6 +14,7 @@ trigger 为 select，并默认选中 option2
 <select id="example1">
     <option value="option1">option1</option>
     <option value="option2" selected="selected">option2</option>
+    <option value="option3" disabled="disabled">option3</option>
 </select>
 ````
 
@@ -39,7 +40,8 @@ seajs.use(['select'], function(Select) {
         trigger: '#example2',
         model: [
             {value:'option1', text:'option1'},
-            {value:'option2', text:'option2', selected: true}
+            {value:'option2', text:'option2', selected: true},
+            {value:'option3', text:'option3', disabled: true}
         ]
     }).render();
 });

@@ -9,6 +9,12 @@ define(function(require, exports, module) {
     var Select = Overlay.extend({
 
         Implements: Templatable,
+        
+        templateHelpers: {
+            has: function(val, options){
+                return val == 'true' ? options.fn(this) : false;
+            }
+        },
 
         attrs: {
             trigger: {
@@ -23,6 +29,9 @@ define(function(require, exports, module) {
             align: {
                 baseXY: [0, '100%-1px']
             },
+            
+            // trigger 的 tpl
+            triggerTpl: '<a href="#"></a>',
 
             // 原生 select 的属性
             name: '',
@@ -39,13 +48,21 @@ define(function(require, exports, module) {
         events: {
             'click [data-role=item]': function(e) {
                 var target = $(e.currentTarget);
-                this.select(target);
+                if(!target.data('disabled')){
+                    this.select(target);
+                }
             },
             'mouseenter [data-role=item]': function(e) {
-                $(e.currentTarget).addClass(this.get('classPrefix') + '-hover');
+                var target = $(e.currentTarget);
+                if(!target.data('disabled')){
+                    target.addClass(getClassName(this.get('classPrefix'), 'hover'));
+                }
             },
             'mouseleave [data-role=item]': function(e) {
-                $(e.currentTarget).removeClass(this.get('classPrefix') + '-hover');
+                var target = $(e.currentTarget);
+                if(!target.data('disabled')){
+                    target.removeClass(getClassName(this.get('classPrefix'), 'hover'));
+                }
             }
         },
 
@@ -67,9 +84,7 @@ define(function(require, exports, module) {
                 // 替换之前把 select 保存起来
                 this.set('selectSource', trigger);
                 // 替换 trigger
-                var triggerTemplate = '<a href="#" class="' +
-                    this.get('classPrefix') + '-trigger"></a>';
-                var newTrigger = $(triggerTemplate);
+                var newTrigger = $(this.get('triggerTpl')).addClass(getClassName(this.get('classPrefix'), 'trigger'));
                 this.set('trigger', newTrigger);
                 this._initFromSelect = true;
                 trigger.after(newTrigger).hide();
@@ -102,10 +117,10 @@ define(function(require, exports, module) {
             this.delegateEvents(trigger, "click", this._trigger_click);
 
             this.delegateEvents(trigger, 'mouseenter', function(e) {
-                trigger.addClass(this.get('classPrefix') + '-trigger-hover');
+                trigger.addClass(getClassName(this.get('classPrefix'), 'trigger-hover'));
             });
             this.delegateEvents(trigger, 'mouseleave', function(e) {
-                trigger.removeClass(this.get('classPrefix') + '-trigger-hover');
+                trigger.removeClass(getClassName(this.get('classPrefix'), 'trigger-hover'));
             });
 
             this.options = this.$('[data-role=content]').children();
@@ -265,12 +280,12 @@ define(function(require, exports, module) {
             // 处理之前选中的元素
             if (currentItem) {
                 currentItem.attr('data-selected', 'false')
-                    .removeClass(this.get('classPrefix') + '-selected');
+                    .removeClass(getClassName(this.get('classPrefix'), 'selected'));
             }
 
             // 处理当前选中的元素
             selected.attr('data-selected', 'true')
-                .addClass(this.get('classPrefix') + '-selected');
+                .addClass(getClassName(this.get('classPrefix'), 'selected'));
             this.set('value', value);
 
             // 填入选中内容，位置先找 "data-role"="trigger-content"，再找 trigger
@@ -285,7 +300,7 @@ define(function(require, exports, module) {
         },
 
         _onRenderDisabled: function(val) {
-            var className = this.get('classPrefix') + '-disabled';
+            var className = getClassName(this.get('classPrefix'), 'disabled');
             var trigger = this.get('trigger');
             trigger[(val ? 'addClass' : 'removeClass')](className);
 
@@ -305,22 +320,25 @@ define(function(require, exports, module) {
     // <select>
     //   <option value='value1'>text1</option>
     //   <option value='value2' selected>text2</option>
+    //   <option value='value3' disabled>text3</option>
     // </select>
     //
     // ------->
     //
     // [
     //   {value: 'value1', text: 'text1',
-    //      defaultSelected: false, selected: false}
+    //      defaultSelected: false, selected: false, disabled: false}
     //   {value: 'value2', text: 'text2',
-    //      defaultSelected: true, selected: true}
+    //      defaultSelected: true, selected: true, disabled: false}
+    //   {value: 'value3', text: 'text3',
+    //      defaultSelected: false, selected: false, disabled: true}
     // ]
     function convertSelect(select, classPrefix) {
         var i, model = [], options = select.options,
             l = options.length, hasDefaultSelect = false;
         for (i = 0; i < l; i++) {
             var j, o = {}, option = options[i];
-            var fields = ['text', 'value', 'defaultSelected', 'selected'];
+            var fields = ['text', 'value', 'defaultSelected', 'selected', 'disabled'];
             for (j in fields) {
                 var field = fields[j];
                 o[field] = option[field];
@@ -332,6 +350,7 @@ define(function(require, exports, module) {
             } else {
                 o.selected = 'false';
             }
+            o.disabled = option.disabled ? 'true' : 'false';
             model.push(o);
         }
         // 当所有都没有设置 selected，默认设置第一个
@@ -352,6 +371,7 @@ define(function(require, exports, module) {
             } else {
                 o.selected = o.defaultSelected = 'false';
             }
+            o.disabled = o.disabled ? 'true' : 'false';
             newModel.push(o);
         }
         if (selectIndexArray.length > 0) {
@@ -391,5 +411,11 @@ define(function(require, exports, module) {
                 select.add(option);
             }
         }
+    }
+
+    // 获取 className ，如果 classPrefix 不设置，就返回 ''
+    function getClassName(classPrefix, className){
+        if(!classPrefix) return '';
+        return classPrefix + '-' + className;
     }
 });
