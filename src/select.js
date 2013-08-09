@@ -11,9 +11,9 @@ define(function(require, exports, module) {
         Implements: Templatable,
         
         templateHelpers: {
-        	has: function(val, options){
-        		return val == 'true' ? options.fn(this) : false;
-        	}
+            has: function(val, options){
+                return val == 'true' ? options.fn(this) : false;
+            }
         },
 
         attrs: {
