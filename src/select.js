@@ -29,6 +29,9 @@ define(function(require, exports, module) {
             align: {
                 baseXY: [0, '100%-1px']
             },
+            
+            // trigger 的 tpl
+            triggerTpl: '<a href="#"></a>',
 
             // 原生 select 的属性
             name: '',
@@ -81,9 +84,7 @@ define(function(require, exports, module) {
                 // 替换之前把 select 保存起来
                 this.set('selectSource', trigger);
                 // 替换 trigger
-                var triggerTemplate = '<a href="#" class="' +
-                    getClassName(this.get('classPrefix'), 'trigger') + '"></a>';
-                var newTrigger = $(triggerTemplate);
+                var newTrigger = $(this.get('triggerTpl')).addClass(getClassName(this.get('classPrefix'), 'trigger'));
                 this.set('trigger', newTrigger);
                 this._initFromSelect = true;
                 trigger.after(newTrigger).hide();
