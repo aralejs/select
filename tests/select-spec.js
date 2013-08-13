@@ -84,6 +84,17 @@ define(function(require) {
                 expect(model[1].text).to.be('text2');
             });
 
+            it('disable second item when trigger is disabled', function() {
+                trigger = $('<select id="example"><option value="value1">text1</option><option value="value2" disabled>text2</option></select>').appendTo(document.body);
+                select = new Select({
+                    trigger: '#example'
+                }).render();
+
+                var model = select.get("model").select;
+                expect(model[0].disabled).to.be('false');
+                expect(model[1].disabled).to.be('true');
+            });
+
             it('select both item when trigger is select', function() {
                 trigger = $('<select id="example"><option value="value1" selected>text1</option><option value="value2" selected>text2</option></select>').appendTo(document.body);
                 select = new Select({
