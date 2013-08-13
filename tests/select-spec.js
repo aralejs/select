@@ -184,6 +184,18 @@ define(function(require) {
                 var model = select.get("model").select;
                 expect(model.length).to.be(0);
             });
+
+            it('customize triggerTpl', function() {
+                trigger = $('<select id="example"></select>').appendTo(document.body);
+                select = new Select({
+                    trigger: '#example',
+                    triggerTpl: '<p></p>'
+                }).render();
+
+                expect(select.get('trigger').hasClass('ui-select-trigger')).to.be(true);
+                expect(select.get('trigger')[0].tagName).to.be('P');
+            });
+
         });
 
         describe('select function', function() {
