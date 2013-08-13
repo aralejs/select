@@ -2,7 +2,7 @@ define(function(require) {
 
     var $ = require('$');
     var sinon = require('sinon');
-    var expect = require('puerh');
+    var expect = require('expect');
     var Select = require('select');
 
     describe('select', function() {
@@ -515,13 +515,13 @@ define(function(require) {
 
             var selected = select.options.eq(1);
             select.render();
-            expect(spy).to.be.called.once();
-            expect(spy).to.be.called.withArgs(selected, false);
+            expect(spy.callCount).to.be(1);
+            expect(spy.withArgs(selected, false).called).to.be.ok();
 
             select.set('disabled', true);
             // console.log(spy.callCount)
-            expect(spy).to.be.called.twice();
-            expect(spy).to.be.called.withArgs(selected, true);
+            expect(spy.callCount).to.be(2);
+            expect(spy.withArgs(selected, true).called).to.be.ok();
         });
 
         it('model should clone', function() {
