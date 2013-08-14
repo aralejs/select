@@ -33,7 +33,7 @@ seajs.use(['select'], function(Select) {
 trigger 为任意 DOM，但必须传入 model 数据
 
 ````html
-<a href="#" id="example2">请选择</a>
+<a href="#" id="example2" class="ui-select-trigger">请选择</a>
 ````
 
 ````javascript
