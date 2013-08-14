@@ -4,7 +4,9 @@
 
 ----
 
-<link rel="stylesheet" href="../src/select.css" />
+<script>
+seajs.use('select.css');
+</script>
 
 ## 可以根据原生的 select 初始化
 
