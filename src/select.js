@@ -112,28 +112,11 @@ define(function(require, exports, module) {
         },
 
         setup: function() {
-            var trigger = this.get('trigger');
-
-            this.delegateEvents(trigger, "click", this._trigger_click);
-
-            this.delegateEvents(trigger, 'mouseenter', function(e) {
-                trigger.addClass(getClassName(this.get('classPrefix'), 'trigger-hover'));
-            });
-            this.delegateEvents(trigger, 'mouseleave', function(e) {
-                trigger.removeClass(getClassName(this.get('classPrefix'), 'trigger-hover'));
-            });
-
-            this.options = this.$('[data-role=content]').children();
-            // 初始化 select 的参数
-            // 必须在插入文档流后操作
-            this.select('[data-selected=true]');
-            this.set('length', this.options.length);
-
+            this._bindEvents();
+            this._initOptions();
             this._tweakAlignDefaultValue();
-
             // 调用 overlay，点击 body 隐藏
-            this._blurHide(trigger);
-
+            this._blurHide(this.get('trigger'));
             Select.superclass.setup.call(this);
         },
 
@@ -141,36 +124,6 @@ define(function(require, exports, module) {
             Select.superclass.render.call(this);
             this._setTriggerWidth();
             return this;
-        },
-
-        // trigger 的宽度和浮层保持一致
-        _setTriggerWidth: function() {
-            var trigger = this.get('trigger');
-            var width = this.element.outerWidth();
-            var pl = parseInt(trigger.css('padding-left'), 10);
-            var pr = parseInt(trigger.css('padding-right'), 10);
-            var bl = parseInt(trigger.css('border-left-width'), 10);
-            var br = parseInt(trigger.css('border-right-width'), 10);
-            trigger.css('width', width - pl - pr - bl - br);
-        },
-
-        // borrow from dropdown
-        // 调整 align 属性的默认值, 在 trigger 下方
-        _tweakAlignDefaultValue: function() {
-            var align = this.get('align');
-            // 默认基准定位元素为 trigger
-            if (align.baseElement._id === 'VIEWPORT') {
-                align.baseElement = this.get('trigger');
-            }
-            this.set('align', align);
-        },
-
-        _trigger_click: function(e) {
-            var self = this;
-            e.preventDefault();
-            if (!self.get('disabled')) {
-                self.show();
-            }
         },
 
         destroy: function() {
@@ -307,6 +260,59 @@ define(function(require, exports, module) {
             // trigger event
             var selected = this.options.eq(this.get('selectedIndex'));
             this.trigger('disabledChange', selected, val);
+        },
+
+        // 私有方法
+        // ------------
+
+        _bindEvents: function() {
+            var trigger = this.get('trigger');
+
+            this.delegateEvents(trigger, "click", this._trigger_click);
+            this.delegateEvents(trigger, 'mouseenter', function(e) {
+                trigger.addClass(getClassName(this.get('classPrefix'), 'trigger-hover'));
+            });
+            this.delegateEvents(trigger, 'mouseleave', function(e) {
+                trigger.removeClass(getClassName(this.get('classPrefix'), 'trigger-hover'));
+            });
+        },
+
+        _initOptions: function() {
+            this.options = this.$('[data-role=content]').children();
+            // 初始化 select 的参数
+            // 必须在插入文档流后操作
+            this.select('[data-selected=true]');
+            this.set('length', this.options.length);
+        },
+
+        // trigger 的宽度和浮层保持一致
+        _setTriggerWidth: function() {
+            var trigger = this.get('trigger');
+            var width = this.element.outerWidth();
+            var pl = parseInt(trigger.css('padding-left'), 10);
+            var pr = parseInt(trigger.css('padding-right'), 10);
+            var bl = parseInt(trigger.css('border-left-width'), 10);
+            var br = parseInt(trigger.css('border-right-width'), 10);
+            trigger.css('width', width - pl - pr - bl - br);
+        },
+
+        // borrow from dropdown
+        // 调整 align 属性的默认值, 在 trigger 下方
+        _tweakAlignDefaultValue: function() {
+            var align = this.get('align');
+            // 默认基准定位元素为 trigger
+            if (align.baseElement._id === 'VIEWPORT') {
+                align.baseElement = this.get('trigger');
+            }
+            this.set('align', align);
+        },
+
+        _trigger_click: function(e) {
+            var self = this;
+            e.preventDefault();
+            if (!self.get('disabled')) {
+                self.show();
+            }
         }
     });
 
