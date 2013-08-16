@@ -40,6 +40,9 @@ define(function(require, exports, module) {
         },
 
         events: {
+            'click': function(e){
+                e.stopPropagation();
+            },
             'click [data-role=item]': function(e) {
                 var target = $(e.currentTarget);
                 if(!target.data('disabled')){
