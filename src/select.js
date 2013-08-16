@@ -321,8 +321,10 @@ define(function(require, exports, module) {
             this.after('show', function() {
                 var maxHeight = this.get('maxHeight');
                 if (maxHeight) {
-                    var height = getLiHeight(this.$('[data-role=content]'));
+                    var ul = this.$('[data-role=content]');
+                    var height = getLiHeight(ul);
                     this.set('height', height > maxHeight ? maxHeight : '');
+                    ul.scrollTop(0);
                 }
             });
         }
