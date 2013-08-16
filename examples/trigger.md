@@ -40,7 +40,7 @@ seajs.use(['select','jquery'], function(Select, $) {
 需要指定 `data-role="trigger-content"`，否则会覆盖整个 trigger 的内容
 
 ````html
-<a href="#" id="example8"><span data-role="trigger-content"></span><span>x</span></a>
+<a href="#" id="example8" class="ui-select-trigger"><span data-role="trigger-content"></span><span>x</span></a>
 ````
 
 ````javascript

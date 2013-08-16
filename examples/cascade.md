@@ -35,15 +35,23 @@ function parseCity(type, prov) {
     <option value="WATER">水费</option>
     <option value="ELECTRIC">电费</option>
 </select>
-<a href="#" id="exampel6-2">请选择</a>
-<a href="#" id="exampel6-3">请选择</a>
+<a href="#" id="exampel6-2" class="ui-select-trigger">
+    <span data-role="trigger-content">请选择</span>
+    <i class="iconfont" title="下三角形">&#xF03C;</i>
+</a>
+<a href="#" id="exampel6-3" class="ui-select-trigger">
+    <span data-role="trigger-content">请选择</span>
+    <i class="iconfont" title="下三角形">&#xF03C;</i>
+</a>
 
 通过 change 事件监听切换，通知其他 select 更新数据
 
 ````javascript
 seajs.use(['select'], function(Select) {
     var a1 = new Select({
-        trigger: '#exampel6-1'
+        trigger: '#exampel6-1',
+        triggerTpl: '<a href="#"><span data-role="trigger-content"></span><i class="iconfont" title="下三角形">&#xF03C;</i></a>',
+        width: 100
     }).on('change', function(target) {
         var type = target.attr('data-value');
         var model = parseProv(type);
@@ -53,7 +61,9 @@ seajs.use(['select'], function(Select) {
 
     var a2 = new Select({
         trigger: '#exampel6-2',
-        model: parseProv('WATER')
+        model: parseProv('WATER'),
+        width: 100,
+        maxHeight: 300
     }).on('change', function(target) {
         var prov = target.attr('data-value');
         var model = parseCity(a1.get('value'), prov);
@@ -62,7 +72,9 @@ seajs.use(['select'], function(Select) {
 
     var a3 = new Select({
         trigger: '#exampel6-3',
-        model: parseCity('WATER')
+        model: parseCity('WATER'),
+        width: 100,
+        maxHeight: 300
     });
 
     a1.render();

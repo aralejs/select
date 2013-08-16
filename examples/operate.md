@@ -38,7 +38,7 @@ seajs.use(['select','jquery'], function(Select, $) {
 
 ## 可以通过 select 接口去选择
 
-<a href="#" id="example4">请选择</a>
+<a href="#" id="example4" class="ui-select-trigger">请选择</a>
 <a href="#" class="example4-select" data-value="1">选择1</a>
 <a href="#" class="example4-select" data-value="2">选择2</a>
 <a href="#" class="example4-select" data-value="3">选择3</a>
@@ -68,7 +68,7 @@ seajs.use(['select','jquery'], function(Select, $) {
 
 ## 提供 change 的事件
 
-<a href="#" id="example5">请选择</a>
+<a href="#" id="example5" class="ui-select-trigger">请选择</a>
 <span id="example5-log"></span>
 
 ````javascript
