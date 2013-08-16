@@ -34,6 +34,7 @@ define(function(require, exports, module) {
             selectedIndex: -1,
             multiple: false, // TODO
             disabled: false,
+            maxHeight: null,
 
             // 以下不要覆盖
             selectSource: null // 原生表单项的引用，select/input
@@ -114,6 +115,7 @@ define(function(require, exports, module) {
         setup: function() {
             this._bindEvents();
             this._initOptions();
+            this._initHeight();
             this._tweakAlignDefaultValue();
             // 调用 overlay，点击 body 隐藏
             this._blurHide(this.get('trigger'));
@@ -313,6 +315,16 @@ define(function(require, exports, module) {
             if (!self.get('disabled')) {
                 self.show();
             }
+        },
+
+        _initHeight: function() {
+            this.after('show', function() {
+                var maxHeight = this.get('maxHeight');
+                if (maxHeight) {
+                    var height = getLiHeight(this.$('[data-role=content]'));
+                    this.set('height', height > maxHeight ? maxHeight : '');
+                }
+            });
         }
     });
 
@@ -412,5 +424,14 @@ define(function(require, exports, module) {
     function getClassName(classPrefix, className){
         if(!classPrefix) return '';
         return classPrefix + '-' + className;
+    }
+
+    // 获取 ul 中所有 li 的高度 
+    function getLiHeight (ul) {
+        var height = 0;
+        ul.find('li').each(function(index, item) {
+            height += $(item).outerHeight();
+        });
+        return height;
     }
 });
