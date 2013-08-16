@@ -117,7 +117,7 @@ define(function(require, exports, module) {
         setup: function() {
             var trigger = this.get('trigger');
 
-            this.delegateEvents(trigger, "click", this._trigger_click);
+            this.delegateEvents(trigger, "mousedown", this._triggerHandle);
 
             this.delegateEvents(trigger, 'mouseenter', function(e) {
                 trigger.addClass(getClassName(this.get('classPrefix'), 'trigger-hover'));
@@ -168,11 +168,10 @@ define(function(require, exports, module) {
             this.set('align', align);
         },
 
-        _trigger_click: function(e) {
-            var self = this;
+        _triggerHandle: function(e) {
             e.preventDefault();
-            if (!self.get('disabled')) {
-                self.show();
+            if (!this.get('disabled')) {
+                this.show();
             }
         },
 

@@ -347,7 +347,7 @@ define(function(require) {
                 .to.be('true');
         });
 
-        it('trigger click', function() {
+        it('trigger mousedown', function() {
             trigger = $('<a href="#" id="example"></a>').appendTo(document.body);
             select = new Select({
                 trigger: '#example',
@@ -357,7 +357,7 @@ define(function(require) {
                 ]
             }).render();
 
-            trigger.click();
+            trigger.mousedown();
             expect(select.element.is(':hidden')).to.be(false);
             select.hide();
             expect(select.element.is(':hidden')).to.be(true);
@@ -374,13 +374,13 @@ define(function(require) {
                 disabled: true
             }).render();
 
-            trigger.click();
+            trigger.mousedown();
             expect(trigger.hasClass('ui-select-disabled')).to.be(true);
             expect(select.element.is(':hidden')).to.be(true);
             select.hide();
 
             select.set('disabled', false);
-            trigger.click();
+            trigger.mousedown();
             expect(trigger.hasClass('ui-select-disabled')).to.be(false);
             expect(select.element.is(':hidden')).to.be(false);
         });
