@@ -1,7 +1,12 @@
 <div class="{{classPrefix}}">
     <ul class="{{classPrefix}}-content" data-role="content">
         {{#each select}}
-        <li data-role="item" class="{{../classPrefix}}-item {{#has disabled}}{{../../classPrefix}}-disabled{{/has}}" data-value="{{value}}" data-defaultSelected="{{defaultSelected}}" data-selected="{{selected}}" data-disabled="{{disabled}}">{{{text}}}</li>
+        <li data-role="item"
+          class="{{../classPrefix}}-item {{#if disabled}}{{../../classPrefix}}-disabled{{/if}}"
+          data-value="{{value}}"
+          data-defaultSelected="{{output defaultSelected}}"
+          data-selected="{{output selected}}"
+          data-disabled="{{output disabled}}">{{{text}}}</li>
         {{/each}}
     </ul>
 </div>

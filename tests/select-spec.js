@@ -2,7 +2,7 @@ define(function(require) {
 
     var $ = require('$');
     var sinon = require('sinon');
-    var expect = require('puerh');
+    var expect = require('expect');
     var Select = require('select');
 
     describe('select', function() {
@@ -57,12 +57,12 @@ define(function(require) {
                 }).render();
 
                 var model = select.get("model").select;
-                expect(model[0].defaultSelected).to.be('false');
-                expect(model[0].selected).to.be('true');
+                expect(model[0].defaultSelected).to.be(false);
+                expect(model[0].selected).to.be(true);
                 expect(model[0].value).to.be('value1');
                 expect(model[0].text).to.be('text1');
-                expect(model[1].defaultSelected).to.be('false');
-                expect(model[1].selected).to.be('false');
+                expect(model[1].defaultSelected).to.be(false);
+                expect(model[1].selected).to.be(false);
                 expect(model[1].value).to.be('value2');
                 expect(model[1].text).to.be('text2');
             });
@@ -74,14 +74,25 @@ define(function(require) {
                 }).render();
 
                 var model = select.get("model").select;
-                expect(model[0].defaultSelected).to.be('false');
-                expect(model[0].selected).to.be('false');
+                expect(model[0].defaultSelected).to.be(false);
+                expect(model[0].selected).to.be(false);
                 expect(model[0].value).to.be('value1');
                 expect(model[0].text).to.be('text1');
-                expect(model[1].defaultSelected).to.be('true');
-                expect(model[1].selected).to.be('true');
+                expect(model[1].defaultSelected).to.be(true);
+                expect(model[1].selected).to.be(true);
                 expect(model[1].value).to.be('value2');
                 expect(model[1].text).to.be('text2');
+            });
+
+            it('disable second item when trigger is disabled', function() {
+                trigger = $('<select id="example"><option value="value1">text1</option><option value="value2" disabled>text2</option></select>').appendTo(document.body);
+                select = new Select({
+                    trigger: '#example'
+                }).render();
+
+                var model = select.get("model").select;
+                expect(model[0].disabled).to.be(false);
+                expect(model[1].disabled).to.be(true);
             });
 
             it('select both item when trigger is select', function() {
@@ -91,12 +102,12 @@ define(function(require) {
                 }).render();
 
                 var model = select.get("model").select;
-                expect(model[0].defaultSelected).to.be('true');
-                expect(model[0].selected).to.be('false');
+                expect(model[0].defaultSelected).to.be(true);
+                expect(model[0].selected).to.be(false);
                 expect(model[0].value).to.be('value1');
                 expect(model[0].text).to.be('text1');
-                expect(model[1].defaultSelected).to.be('true');
-                expect(model[1].selected).to.be('true');
+                expect(model[1].defaultSelected).to.be(true);
+                expect(model[1].selected).to.be(true);
                 expect(model[1].value).to.be('value2');
                 expect(model[1].text).to.be('text2');
             });
@@ -112,12 +123,12 @@ define(function(require) {
                 }).render();
 
                 var model = select.get("model").select;
-                expect(model[0].defaultSelected).to.be('false');
-                expect(model[0].selected).to.be('true');
+                expect(model[0].defaultSelected).to.be(false);
+                expect(model[0].selected).to.be(true);
                 expect(model[0].value).to.be('value1');
                 expect(model[0].text).to.be('text1');
-                expect(model[1].defaultSelected).to.be('false');
-                expect(model[1].selected).to.be('false');
+                expect(model[1].defaultSelected).to.be(false);
+                expect(model[1].selected).to.be(false);
                 expect(model[1].value).to.be('value2');
                 expect(model[1].text).to.be('text2');
             });
@@ -133,12 +144,12 @@ define(function(require) {
                 }).render();
 
                 var model = select.get("model").select;
-                expect(model[0].defaultSelected).to.be('false');
-                expect(model[0].selected).to.be('false');
+                expect(model[0].defaultSelected).to.be(false);
+                expect(model[0].selected).to.be(false);
                 expect(model[0].value).to.be('value1');
                 expect(model[0].text).to.be('text1');
-                expect(model[1].defaultSelected).to.be('true');
-                expect(model[1].selected).to.be('true');
+                expect(model[1].defaultSelected).to.be(true);
+                expect(model[1].selected).to.be(true);
                 expect(model[1].value).to.be('value2');
                 expect(model[1].text).to.be('text2');
             });
@@ -154,12 +165,12 @@ define(function(require) {
                 }).render();
 
                 var model = select.get("model").select;
-                expect(model[0].defaultSelected).to.be('true');
-                expect(model[0].selected).to.be('false');
+                expect(model[0].defaultSelected).to.be(true);
+                expect(model[0].selected).to.be(false);
                 expect(model[0].value).to.be('value1');
                 expect(model[0].text).to.be('text1');
-                expect(model[1].defaultSelected).to.be('true');
-                expect(model[1].selected).to.be('true');
+                expect(model[1].defaultSelected).to.be(true);
+                expect(model[1].selected).to.be(true);
                 expect(model[1].value).to.be('value2');
                 expect(model[1].text).to.be('text2');
             });
@@ -173,6 +184,18 @@ define(function(require) {
                 var model = select.get("model").select;
                 expect(model.length).to.be(0);
             });
+
+            it('customize triggerTpl', function() {
+                trigger = $('<select id="example"></select>').appendTo(document.body);
+                select = new Select({
+                    trigger: '#example',
+                    triggerTpl: '<p></p>'
+                }).render();
+
+                expect(select.get('trigger').hasClass('ui-select-trigger')).to.be(true);
+                expect(select.get('trigger')[0].tagName).to.be('P');
+            });
+
         });
 
         describe('select function', function() {
@@ -515,13 +538,13 @@ define(function(require) {
 
             var selected = select.options.eq(1);
             select.render();
-            expect(spy).to.be.called.once();
-            expect(spy).to.be.called.withArgs(selected, false);
+            expect(spy.callCount).to.be(1);
+            expect(spy.withArgs(selected, false).called).to.be.ok();
 
             select.set('disabled', true);
             // console.log(spy.callCount)
-            expect(spy).to.be.called.twice();
-            expect(spy).to.be.called.withArgs(selected, true);
+            expect(spy.callCount).to.be(2);
+            expect(spy.withArgs(selected, true).called).to.be.ok();
         });
 
         it('model should clone', function() {

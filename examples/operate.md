@@ -4,8 +4,9 @@
 
 ----
 
-<link rel="stylesheet" href="../src/select.css" />
-
+<script>
+seajs.use('select.css');
+</script>
 
 ## 设置 select 为 disabled
 

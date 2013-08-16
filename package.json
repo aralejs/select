@@ -24,7 +24,8 @@
             "templatable": "arale/templatable/0.9.1/templatable"
         },
         "devAlias": {
-            "puerh": "popomore/puerh/0.1.0/puerh"
+            "puerh": "popomore/puerh/0.1.0/puerh",
+            "select.css": "alice/select/1.0.1/select.css"
         },
         "output": ["./select.js"]
     },

@@ -9,12 +9,6 @@ define(function(require, exports, module) {
     var Select = Overlay.extend({
 
         Implements: Templatable,
-        
-        templateHelpers: {
-            has: function(val, options){
-                return val == 'true' ? options.fn(this) : false;
-            }
-        },
 
         attrs: {
             trigger: {
@@ -66,17 +60,23 @@ define(function(require, exports, module) {
             }
         },
 
+        templateHelpers: {
+            output: function(data) {
+                return data + '';
+            }
+        },
+
         // 覆盖父类
         // --------
 
         initAttrs: function(config, dataAttrsConfig) {
             Select.superclass.initAttrs.call(this, config, dataAttrsConfig);
 
-            var trigger = this.get('trigger');
-            if (trigger[0].tagName.toLowerCase() == 'select') {
+            var selectName, trigger = this.get('trigger');
+            if (trigger[0].tagName.toLowerCase() === 'select') {
                 // 初始化 name
                 // 如果 select 的 name 存在则覆盖 name 属性
-                var selectName = trigger.attr('name');
+                selectName = trigger.attr('name');
                 if (selectName) {
                     this.set('name', selectName);
                 }
@@ -93,7 +93,7 @@ define(function(require, exports, module) {
                 this.set("model", convertSelect(trigger[0], this.get('classPrefix')));
             } else {
                 // 如果 name 存在则创建隐藏域
-                var selectName = this.get('name');
+                selectName = this.get('name');
                 if (selectName) {
                     var input = $('input[name=' + selectName + ']').eq(0);
                     if (!input[0]) {
@@ -256,14 +256,14 @@ define(function(require, exports, module) {
         // ------------
 
         _onRenderSelectedIndex: function(index) {
-            if (index == -1) return;
+            if (index === -1) return;
 
             var selected = this.options.eq(index),
                 currentItem = this.currentItem,
                 value = selected.attr('data-value');
 
             // 如果两个 DOM 相同则不再处理
-            if (currentItem && selected[0] == currentItem[0]) {
+            if (currentItem && selected[0] === currentItem[0]) {
                 return;
             }
 
@@ -343,14 +343,7 @@ define(function(require, exports, module) {
                 var field = fields[j];
                 o[field] = option[field];
             }
-            o.defaultSelected = option.defaultSelected ? 'true' : 'false';
-            if (option.selected) {
-                o.selected = 'true';
-                hasDefaultSelect = true;
-            } else {
-                o.selected = 'false';
-            }
-            o.disabled = option.disabled ? 'true' : 'false';
+            if (option.selected) hasDefaultSelect = true;
             model.push(o);
         }
         // 当所有都没有设置 selected，默认设置第一个
@@ -365,23 +358,19 @@ define(function(require, exports, module) {
         var i, j, l, ll, newModel = [], selectIndexArray = [];
         for (i = 0, l = model.length; i < l; i++) {
             var o = $.extend({}, model[i]);
-            if (o.selected) {
-                o.selected = o.defaultSelected = 'true';
-                selectIndexArray.push(i);
-            } else {
-                o.selected = o.defaultSelected = 'false';
-            }
-            o.disabled = o.disabled ? 'true' : 'false';
+            if (o.selected) selectIndexArray.push(i);
+            o.selected = o.defaultSelected = !!o.selected;
+            o.disabled = !!o.disabled;
             newModel.push(o);
         }
         if (selectIndexArray.length > 0) {
             // 如果有多个 selected 则选中最后一个
             selectIndexArray.pop();
             for (j = 0, ll = selectIndexArray.length; j < ll; j++) {
-                newModel[j].selected = 'false';
+                newModel[j].selected = false;
             }
         } else { //当所有都没有设置 selected 则默认设置第一个
-            newModel[0].selected = 'true';
+            newModel[0].selected = true;
         }
         return {select: newModel, classPrefix: classPrefix};
     }

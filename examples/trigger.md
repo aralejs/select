@@ -4,7 +4,9 @@
 
 ----
 
-<link rel="stylesheet" href="../src/select.css" />
+<script>
+seajs.use('select.css');
+</script>
 
 ## trigger 的宽度和浮层的宽度保持一致
 
