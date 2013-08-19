@@ -274,6 +274,9 @@ define(function(require, exports, module) {
             var trigger = this.get('trigger');
 
             this.delegateEvents(trigger, "mousedown", this._triggerHandle);
+            this.delegateEvents(trigger, "click", function(e) {
+                e.preventDefault();
+            });
             this.delegateEvents(trigger, 'mouseenter', function(e) {
                 trigger.addClass(getClassName(this.get('classPrefix'), 'trigger-hover'));
             });
