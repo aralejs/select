@@ -65,10 +65,6 @@ trigger 可以为 select 或 其他任何 DOM。
 
 如果 trigger 比较复杂，可以选择 DOM 自定义结构，而且需要设置 `data-role="trigger-content"` 来指定填入内容的位置。
 
-### triggerTpl *string*
-
-可以指定触发器的 DOM 结构，默认就是个 a 标签。
-
 ### model *object*
 
 model 的来源有两处
