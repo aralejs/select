@@ -93,6 +93,10 @@ model 的格式为
 
 生成组件的模版，数据源为 model。
 
+### triggerTpl *string*
+
+可以指定触发器的 DOM 结构，默认就是个 a 标签。
+
 ### classPrefix *string* _(0.9.0 修改，之前为 prefix)_
 
 样式前缀，默认为 `ui-select`
