@@ -318,7 +318,7 @@ define(function(require, exports, module) {
         _triggerHandle: function(e) {
             e.preventDefault();
             if (!this.get('disabled')) {
-                this.show();
+                this.get('visible') ? this.hide() : this.show();
             }
         },
 
