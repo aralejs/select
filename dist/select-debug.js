@@ -1,4 +1,4 @@
-define("arale/select/0.9.6/select-debug", [ "arale/overlay/1.1.1/overlay-debug", "$-debug", "arale/position/1.0.1/position-debug", "arale/iframe-shim/1.0.2/iframe-shim-debug", "arale/widget/1.1.1/widget-debug", "arale/base/1.1.1/base-debug", "arale/class/1.1.0/class-debug", "arale/events/1.1.0/events-debug", "arale/templatable/0.9.1/templatable-debug", "gallery/handlebars/1.0.2/handlebars-debug", "./select-debug.handlebars" ], function(require, exports, module) {
+define("arale/select/0.9.7/select-debug", [ "arale/overlay/1.1.1/overlay-debug", "$-debug", "arale/position/1.0.1/position-debug", "arale/iframe-shim/1.0.2/iframe-shim-debug", "arale/widget/1.1.1/widget-debug", "arale/base/1.1.1/base-debug", "arale/class/1.1.0/class-debug", "arale/events/1.1.0/events-debug", "arale/templatable/0.9.1/templatable-debug", "gallery/handlebars/1.0.2/handlebars-debug", "./select-debug.handlebars" ], function(require, exports, module) {
     var Overlay = require("arale/overlay/1.1.1/overlay-debug");
     var $ = require("$-debug");
     var Templatable = require("arale/templatable/0.9.1/templatable-debug");
@@ -19,6 +19,8 @@ define("arale/select/0.9.6/select-debug", [ "arale/overlay/1.1.1/overlay-debug",
             align: {
                 baseXY: [ 0, "100%-1px" ]
             },
+            // trigger 的 tpl
+            triggerTpl: '<a href="#"></a>',
             // 原生 select 的属性
             name: "",
             value: "",
@@ -27,38 +29,54 @@ define("arale/select/0.9.6/select-debug", [ "arale/overlay/1.1.1/overlay-debug",
             multiple: false,
             // TODO
             disabled: false,
+            maxHeight: null,
             // 以下不要覆盖
             selectSource: null
         },
         events: {
+            click: function(e) {
+                e.stopPropagation();
+            },
             "click [data-role=item]": function(e) {
                 var target = $(e.currentTarget);
-                this.select(target);
+                if (!target.data("disabled")) {
+                    this.select(target);
+                }
             },
             "mouseenter [data-role=item]": function(e) {
-                $(e.currentTarget).addClass(this.get("classPrefix") + "-hover");
+                var target = $(e.currentTarget);
+                if (!target.data("disabled")) {
+                    target.addClass(getClassName(this.get("classPrefix"), "hover"));
+                }
             },
             "mouseleave [data-role=item]": function(e) {
-                $(e.currentTarget).removeClass(this.get("classPrefix") + "-hover");
+                var target = $(e.currentTarget);
+                if (!target.data("disabled")) {
+                    target.removeClass(getClassName(this.get("classPrefix"), "hover"));
+                }
+            }
+        },
+        templateHelpers: {
+            output: function(data) {
+                return data + "";
             }
         },
         // 覆盖父类
         // --------
         initAttrs: function(config, dataAttrsConfig) {
             Select.superclass.initAttrs.call(this, config, dataAttrsConfig);
-            var trigger = this.get("trigger");
-            if (trigger[0].tagName.toLowerCase() == "select") {
+            var selectName, trigger = this.get("trigger");
+            if (trigger[0].tagName.toLowerCase() === "select") {
                 // 初始化 name
                 // 如果 select 的 name 存在则覆盖 name 属性
-                var selectName = trigger.attr("name");
+                selectName = trigger.attr("name");
                 if (selectName) {
                     this.set("name", selectName);
                 }
                 // 替换之前把 select 保存起来
                 this.set("selectSource", trigger);
                 // 替换 trigger
-                var triggerTemplate = '<a href="#" class="' + this.get("classPrefix") + '-trigger"></a>';
-                var newTrigger = $(triggerTemplate);
+                var newTrigger = $(this.get("triggerTpl")).addClass(getClassName(this.get("classPrefix"), "trigger"));
                 this.set("trigger", newTrigger);
                 this._initFromSelect = true;
                 trigger.after(newTrigger).hide();
@@ -66,7 +84,7 @@ define("arale/select/0.9.6/select-debug", [ "arale/overlay/1.1.1/overlay-debug",
                 this.set("model", convertSelect(trigger[0], this.get("classPrefix")));
             } else {
                 // 如果 name 存在则创建隐藏域
-                var selectName = this.get("name");
+                selectName = this.get("name");
                 if (selectName) {
                     var input = $("input[name=" + selectName + "]").eq(0);
                     if (!input[0]) {
@@ -79,55 +97,18 @@ define("arale/select/0.9.6/select-debug", [ "arale/overlay/1.1.1/overlay-debug",
             }
         },
         setup: function() {
-            var trigger = this.get("trigger");
-            this.delegateEvents(trigger, "click", this._trigger_click);
-            this.delegateEvents(trigger, "mouseenter", function(e) {
-                trigger.addClass(this.get("classPrefix") + "-trigger-hover");
-            });
-            this.delegateEvents(trigger, "mouseleave", function(e) {
-                trigger.removeClass(this.get("classPrefix") + "-trigger-hover");
-            });
-            this.options = this.$("[data-role=content]").children();
-            // 初始化 select 的参数
-            // 必须在插入文档流后操作
-            this.select("[data-selected=true]");
-            this.set("length", this.options.length);
+            this._bindEvents();
+            this._initOptions();
+            this._initHeight();
             this._tweakAlignDefaultValue();
             // 调用 overlay，点击 body 隐藏
-            this._blurHide(trigger);
+            this._blurHide(this.get("trigger"));
             Select.superclass.setup.call(this);
         },
         render: function() {
             Select.superclass.render.call(this);
             this._setTriggerWidth();
             return this;
-        },
-        // trigger 的宽度和浮层保持一致
-        _setTriggerWidth: function() {
-            var trigger = this.get("trigger");
-            var width = this.element.outerWidth();
-            var pl = parseInt(trigger.css("padding-left"), 10);
-            var pr = parseInt(trigger.css("padding-right"), 10);
-            var bl = parseInt(trigger.css("border-left-width"), 10);
-            var br = parseInt(trigger.css("border-right-width"), 10);
-            trigger.css("width", width - pl - pr - bl - br);
-        },
-        // borrow from dropdown
-        // 调整 align 属性的默认值, 在 trigger 下方
-        _tweakAlignDefaultValue: function() {
-            var align = this.get("align");
-            // 默认基准定位元素为 trigger
-            if (align.baseElement._id === "VIEWPORT") {
-                align.baseElement = this.get("trigger");
-            }
-            this.set("align", align);
-        },
-        _trigger_click: function(e) {
-            var self = this;
-            e.preventDefault();
-            if (!self.get("disabled")) {
-                self.show();
-            }
         },
         destroy: function() {
             if (this._initFromSelect) {
@@ -194,10 +175,10 @@ define("arale/select/0.9.6/select-debug", [ "arale/overlay/1.1.1/overlay-debug",
         // set 后的回调
         // ------------
         _onRenderSelectedIndex: function(index) {
-            if (index == -1) return;
+            if (index === -1) return;
             var selected = this.options.eq(index), currentItem = this.currentItem, value = selected.attr("data-value");
             // 如果两个 DOM 相同则不再处理
-            if (currentItem && selected[0] == currentItem[0]) {
+            if (currentItem && selected[0] === currentItem[0]) {
                 return;
             }
             // 设置原来的表单项
@@ -211,10 +192,10 @@ define("arale/select/0.9.6/select-debug", [ "arale/overlay/1.1.1/overlay-debug",
             }
             // 处理之前选中的元素
             if (currentItem) {
-                currentItem.attr("data-selected", "false").removeClass(this.get("classPrefix") + "-selected");
+                currentItem.attr("data-selected", "false").removeClass(getClassName(this.get("classPrefix"), "selected"));
             }
             // 处理当前选中的元素
-            selected.attr("data-selected", "true").addClass(this.get("classPrefix") + "-selected");
+            selected.attr("data-selected", "true").addClass(getClassName(this.get("classPrefix"), "selected"));
             this.set("value", value);
             // 填入选中内容，位置先找 "data-role"="trigger-content"，再找 trigger
             var trigger = this.get("trigger");
@@ -227,12 +208,71 @@ define("arale/select/0.9.6/select-debug", [ "arale/overlay/1.1.1/overlay-debug",
             this.currentItem = selected;
         },
         _onRenderDisabled: function(val) {
-            var className = this.get("classPrefix") + "-disabled";
+            var className = getClassName(this.get("classPrefix"), "disabled");
             var trigger = this.get("trigger");
             trigger[val ? "addClass" : "removeClass"](className);
             // trigger event
             var selected = this.options.eq(this.get("selectedIndex"));
             this.trigger("disabledChange", selected, val);
+        },
+        // 私有方法
+        // ------------
+        _bindEvents: function() {
+            var trigger = this.get("trigger");
+            this.delegateEvents(trigger, "mousedown", this._triggerHandle);
+            this.delegateEvents(trigger, "click", function(e) {
+                e.preventDefault();
+            });
+            this.delegateEvents(trigger, "mouseenter", function(e) {
+                trigger.addClass(getClassName(this.get("classPrefix"), "trigger-hover"));
+            });
+            this.delegateEvents(trigger, "mouseleave", function(e) {
+                trigger.removeClass(getClassName(this.get("classPrefix"), "trigger-hover"));
+            });
+        },
+        _initOptions: function() {
+            this.options = this.$("[data-role=content]").children();
+            // 初始化 select 的参数
+            // 必须在插入文档流后操作
+            this.select("[data-selected=true]");
+            this.set("length", this.options.length);
+        },
+        // trigger 的宽度和浮层保持一致
+        _setTriggerWidth: function() {
+            var trigger = this.get("trigger");
+            var width = this.element.outerWidth();
+            var pl = parseInt(trigger.css("padding-left"), 10);
+            var pr = parseInt(trigger.css("padding-right"), 10);
+            var bl = parseInt(trigger.css("border-left-width"), 10);
+            var br = parseInt(trigger.css("border-right-width"), 10);
+            trigger.css("width", width - pl - pr - bl - br);
+        },
+        // borrow from dropdown
+        // 调整 align 属性的默认值, 在 trigger 下方
+        _tweakAlignDefaultValue: function() {
+            var align = this.get("align");
+            // 默认基准定位元素为 trigger
+            if (align.baseElement._id === "VIEWPORT") {
+                align.baseElement = this.get("trigger");
+            }
+            this.set("align", align);
+        },
+        _triggerHandle: function(e) {
+            e.preventDefault();
+            if (!this.get("disabled")) {
+                this.get("visible") ? this.hide() : this.show();
+            }
+        },
+        _initHeight: function() {
+            this.after("show", function() {
+                var maxHeight = this.get("maxHeight");
+                if (maxHeight) {
+                    var ul = this.$("[data-role=content]");
+                    var height = getLiHeight(ul);
+                    this.set("height", height > maxHeight ? maxHeight : "");
+                    ul.scrollTop(0);
+                }
+            });
         }
     });
     module.exports = Select;
@@ -243,32 +283,29 @@ define("arale/select/0.9.6/select-debug", [ "arale/overlay/1.1.1/overlay-debug",
     // <select>
     //   <option value='value1'>text1</option>
     //   <option value='value2' selected>text2</option>
+    //   <option value='value3' disabled>text3</option>
     // </select>
     //
     // ------->
     //
     // [
     //   {value: 'value1', text: 'text1',
-    //      defaultSelected: false, selected: false}
+    //      defaultSelected: false, selected: false, disabled: false}
     //   {value: 'value2', text: 'text2',
-    //      defaultSelected: true, selected: true}
+    //      defaultSelected: true, selected: true, disabled: false}
+    //   {value: 'value3', text: 'text3',
+    //      defaultSelected: false, selected: false, disabled: true}
     // ]
     function convertSelect(select, classPrefix) {
         var i, model = [], options = select.options, l = options.length, hasDefaultSelect = false;
         for (i = 0; i < l; i++) {
             var j, o = {}, option = options[i];
-            var fields = [ "text", "value", "defaultSelected", "selected" ];
+            var fields = [ "text", "value", "defaultSelected", "selected", "disabled" ];
             for (j in fields) {
                 var field = fields[j];
                 o[field] = option[field];
             }
-            o.defaultSelected = option.defaultSelected ? "true" : "false";
-            if (option.selected) {
-                o.selected = "true";
-                hasDefaultSelect = true;
-            } else {
-                o.selected = "false";
-            }
+            if (option.selected) hasDefaultSelect = true;
             model.push(o);
         }
         // 当所有都没有设置 selected，默认设置第一个
@@ -285,23 +322,20 @@ define("arale/select/0.9.6/select-debug", [ "arale/overlay/1.1.1/overlay-debug",
         var i, j, l, ll, newModel = [], selectIndexArray = [];
         for (i = 0, l = model.length; i < l; i++) {
             var o = $.extend({}, model[i]);
-            if (o.selected) {
-                o.selected = o.defaultSelected = "true";
-                selectIndexArray.push(i);
-            } else {
-                o.selected = o.defaultSelected = "false";
-            }
+            if (o.selected) selectIndexArray.push(i);
+            o.selected = o.defaultSelected = !!o.selected;
+            o.disabled = !!o.disabled;
             newModel.push(o);
         }
         if (selectIndexArray.length > 0) {
             // 如果有多个 selected 则选中最后一个
             selectIndexArray.pop();
             for (j = 0, ll = selectIndexArray.length; j < ll; j++) {
-                newModel[j].selected = "false";
+                newModel[j].selected = false;
             }
         } else {
             //当所有都没有设置 selected 则默认设置第一个
-            newModel[0].selected = "true";
+            newModel[0].selected = true;
         }
         return {
             select: newModel,
@@ -336,9 +370,22 @@ define("arale/select/0.9.6/select-debug", [ "arale/overlay/1.1.1/overlay-debug",
             }
         }
     }
+    // 获取 className ，如果 classPrefix 不设置，就返回 ''
+    function getClassName(classPrefix, className) {
+        if (!classPrefix) return "";
+        return classPrefix + "-" + className;
+    }
+    // 获取 ul 中所有 li 的高度 
+    function getLiHeight(ul) {
+        var height = 0;
+        ul.find("li").each(function(index, item) {
+            height += $(item).outerHeight();
+        });
+        return height;
+    }
 });
 
-define("arale/select/0.9.6/select-debug.handlebars", [ "gallery/handlebars/1.0.2/runtime-debug" ], function(require, exports, module) {
+define("arale/select/0.9.7/select-debug.handlebars", [ "gallery/handlebars/1.0.2/runtime-debug" ], function(require, exports, module) {
     var Handlebars = require("gallery/handlebars/1.0.2/runtime-debug");
     var template = Handlebars.template;
     module.exports = template(function(Handlebars, depth0, helpers, partials, data) {
@@ -348,11 +395,21 @@ define("arale/select/0.9.6/select-debug.handlebars", [ "gallery/handlebars/1.0.2
             helpers[key] = helpers[key] || Handlebars.helpers[key];
         }
         data = data || {};
-        var buffer = "", stack1, functionType = "function", escapeExpression = this.escapeExpression, self = this;
+        var buffer = "", stack1, functionType = "function", escapeExpression = this.escapeExpression, self = this, helperMissing = helpers.helperMissing;
         function program1(depth0, data, depth1) {
-            var buffer = "", stack1, stack2;
-            buffer += '\n        <li data-role="item" class="' + escapeExpression((stack1 = depth1.classPrefix, 
-            typeof stack1 === functionType ? stack1.apply(depth0) : stack1)) + '-item" data-value="';
+            var buffer = "", stack1, stack2, options;
+            buffer += '\n        <li data-role="item"\n          class="' + escapeExpression((stack1 = depth1.classPrefix, 
+            typeof stack1 === functionType ? stack1.apply(depth0) : stack1)) + "-item ";
+            stack2 = helpers["if"].call(depth0, depth0.disabled, {
+                hash: {},
+                inverse: self.noop,
+                fn: self.programWithDepth(2, program2, data, depth1),
+                data: data
+            });
+            if (stack2 || stack2 === 0) {
+                buffer += stack2;
+            }
+            buffer += '"\n          data-value="';
             if (stack2 = helpers.value) {
                 stack2 = stack2.call(depth0, {
                     hash: {},
@@ -362,27 +419,22 @@ define("arale/select/0.9.6/select-debug.handlebars", [ "gallery/handlebars/1.0.2
                 stack2 = depth0.value;
                 stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2;
             }
-            buffer += escapeExpression(stack2) + '" data-defaultSelected="';
-            if (stack2 = helpers.defaultSelected) {
-                stack2 = stack2.call(depth0, {
-                    hash: {},
-                    data: data
-                });
-            } else {
-                stack2 = depth0.defaultSelected;
-                stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2;
-            }
-            buffer += escapeExpression(stack2) + '" data-selected="';
-            if (stack2 = helpers.selected) {
-                stack2 = stack2.call(depth0, {
-                    hash: {},
-                    data: data
-                });
-            } else {
-                stack2 = depth0.selected;
-                stack2 = typeof stack2 === functionType ? stack2.apply(depth0) : stack2;
-            }
-            buffer += escapeExpression(stack2) + '">';
+            buffer += escapeExpression(stack2) + '"\n          data-defaultSelected="';
+            options = {
+                hash: {},
+                data: data
+            };
+            buffer += escapeExpression((stack1 = helpers.output, stack1 ? stack1.call(depth0, depth0.defaultSelected, options) : helperMissing.call(depth0, "output", depth0.defaultSelected, options))) + '"\n          data-selected="';
+            options = {
+                hash: {},
+                data: data
+            };
+            buffer += escapeExpression((stack1 = helpers.output, stack1 ? stack1.call(depth0, depth0.selected, options) : helperMissing.call(depth0, "output", depth0.selected, options))) + '"\n          data-disabled="';
+            options = {
+                hash: {},
+                data: data
+            };
+            buffer += escapeExpression((stack1 = helpers.output, stack1 ? stack1.call(depth0, depth0.disabled, options) : helperMissing.call(depth0, "output", depth0.disabled, options))) + '">';
             if (stack2 = helpers.text) {
                 stack2 = stack2.call(depth0, {
                     hash: {},
@@ -396,6 +448,11 @@ define("arale/select/0.9.6/select-debug.handlebars", [ "gallery/handlebars/1.0.2
                 buffer += stack2;
             }
             buffer += "</li>\n        ";
+            return buffer;
+        }
+        function program2(depth0, data, depth2) {
+            var buffer = "", stack1;
+            buffer += escapeExpression((stack1 = depth2.classPrefix, typeof stack1 === functionType ? stack1.apply(depth0) : stack1)) + "-item-disabled";
             return buffer;
         }
         buffer += '<div class="';
