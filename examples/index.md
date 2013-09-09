@@ -23,8 +23,7 @@ trigger 为 select，并默认选中 option2
 ````javascript
 seajs.use(['select'], function(Select) {
     new Select({
-        trigger: '#example1',
-        width: 88
+        trigger: '#example1'
     }).render();
 });
 ````
@@ -41,7 +40,6 @@ trigger 为任意 DOM，但必须传入 model 数据
 seajs.use(['select'], function(Select) {
     new Select({
         trigger: '#example2',
-        width: 88,
         model: [
             {value:'option1', text:'option1'},
             {value:'option2', text:'option2', selected: true},
