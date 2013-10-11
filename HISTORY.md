@@ -2,6 +2,12 @@
 
 ---
 
+## 0.9.7
+
+`tag:improved` #52 change 事件增加之前的 item
+
+`tag:fixed` #51 修复 IE6 下的样式问题
+
 ## 0.9.6
 
 `tag:changed` 升级 overlay 到 1.1.1
