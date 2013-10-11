@@ -166,7 +166,7 @@ model 为数据源，和上面提到的 model 格式保持一致
 ```
 new Select({
     trigger: ''
-}).on('change', function(target) {
+}).on('change', function(target, prev) {
     console.log(target.html());
 })
 ```
