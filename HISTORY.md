@@ -4,9 +4,25 @@
 
 ## 0.9.7
 
+`tag:new` #45 增加 option 的 disabled 状态
+
+`tag:new` 使用 alice.select
+
+`tag:new` #14 添加 maxHeight 参数
+
 `tag:improved` #52 change 事件增加之前的 item
 
+`tag:improved` #45 如果不设置 classPrefix，所有通过js add/removeClass 的操作都无效
+
+`tag:improved` #45 triggerTpl 可配置
+
+`tag:improved` #37 item 区域的click点击不应该冒泡
+
+`tag:improved` #46 trigger 的触发方式应该是 mousedown
+
 `tag:fixed` #51 修复 IE6 下的样式问题
+
+`tag:fixed` #49 修复 trigger 无法 toggle 
 
 ## 0.9.6
 
