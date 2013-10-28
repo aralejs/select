@@ -125,8 +125,9 @@ define("arale/select/0.9.7/select-debug", [ "arale/overlay/1.1.1/overlay-debug",
             this.set("selectedIndex", selectIndex);
             // 如果不是原来选中的则触发 change 事件
             if (oldSelectIndex !== selectIndex) {
-                var selected = this.options.eq(selectIndex);
-                this.trigger("change", selected);
+                var current = this.options.eq(selectIndex);
+                var previous = this.options.eq(oldSelectIndex);
+                this.trigger("change", current, previous);
             }
             this.hide();
             return this;
