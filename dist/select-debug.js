@@ -173,6 +173,28 @@ define("arale/select/0.9.8/select-debug", [ "arale/overlay/1.1.4/overlay-debug",
             }
             return this;
         },
+        enableOption: function(option) {
+            var index = getOptionIndex(option, this.options);
+            var model = this.get("model").select;
+            for (var i = 0; i < model.length; i++) {
+                if (i === index) {
+                    model[i].disabled = false;
+                }
+            }
+            this.syncModel(model);
+            return this;
+        },
+        disableOption: function(option) {
+            var index = getOptionIndex(option, this.options);
+            var model = this.get("model").select;
+            for (var i = 0; i < model.length; i++) {
+                if (i === index) {
+                    model[i].disabled = true;
+                }
+            }
+            this.syncModel(model);
+            return this;
+        },
         // set 后的回调
         // ------------
         _onRenderSelectedIndex: function(index) {
@@ -376,7 +398,7 @@ define("arale/select/0.9.8/select-debug", [ "arale/overlay/1.1.4/overlay-debug",
         if (!classPrefix) return "";
         return classPrefix + "-" + className;
     }
-    // 获取 ul 中所有 li 的高度 
+    // 获取 ul 中所有 li 的高度
     function getLiHeight(ul) {
         var height = 0;
         ul.find("li").each(function(index, item) {
