@@ -624,7 +624,6 @@ define(function(require) {
                 ]
             }).render();
             select.disableOption(2);
-            console.log(select.options.eq(2));
             expect(select.options.eq(2).data('disabled')).to.be.ok();
             select.enableOption(2);
             expect(select.options.eq(2).data('disabled')).not.to.be.ok();
