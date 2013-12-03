@@ -2,6 +2,10 @@
 
 ---
 
+## 0.9.8
+
+`tag:improved` 升级依赖到 overlay@1.1.4 和 template@0.9.2 。
+
 ## 0.9.7
 
 `tag:new` #45 增加 option 的 disabled 状态
