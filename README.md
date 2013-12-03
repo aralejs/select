@@ -155,6 +155,14 @@ model 为数据源，和上面提到的 model 格式保持一致
 
 删除某个选项，参数和 `.select` 方法一致
 
+### .enableOption(option)
+
+使某个选项可选，参数和 `.select` 方法一致
+
+### .disableOption(option)
+
+使某个选项不可选，参数和 `.select` 方法一致
+
 ## 事件
 
 ### change

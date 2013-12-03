@@ -612,5 +612,23 @@ define(function(require) {
             expect(select.get('selectSource')[0].value).to.be('value4');
         });
 
+        it('disable & enable option', function() {
+            trigger = $('<a href="#" id="example"></a>')
+                .appendTo(document.body);
+            select = new Select({
+                trigger: '#example',
+                model: [
+                    {value: 'value1', text: 'text1'},
+                    {value: 'value2', text: 'text2', selected: true},
+                    {value: 'value3', text: 'text3'}
+                ]
+            }).render();
+            select.disableOption(2);
+            console.log(select.options.eq(2));
+            expect(select.options.eq(2).data('disabled')).to.be.ok();
+            select.enableOption(2);
+            expect(select.options.eq(2).data('disabled')).not.to.be.ok();
+        });
+
     });
 });

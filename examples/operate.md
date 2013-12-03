@@ -122,3 +122,29 @@ seajs.use(['select'], function(Select) {
     }).render();
 });
 ````
+
+## 设置某项为不可选
+
+<select id="example7">
+    <option value="option1">option1</option>
+    <option value="option2" selected="selected">option2</option>
+    <option value="option3">option3</option>
+</select>
+<a href="javascript:;" id="example7-disable" style="margin-left:20px;">disable 第三项</a>
+<a href="javascript:;" id="example7-enable" style="margin-left:20px;">enable 第三项</a>
+
+````javascript
+seajs.use(['select','jquery'], function(Select, $) {
+    var example7 = new Select({
+        trigger: '#example7'
+    }).render();
+
+    $('#example7-enable').click(function() {
+        example7.enableOption(2);
+    });
+
+    $('#example7-disable').click(function() {
+        example7.disableOption(2);
+    });
+});
+````

@@ -23,7 +23,7 @@ define(function(require, exports, module) {
             align: {
                 baseXY: [0, '100%-1px']
             },
-            
+
             // trigger 的 tpl
             triggerTpl: '<a href="#"></a>',
 
@@ -208,6 +208,30 @@ define(function(require, exports, module) {
             } else if (removedIndex < oldIndex) {
                 this.set('selectedIndex', oldIndex - 1);
             }
+            return this;
+        },
+
+        enableOption: function(option) {
+            var index = getOptionIndex(option, this.options);
+            var model = this.get("model").select;
+            for (var i=0; i<model.length; i++) {
+                if (i === index) {
+                    model[i].disabled = false;
+                }
+            }
+            this.syncModel(model);
+            return this;
+        },
+
+        disableOption: function(option) {
+            var index = getOptionIndex(option, this.options);
+            var model = this.get("model").select;
+            for (var i=0; i<model.length; i++) {
+                if (i === index) {
+                    model[i].disabled = true;
+                }
+            }
+            this.syncModel(model);
             return this;
         },
 
@@ -434,7 +458,7 @@ define(function(require, exports, module) {
         return classPrefix + '-' + className;
     }
 
-    // 获取 ul 中所有 li 的高度 
+    // 获取 ul 中所有 li 的高度
     function getLiHeight (ul) {
         var height = 0;
         ul.find('li').each(function(index, item) {
