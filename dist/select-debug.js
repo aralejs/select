@@ -123,6 +123,15 @@ define("arale/select/0.9.8/select-debug", [ "arale/overlay/1.1.4/overlay-debug",
             var selectIndex = getOptionIndex(option, this.options);
             var oldSelectIndex = this.get("selectedIndex");
             this.set("selectedIndex", selectIndex);
+            // 同步 html 到 model
+            var model = this.get("model");
+            if (oldSelectIndex >= 0) {
+                model.select[oldSelectIndex].selected = false;
+            }
+            if (selectIndex >= 0) {
+                model.select[selectIndex].selected = true;
+            }
+            this.set("model", model);
             // 如果不是原来选中的则触发 change 事件
             if (oldSelectIndex !== selectIndex) {
                 var current = this.options.eq(selectIndex);
@@ -176,6 +185,7 @@ define("arale/select/0.9.8/select-debug", [ "arale/overlay/1.1.4/overlay-debug",
         enableOption: function(option) {
             var index = getOptionIndex(option, this.options);
             var model = this.get("model").select;
+            console.log(model);
             model[index].disabled = false;
             this.syncModel(model);
             return this;

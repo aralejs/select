@@ -629,5 +629,24 @@ define(function(require) {
             expect(select.options.eq(2).data('disabled')).not.to.be.ok();
         });
 
+        it('html sync to model', function() {
+            trigger = $('<a href="#" id="example"></a>')
+                .appendTo(document.body);
+            select = new Select({
+                trigger: '#example',
+                model: [
+                    {value: 'value1', text: 'text1'},
+                    {value: 'value2', text: 'text2', selected: true},
+                    {value: 'value3', text: 'text3'}
+                ]
+            }).render();
+            select.select(0);
+            expect(select.get('model').select[0].selected).to.be.ok();
+            select.select(1);
+            expect(select.get('model').select[1].selected).to.be.ok();
+            select.select(2);
+            expect(select.get('model').select[2].selected).to.be.ok();
+        });
+
     });
 });

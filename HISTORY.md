@@ -5,7 +5,10 @@
 ## 0.9.8
 
 `tag:improved` 升级依赖到 overlay@1.1.4 和 template@0.9.2 。
+
 `tag:new` 添加 enableOption 和 disableOption 方法。
+
+`tag:fixed` 修复了选中选项后没有同步到 model 的问题。
 
 ## 0.9.7
 

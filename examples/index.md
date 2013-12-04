@@ -24,9 +24,7 @@ trigger 为 select，并默认选中 option2
 seajs.use(['select'], function(Select) {
     new Select({
         trigger: '#example1'
-    }).render().on('change', function(t, p) {
-        this.disableOption(p);
-    });
+    }).render();
 });
 ````
 
