@@ -214,11 +214,7 @@ define(function(require, exports, module) {
         enableOption: function(option) {
             var index = getOptionIndex(option, this.options);
             var model = this.get("model").select;
-            for (var i=0; i<model.length; i++) {
-                if (i === index) {
-                    model[i].disabled = false;
-                }
-            }
+            model[index].disabled = false;
             this.syncModel(model);
             return this;
         },
@@ -226,11 +222,7 @@ define(function(require, exports, module) {
         disableOption: function(option) {
             var index = getOptionIndex(option, this.options);
             var model = this.get("model").select;
-            for (var i=0; i<model.length; i++) {
-                if (i === index) {
-                    model[i].disabled = true;
-                }
-            }
+            model[index].disabled = true;
             this.syncModel(model);
             return this;
         },
