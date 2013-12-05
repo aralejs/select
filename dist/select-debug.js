@@ -191,7 +191,6 @@ define("arale/select/0.9.8/select-debug", [ "arale/overlay/1.1.4/overlay-debug",
         enableOption: function(option) {
             var index = getOptionIndex(option, this.options);
             var model = this.get("model").select;
-            console.log(model);
             model[index].disabled = false;
             this.syncModel(model);
             return this;

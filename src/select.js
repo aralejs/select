@@ -231,7 +231,6 @@ define(function(require, exports, module) {
         enableOption: function(option) {
             var index = getOptionIndex(option, this.options);
             var model = this.get("model").select;
-            console.log(model);
             model[index].disabled = false;
             this.syncModel(model);
             return this;
