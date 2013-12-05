@@ -96,7 +96,7 @@ define(function(require, exports, module) {
                 // 不用 hide() 的原因是需要和 arale/validator 的 skipHidden 来配合
                 trigger.after(newTrigger).css({
                     position: 'absolute',
-                    opacity: '-99999px',
+                    left: '-99999px',
                     zIndex: -100
                 });
 
