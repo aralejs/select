@@ -83,6 +83,7 @@ define("arale/select/0.9.8/select-debug", [ "arale/overlay/1.1.4/overlay-debug",
                 // 不用 hide() 的原因是需要和 arale/validator 的 skipHidden 来配合
                 trigger.after(newTrigger).css({
                     position: "absolute",
+                    opacity: "-99999px",
                     zIndex: -100
                 });
                 // trigger 如果为 select 则根据 select 的结构生成
