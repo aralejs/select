@@ -79,7 +79,12 @@ define("arale/select/0.9.8/select-debug", [ "arale/overlay/1.1.4/overlay-debug",
                 var newTrigger = $(this.get("triggerTpl")).addClass(getClassName(this.get("classPrefix"), "trigger"));
                 this.set("trigger", newTrigger);
                 this._initFromSelect = true;
-                trigger.after(newTrigger).hide();
+                // 隐藏原生控件
+                // 不用 hide() 的原因是需要和 arale/validator 的 skipHidden 来配合
+                trigger.after(newTrigger).css({
+                    position: "absolute",
+                    zIndex: -100
+                });
                 // trigger 如果为 select 则根据 select 的结构生成
                 this.set("model", convertSelect(trigger[0], this.get("classPrefix")));
             } else {

@@ -10,6 +10,8 @@
 
 `tag:fixed` 修复了选中选项后没有同步到 model 的问题。
 
+`tag:fixed` 原生 select 采用特殊方式进行隐藏，探测它时为可见状态。
+
 ## 0.9.7
 
 `tag:new` #45 增加 option 的 disabled 状态

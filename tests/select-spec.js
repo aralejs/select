@@ -27,7 +27,7 @@ define(function(require) {
             }).render();
 
             expect(select.get('selectSource')[0]).to.be(trigger[0]);
-            expect(trigger.is(':hidden')).to.be(true);
+            expect(trigger.is(':hidden')).to.be(false);
             expect(select.get('trigger').html()).to.be('text1');
             expect(select.get('value')).to.be('value1');
             expect(select.get('length')).to.be(2);
@@ -646,6 +646,14 @@ define(function(require) {
             expect(select.get('model').select[1].selected).to.be.ok();
             select.select(2);
             expect(select.get('model').select[2].selected).to.be.ok();
+        });
+
+        it('html original select should be visiable', function() {
+            trigger = $('<select id="example"><option value="value1">text1</option><option value="value2">text2</option></select>').appendTo(document.body);
+            select = new Select({
+                trigger: '#example'
+            }).render();
+            expect(select.get('selectSource').is(':visible')).to.be.ok();
         });
 
     });
