@@ -77,6 +77,8 @@ define(function(require, exports, module) {
             Select.superclass.initAttrs.call(this, config, dataAttrsConfig);
 
             var selectName, trigger = this.get('trigger');
+            trigger.addClass(getClassName(this.get('classPrefix'), 'trigger'));
+
             if (trigger[0].tagName.toLowerCase() === 'select') {
                 // 初始化 name
                 // 如果 select 的 name 存在则覆盖 name 属性

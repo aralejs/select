@@ -66,6 +66,7 @@ define("arale/select/0.9.8/select-debug", [ "arale/overlay/1.1.4/overlay-debug",
         initAttrs: function(config, dataAttrsConfig) {
             Select.superclass.initAttrs.call(this, config, dataAttrsConfig);
             var selectName, trigger = this.get("trigger");
+            trigger.addClass(getClassName(this.get("classPrefix"), "trigger"));
             if (trigger[0].tagName.toLowerCase() === "select") {
                 // 初始化 name
                 // 如果 select 的 name 存在则覆盖 name 属性
