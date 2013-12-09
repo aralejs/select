@@ -114,7 +114,7 @@ define(function(require, exports, module) {
                             '<input type="hidden" id="select-' + selectName +
                             '" name="' + selectName +
                             '" />'
-                        ).insertBefore(trigger);
+                        ).insertAfter(trigger);
                     }
                     this.set('selectSource', input);
                 }

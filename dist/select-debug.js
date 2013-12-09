@@ -95,7 +95,7 @@ define("arale/select/0.9.8/select-debug", [ "arale/overlay/1.1.4/overlay-debug",
                 if (selectName) {
                     var input = $("input[name=" + selectName + "]").eq(0);
                     if (!input[0]) {
-                        input = $('<input type="hidden" id="select-' + selectName + '" name="' + selectName + '" />').insertBefore(trigger);
+                        input = $('<input type="hidden" id="select-' + selectName + '" name="' + selectName + '" />').insertAfter(trigger);
                     }
                     this.set("selectSource", input);
                 }
