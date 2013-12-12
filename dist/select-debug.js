@@ -93,9 +93,9 @@ define("arale/select/0.9.8/select-debug", [ "arale/overlay/1.1.4/overlay-debug",
                 // 如果 name 存在则创建隐藏域
                 selectName = this.get("name");
                 if (selectName) {
-                    var input = $("input[name=" + selectName + "]").eq(0);
+                    var input = $('input[name="' + selectName + '"]').eq(0);
                     if (!input[0]) {
-                        input = $('<input type="hidden" id="select-' + selectName + '" name="' + selectName + '" />').insertAfter(trigger);
+                        input = $('<input type="hidden" id="select-' + selectName.replace(/\./g, "-") + '" name="' + selectName + '" />').insertAfter(trigger);
                     }
                     this.set("selectSource", input);
                 }

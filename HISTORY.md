@@ -12,6 +12,8 @@
 
 `tag:fixed` 原生 select 采用特殊方式进行隐藏，探测它时为可见状态。
 
+`tag:fixed` 修复 name 属性中带 `.` 时报错的问题。
+
 ## 0.9.7
 
 `tag:new` #45 增加 option 的 disabled 状态
