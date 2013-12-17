@@ -14,6 +14,8 @@
 
 `tag:fixed` 修复 name 属性中带 `.` 时报错的问题。
 
+`tag:fixed` 修复 destroy 时没有删除隐藏的 input 的问题。
+
 ## 0.9.7
 
 `tag:new` #45 增加 option 的 disabled 状态

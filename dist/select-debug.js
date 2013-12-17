@@ -121,6 +121,7 @@ define("arale/select/0.9.8/select-debug", [ "arale/overlay/1.1.4/overlay-debug",
             if (this._initFromSelect) {
                 this.get("trigger").remove();
             }
+            this.get("selectSource").remove();
             this.element.remove();
             Select.superclass.destroy.call(this);
         },
