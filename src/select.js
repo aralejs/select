@@ -336,8 +336,10 @@ define(function(require, exports, module) {
             var width = this.element.outerWidth();
             var pl = parseInt(trigger.css('padding-left'), 10);
             var pr = parseInt(trigger.css('padding-right'), 10);
-            var bl = parseInt(trigger.css('border-left-width'), 10);
-            var br = parseInt(trigger.css('border-right-width'), 10);
+            // maybe 'thin|medium|thick' in IE
+            // just give a 0
+            var bl = parseInt(trigger.css('border-left-width'), 10) || 0;
+            var br = parseInt(trigger.css('border-right-width'), 10) || 0;
             trigger.css('width', width - pl - pr - bl - br);
         },
 

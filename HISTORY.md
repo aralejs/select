@@ -16,6 +16,9 @@
 
 `tag:fixed` 修复 destroy 时没有删除隐藏的 input 的问题。
 
+`tag:fixed` 修复 IE 下由于 border-width 可能为 `thin|medium|thick` 导致的宽度计算错误。
+
+
 ## 0.9.7
 
 `tag:new` #45 增加 option 的 disabled 状态
