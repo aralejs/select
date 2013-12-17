@@ -144,7 +144,7 @@ define(function(require, exports, module) {
             if (this._initFromSelect) {
                 this.get('trigger').remove();
             }
-            this.get('selectSource').remove();
+            this.get('selectSource') && this.get('selectSource').remove();
             this.element.remove();
             Select.superclass.destroy.call(this);
         },
