@@ -121,7 +121,7 @@ define("arale/select/0.9.8/select-debug", [ "arale/overlay/1.1.4/overlay-debug",
             if (this._initFromSelect) {
                 this.get("trigger").remove();
             }
-            this.get("selectSource").remove();
+            this.get("selectSource") && this.get("selectSource").remove();
             this.element.remove();
             Select.superclass.destroy.call(this);
         },
@@ -275,9 +275,10 @@ define("arale/select/0.9.8/select-debug", [ "arale/overlay/1.1.4/overlay-debug",
             var width = this.element.outerWidth();
             var pl = parseInt(trigger.css("padding-left"), 10);
             var pr = parseInt(trigger.css("padding-right"), 10);
+            // maybe 'thin|medium|thick' in IE
+            // just give a 0
             var bl = parseInt(trigger.css("border-left-width"), 10) || 0;
             var br = parseInt(trigger.css("border-right-width"), 10) || 0;
-            console.log(width, pl, pr, bl, br);
             trigger.css("width", width - pl - pr - bl - br);
         },
         // borrow from dropdown
