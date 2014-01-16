@@ -95,7 +95,11 @@ define("arale/select/0.9.8/select-debug", [ "arale/overlay/1.1.4/overlay-debug",
                 if (selectName) {
                     var input = $('input[name="' + selectName + '"]').eq(0);
                     if (!input[0]) {
-                        input = $('<input type="hidden" id="select-' + selectName.replace(/\./g, "-") + '" name="' + selectName + '" />').insertAfter(trigger);
+                        input = $('<input type="text" id="select-' + selectName.replace(/\./g, "-") + '" name="' + selectName + '" />').css({
+                            position: "absolute",
+                            left: "-99999px",
+                            zIndex: -100
+                        }).insertAfter(trigger);
                     }
                     this.set("selectSource", input);
                 }

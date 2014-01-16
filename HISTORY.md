@@ -10,7 +10,7 @@
 
 `tag:fixed` 修复了选中选项后没有同步到 model 的问题。
 
-`tag:fixed` 原生 select 采用特殊方式进行隐藏，探测它时为可见状态。
+`tag:improved` 原生控件都采用特殊方式进行隐藏，用代码探测时为可见状态。
 
 `tag:fixed` 修复 name 属性中带 `.` 时报错的问题。
 

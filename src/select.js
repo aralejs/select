@@ -111,10 +111,14 @@ define(function(require, exports, module) {
                     var input = $('input[name="' + selectName + '"]').eq(0);
                     if (!input[0]) {
                         input = $(
-                            '<input type="hidden" id="select-' + selectName.replace(/\./g, '-') +
+                            '<input type="text" id="select-' + selectName.replace(/\./g, '-') +
                             '" name="' + selectName +
                             '" />'
-                        ).insertAfter(trigger);
+                        ).css({
+                            position: 'absolute',
+                            left: '-99999px',
+                            zIndex: -100
+                        }).insertAfter(trigger);
                     }
                     this.set('selectSource', input);
                 }
