@@ -2,6 +2,10 @@
 
 ---
 
+## 0.9.9
+
+`tag:improved` 生成的 input[hidden] 控件用特殊方式进行隐藏，用代码探测时为可见状态。
+
 ## 0.9.8
 
 `tag:improved` 升级依赖到 overlay@1.1.4 和 template@0.9.2 。
@@ -10,7 +14,7 @@
 
 `tag:fixed` 修复了选中选项后没有同步到 model 的问题。
 
-`tag:improved` 原生控件都采用特殊方式进行隐藏，用代码探测时为可见状态。
+`tag:improved` 原生 select 采用特殊方式进行隐藏，探测它时为可见状态。
 
 `tag:fixed` 修复 name 属性中带 `.` 时报错的问题。
 
