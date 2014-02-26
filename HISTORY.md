@@ -2,6 +2,10 @@
 
 ---
 
+## 0.9.10
+
+`tag:fixed` #54 修复 completeModel 函数的问题
+
 ## 0.9.9
 
 `tag:improved` 生成的 input[hidden] 控件用特殊方式进行隐藏，用代码探测时为可见状态。
