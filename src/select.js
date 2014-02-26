@@ -435,7 +435,7 @@ define(function(require, exports, module) {
             // 如果有多个 selected 则选中最后一个
             selectIndexArray.pop();
             for (j = 0, ll = selectIndexArray.length; j < ll; j++) {
-                newModel[j].selected = false;
+                newModel[selectIndexArray[j]].selected = false;
             }
         } else { //当所有都没有设置 selected 则默认设置第一个
             newModel[0].selected = true;

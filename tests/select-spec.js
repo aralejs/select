@@ -656,5 +656,22 @@ define(function(require) {
             expect(select.get('selectSource').is(':visible')).to.be.ok();
         });
 
+        it('#54 completeModel bug', function () {
+            trigger = $('<a href="#" id="example"></a>')
+                .appendTo(document.body);
+            select = new Select({
+                trigger: '#example',
+                model: [
+                    {value: 'value1', text: 'text1', selected: true},
+                    {value: 'value2', text: 'text2'},
+                    {value: 'value3', text: 'text3', selected: true},
+                    {value: 'value4', text: 'text4', selected: true}
+                ]
+            }).render();
+            expect(select.get('model').select[0].selected).not.to.be.ok();
+            expect(select.get('model').select[1].selected).not.to.be.ok();
+            expect(select.get('model').select[2].selected).not.to.be.ok();
+            expect(select.get('model').select[3].selected).to.be.ok();
+        })
     });
 });
