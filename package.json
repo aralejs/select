@@ -1,7 +1,6 @@
 {
-  "family": "arale",
-  "name": "select",
-  "version": "0.9.9",
+  "name": "arale-select",
+  "version": "0.10.0",
   "description": "模拟 select 的组件",
   "keywords": ["widget"],
   "homepage": "http://aralejs.org/select",
@@ -18,16 +17,26 @@
     "url": "https://github.com/aralejs/select/issues"
   },
   "spm": {
-    "alias": {
-      "$": "$",
-      "overlay": "arale/overlay/1.1.4/overlay",
-      "templatable": "arale/templatable/0.9.2/templatable"
+    "dependencies": {
+      "jquery": "1.7.2",
+      "arale-overlay": "1.2.0",
+      "arale-templatable": "0.10.0",
+      "handlebars-runtime": "1.3.0"
     },
-    "devAlias": {
-      "puerh": "popomore/puerh/0.1.0/puerh",
-      "select.css": "alice/select/1.0.2/select.css"
+    "devDependencies": {
+      "sinon": "1.6.0",
+      "expect.js": "0.3.1",
+      "alice-select": "1.1.0"
     },
-    "output": ["./select.js"]
+    "engines": {
+      "seajs": "2.2.1",
+      "seajs-text": "1.1.0"
+    },
+    "main": "./index.js",
+    "output": [
+      "./index.css"
+    ],
+    "buildArgs": "--ignore jquery"
   },
   "tests": [
     "select"

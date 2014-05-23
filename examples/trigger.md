@@ -5,7 +5,7 @@
 ----
 
 <script>
-seajs.use('select.css');
+seajs.use('index.css');
 </script>
 
 ## trigger 的宽度和浮层的宽度保持一致
@@ -14,7 +14,7 @@ seajs.use('select.css');
 <a href="#" id="example7-2" class="ui-select-trigger">请选择</a>
 
 ````javascript
-seajs.use(['select','jquery'], function(Select, $) {
+seajs.use(['../index'], function(Select) {
     new Select({
         trigger: '#example7-1',
         model: [
@@ -44,7 +44,7 @@ seajs.use(['select','jquery'], function(Select, $) {
 ````
 
 ````javascript
-seajs.use(['select','jquery'], function(Select, $) {
+seajs.use(['../index'], function(Select) {
     new Select({
         trigger: '#example8',
         model: [

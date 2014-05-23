@@ -2,6 +2,10 @@
 
 ---
 
+## 0.10.0
+
+`improved` 按照 spm@3.x 规范升级。
+
 ## 0.9.10
 
 `tag:fixed` #54 修复 completeModel 函数的问题

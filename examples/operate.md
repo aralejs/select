@@ -5,7 +5,7 @@
 ----
 
 <script>
-seajs.use('select.css');
+seajs.use('index.css');
 </script>
 
 ## 设置 select 为 disabled
@@ -18,7 +18,7 @@ seajs.use('select.css');
 <a href="#" id="example3-disabled" style="margin-left:20px;">设置 disabled=true</a>
 
 ````javascript
-seajs.use(['select','jquery'], function(Select, $) {
+seajs.use(['../index','jquery'], function(Select, $) {
     var example3 = new Select({
         trigger: '#example3',
         disabled: true
@@ -46,7 +46,7 @@ seajs.use(['select','jquery'], function(Select, $) {
 
 
 ````javascript
-seajs.use(['select','jquery'], function(Select, $) {
+seajs.use(['../index','jquery'], function(Select, $) {
     var example4 = new Select({
         trigger: '#example4',
         name: 'example4',
@@ -72,7 +72,7 @@ seajs.use(['select','jquery'], function(Select, $) {
 <span id="example5-log"></span>
 
 ````javascript
-seajs.use(['select','jquery'], function(Select, $) {
+seajs.use(['../index','jquery'], function(Select, $) {
     var log = $('#example5-log');
     new Select({
         trigger: '#example5',
@@ -115,7 +115,7 @@ seajs.use(['select','jquery'], function(Select, $) {
 ````
 
 ````javascript
-seajs.use(['select'], function(Select) {
+seajs.use(['../index'], function(Select) {
     new Select({
         trigger: '#example6',
         maxHeight: 100
@@ -134,7 +134,7 @@ seajs.use(['select'], function(Select) {
 <a href="javascript:;" id="example7-enable" style="margin-left:20px;">enable 第三项</a>
 
 ````javascript
-seajs.use(['select','jquery'], function(Select, $) {
+seajs.use(['../index','jquery'], function(Select, $) {
     var example7 = new Select({
         trigger: '#example7'
     }).render();

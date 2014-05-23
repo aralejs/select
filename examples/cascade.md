@@ -5,7 +5,7 @@
 ---
 
 <script>
-seajs.use('select.css');
+seajs.use('index.css');
 </script>
 
 <script type="text/javascript">
@@ -47,7 +47,7 @@ function parseCity(type, prov) {
 通过 change 事件监听切换，通知其他 select 更新数据
 
 ````javascript
-seajs.use(['select'], function(Select) {
+seajs.use(['../index'], function(Select) {
     var a1 = new Select({
         trigger: '#exampel6-1',
         triggerTpl: '<a href="#"><span data-role="trigger-content"></span><i class="iconfont" title="下三角形">&#xF03C;</i></a>',

@@ -5,7 +5,7 @@
 ----
 
 <script>
-seajs.use('select.css');
+seajs.use('index.css');
 </script>
 
 ## 可以根据原生的 select 初始化
@@ -21,7 +21,7 @@ trigger 为 select，并默认选中 option2
 ````
 
 ````javascript
-seajs.use(['select'], function(Select) {
+seajs.use(['../index'], function(Select) {
     new Select({
         trigger: '#example1'
     }).render();
@@ -37,7 +37,7 @@ trigger 为任意 DOM，但必须传入 model 数据
 ````
 
 ````javascript
-seajs.use(['select'], function(Select) {
+seajs.use(['../index'], function(Select) {
     new Select({
         trigger: '#example2',
         model: [
