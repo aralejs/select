@@ -4,9 +4,7 @@
 
 ----
 
-<script>
-seajs.use('index.css');
-</script>
+<link rel="stylesheet" href="../spm_modules/alice-select/1.1.0/dist/select-debug.css" />
 
 ## 可以根据原生的 select 初始化
 
@@ -21,11 +19,10 @@ trigger 为 select，并默认选中 option2
 ````
 
 ````javascript
-seajs.use(['../index'], function(Select) {
-    new Select({
-        trigger: '#example1'
-    }).render();
-});
+var Select = require('arale-select');
+new Select({
+    trigger: '#example1'
+}).render();
 ````
 
 ## 可直接传入 DOM 初始化
@@ -37,15 +34,14 @@ trigger 为任意 DOM，但必须传入 model 数据
 ````
 
 ````javascript
-seajs.use(['../index'], function(Select) {
-    new Select({
-        trigger: '#example2',
-        model: [
-            {value:'option1', text:'option1'},
-            {value:'option2', text:'option2', selected: true},
-            {value:'option3', text:'option3', disabled: true}
-        ]
-    }).render();
-});
+var Select = require('arale-select');
+new Select({
+    trigger: '#example2',
+    model: [
+        {value:'option1', text:'option1'},
+        {value:'option2', text:'option2', selected: true},
+        {value:'option3', text:'option3', disabled: true}
+    ]
+}).render();
 ````
 

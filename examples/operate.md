@@ -4,9 +4,7 @@
 
 ----
 
-<script>
-seajs.use('index.css');
-</script>
+<link rel="stylesheet" href="../spm_modules/alice-select/1.1.0/dist/select-debug.css" />
 
 ## 设置 select 为 disabled
 
@@ -18,21 +16,22 @@ seajs.use('index.css');
 <a href="#" id="example3-disabled" style="margin-left:20px;">设置 disabled=true</a>
 
 ````javascript
-seajs.use(['../index','jquery'], function(Select, $) {
-    var example3 = new Select({
-        trigger: '#example3',
-        disabled: true
-    }).render();
+var Select = require('arale-select');
+var $ = require('jquery');
 
-    $('#example3-disabled').click(function(e) {
-        e.preventDefault();
-        example3.set('disabled', true);
-    });
+var example3 = new Select({
+    trigger: '#example3',
+    disabled: true
+}).render();
 
-    $('#example3-abled').click(function(e) {
-        e.preventDefault();
-        example3.set('disabled', false);
-    });
+$('#example3-disabled').click(function(e) {
+    e.preventDefault();
+    example3.set('disabled', true);
+});
+
+$('#example3-abled').click(function(e) {
+    e.preventDefault();
+    example3.set('disabled', false);
 });
 ````
 
@@ -46,23 +45,24 @@ seajs.use(['../index','jquery'], function(Select, $) {
 
 
 ````javascript
-seajs.use(['../index','jquery'], function(Select, $) {
-    var example4 = new Select({
-        trigger: '#example4',
-        name: 'example4',
-        model: [
-            {value:'option1', text:'option1'},
-            {value:'option2', text:'option2'},
-            {value:'option3', text:'option3'},
-            {value:'option4', text:'option4'}
-        ]
-    }).render();
+var Select = require('arale-select');
+var $ = require('jquery');
 
-    $('.example4-select').click(function(e) {
-        e.preventDefault();
-        var index = $(e.currentTarget).attr('data-value');
-        example4.select(index - 1);
-    });
+var example4 = new Select({
+    trigger: '#example4',
+    name: 'example4',
+    model: [
+        {value:'option1', text:'option1'},
+        {value:'option2', text:'option2'},
+        {value:'option3', text:'option3'},
+        {value:'option4', text:'option4'}
+    ]
+}).render();
+
+$('.example4-select').click(function(e) {
+    e.preventDefault();
+    var index = $(e.currentTarget).attr('data-value');
+    example4.select(index - 1);
 });
 ````
 
@@ -72,25 +72,26 @@ seajs.use(['../index','jquery'], function(Select, $) {
 <span id="example5-log"></span>
 
 ````javascript
-seajs.use(['../index','jquery'], function(Select, $) {
-    var log = $('#example5-log');
-    new Select({
-        trigger: '#example5',
-        model: [
-            {value:'option1', text:'option1'},
-            {value:'option2', text:'option2'},
-            {value:'option3', text:'option3'},
-            {value:'option4', text:'option4'}
-        ]
-    }).on('change', function(target) {
-        log.html(
-            '已选择: value -> ' + 
-            target.attr('data-value') +
-            '; text -> ' +
-            target.html()
-        );
-    }).render();
-});
+var Select = require('arale-select');
+var $ = require('jquery');
+
+var log = $('#example5-log');
+new Select({
+    trigger: '#example5',
+    model: [
+        {value:'option1', text:'option1'},
+        {value:'option2', text:'option2'},
+        {value:'option3', text:'option3'},
+        {value:'option4', text:'option4'}
+    ]
+}).on('change', function(target) {
+    log.html(
+        '已选择: value -> ' + 
+        target.attr('data-value') +
+        '; text -> ' +
+        target.html()
+    );
+}).render();
 ````
 
 ## 设置最大高度
@@ -115,12 +116,11 @@ seajs.use(['../index','jquery'], function(Select, $) {
 ````
 
 ````javascript
-seajs.use(['../index'], function(Select) {
-    new Select({
-        trigger: '#example6',
-        maxHeight: 100
-    }).render();
-});
+var Select = require('arale-select');
+new Select({
+    trigger: '#example6',
+    maxHeight: 100
+}).render();
 ````
 
 ## 设置某项为不可选
@@ -134,17 +134,18 @@ seajs.use(['../index'], function(Select) {
 <a href="javascript:;" id="example7-enable" style="margin-left:20px;">enable 第三项</a>
 
 ````javascript
-seajs.use(['../index','jquery'], function(Select, $) {
-    var example7 = new Select({
-        trigger: '#example7'
-    }).render();
+var Select = require('arale-select');
+var $ = require('jquery');
 
-    $('#example7-enable').click(function() {
-        example7.enableOption(2);
-    });
+var example7 = new Select({
+    trigger: '#example7'
+}).render();
 
-    $('#example7-disable').click(function() {
-        example7.disableOption(2);
-    });
+$('#example7-enable').click(function() {
+    example7.enableOption(2);
+});
+
+$('#example7-disable').click(function() {
+    example7.disableOption(2);
 });
 ````

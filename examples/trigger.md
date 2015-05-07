@@ -4,9 +4,7 @@
 
 ----
 
-<script>
-seajs.use('index.css');
-</script>
+<link rel="stylesheet" href="../spm_modules/alice-select/1.1.0/dist/select-debug.css" />
 
 ## trigger 的宽度和浮层的宽度保持一致
 
@@ -14,25 +12,25 @@ seajs.use('index.css');
 <a href="#" id="example7-2" class="ui-select-trigger">请选择</a>
 
 ````javascript
-seajs.use(['../index'], function(Select) {
-    new Select({
-        trigger: '#example7-1',
-        model: [
-            {value:'option1', text:'aaaaaaaaaaaaaaaa'},
-            {value:'option2', text:'字比较少'},
-            {value:'option3', text:'字比较少'}
-        ]
-    }).render();
+var Select = require('arale-select');
 
-    new Select({
-        trigger: '#example7-2',
-        model: [
-            {value:'option1', text:'字好多多aaa多多多多多'},
-            {value:'option2', text:'字比较多'},
-            {value:'option3', text:'字比较多'}
-        ]
-    }).render();
-});
+new Select({
+    trigger: '#example7-1',
+    model: [
+        {value:'option1', text:'aaaaaaaaaaaaaaaa'},
+        {value:'option2', text:'字比较少'},
+        {value:'option3', text:'字比较少'}
+    ]
+}).render();
+
+new Select({
+    trigger: '#example7-2',
+    model: [
+        {value:'option1', text:'字好多多aaa多多多多多'},
+        {value:'option2', text:'字比较多'},
+        {value:'option3', text:'字比较多'}
+    ]
+}).render();
 ````
 
 ## 自定义 trigger
@@ -44,13 +42,12 @@ seajs.use(['../index'], function(Select) {
 ````
 
 ````javascript
-seajs.use(['../index'], function(Select) {
-    new Select({
-        trigger: '#example8',
-        model: [
-            {value:'option1', text:'option1'},
-            {value:'option2', text:'option2'}
-        ]
-    }).render();
-});
+var Select = require('arale-select');
+new Select({
+    trigger: '#example8',
+    model: [
+        {value:'option1', text:'option1'},
+        {value:'option2', text:'option2'}
+    ]
+}).render();
 ````
