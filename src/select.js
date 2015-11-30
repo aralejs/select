@@ -109,7 +109,7 @@ var Select = Overlay.extend({
                 var input = $('input[name="' + selectName + '"]').eq(0);
                 if (!input[0]) {
                     input = $(
-                        '<input type="text" id="select-' + selectName.replace(/\./g, '-') +
+                        '<input type="text" tabindex="-1" id="select-' + selectName.replace(/\./g, '-') +
                         '" name="' + selectName +
                         '" />'
                     ).css({
