@@ -22,3 +22,4 @@ sea-modules
 _site
 dist
 spm_modules
+coverage
