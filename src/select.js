@@ -63,7 +63,7 @@ var Select = Overlay.extend({
     },
 
     templateHelpers: {
-        output: function(data) {
+        toString: function(data) {
             return data + '';
         }
     },
@@ -162,10 +162,10 @@ var Select = Overlay.extend({
         // 同步 html 到 model
         var model = this.get('model');
         if (oldSelectIndex >= 0) {
-            model.select[oldSelectIndex].selected = false;
+            model.options[oldSelectIndex].selected = false;
         }
         if (selectIndex >= 0) {
-            model.select[selectIndex].selected = true;
+            model.options[selectIndex].selected = true;
         }
         this.set('model', model);
 
@@ -206,7 +206,7 @@ var Select = Overlay.extend({
     },
 
     addOption: function(option) {
-        var model = this.get("model").select;
+        var model = this.get("model").options;
         model.push(option);
         this.syncModel(model);
         return this;
@@ -235,7 +235,7 @@ var Select = Overlay.extend({
 
     enableOption: function(option) {
         var index = getOptionIndex(option, this.options);
-        var model = this.get("model").select;
+        var model = this.get("model").options;
         model[index].disabled = false;
         this.syncModel(model);
         return this;
@@ -243,7 +243,7 @@ var Select = Overlay.extend({
 
     disableOption: function(option) {
         var index = getOptionIndex(option, this.options);
-        var model = this.get("model").select;
+        var model = this.get("model").options;
         model[index].disabled = true;
         this.syncModel(model);
         return this;
@@ -416,7 +416,7 @@ function convertSelect(select, classPrefix) {
     if (!hasDefaultSelect && model.length) {
         model[0].selected = 'true';
     }
-    return {select: model, classPrefix: classPrefix};
+    return {options: model, classPrefix: classPrefix};
 }
 
 // 补全 model 对象
@@ -438,7 +438,7 @@ function completeModel(model, classPrefix) {
     } else { //当所有都没有设置 selected 则默认设置第一个
         newModel[0].selected = true;
     }
-    return {select: newModel, classPrefix: classPrefix};
+    return {options: newModel, classPrefix: classPrefix};
 }
 
 function getOptionIndex(option, options) {
