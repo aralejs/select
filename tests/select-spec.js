@@ -54,7 +54,7 @@ describe('select', function() {
                 trigger: '#example'
             }).render();
 
-            var model = select.get("model").select;
+            var model = select.get("model").options;
             expect(model[0].defaultSelected).to.be(false);
             expect(model[0].selected).to.be(true);
             expect(model[0].value).to.be('value1');
@@ -71,7 +71,7 @@ describe('select', function() {
                 trigger: '#example'
             }).render();
 
-            var model = select.get("model").select;
+            var model = select.get("model").options;
             expect(model[0].defaultSelected).to.be(false);
             expect(model[0].selected).to.be(false);
             expect(model[0].value).to.be('value1');
@@ -88,7 +88,7 @@ describe('select', function() {
                 trigger: '#example'
             }).render();
 
-            var model = select.get("model").select;
+            var model = select.get("model").options;
             expect(model[0].disabled).to.be(false);
             expect(model[1].disabled).to.be(true);
         });
@@ -99,7 +99,7 @@ describe('select', function() {
                 trigger: '#example'
             }).render();
 
-            var model = select.get("model").select;
+            var model = select.get("model").options;
             expect(model[0].defaultSelected).to.be(true);
             expect(model[0].selected).to.be(false);
             expect(model[0].value).to.be('value1');
@@ -120,7 +120,7 @@ describe('select', function() {
                 ]
             }).render();
 
-            var model = select.get("model").select;
+            var model = select.get("model").options;
             expect(model[0].defaultSelected).to.be(false);
             expect(model[0].selected).to.be(true);
             expect(model[0].value).to.be('value1');
@@ -141,7 +141,7 @@ describe('select', function() {
                 ]
             }).render();
 
-            var model = select.get("model").select;
+            var model = select.get("model").options;
             expect(model[0].defaultSelected).to.be(false);
             expect(model[0].selected).to.be(false);
             expect(model[0].value).to.be('value1');
@@ -162,7 +162,7 @@ describe('select', function() {
                 ]
             }).render();
 
-            var model = select.get("model").select;
+            var model = select.get("model").options;
             expect(model[0].defaultSelected).to.be(true);
             expect(model[0].selected).to.be(false);
             expect(model[0].value).to.be('value1');
@@ -179,7 +179,7 @@ describe('select', function() {
                 trigger: '#example'
             }).render();
 
-            var model = select.get("model").select;
+            var model = select.get("model").options;
             expect(model.length).to.be(0);
         });
 
@@ -639,11 +639,11 @@ describe('select', function() {
             ]
         }).render();
         select.select(0);
-        expect(select.get('model').select[0].selected).to.be.ok();
+        expect(select.get('model').options[0].selected).to.be.ok();
         select.select(1);
-        expect(select.get('model').select[1].selected).to.be.ok();
+        expect(select.get('model').options[1].selected).to.be.ok();
         select.select(2);
-        expect(select.get('model').select[2].selected).to.be.ok();
+        expect(select.get('model').options[2].selected).to.be.ok();
     });
 
     it('html original select should be visiable', function() {
@@ -666,9 +666,9 @@ describe('select', function() {
                 {value: 'value4', text: 'text4', selected: true}
             ]
         }).render();
-        expect(select.get('model').select[0].selected).not.to.be.ok();
-        expect(select.get('model').select[1].selected).not.to.be.ok();
-        expect(select.get('model').select[2].selected).not.to.be.ok();
-        expect(select.get('model').select[3].selected).to.be.ok();
+        expect(select.get('model').options[0].selected).not.to.be.ok();
+        expect(select.get('model').options[1].selected).not.to.be.ok();
+        expect(select.get('model').options[2].selected).not.to.be.ok();
+        expect(select.get('model').options[3].selected).to.be.ok();
     })
 });
