@@ -1,8 +1,10 @@
 {
   "name": "arale-select",
-  "version": "0.11.1",
+  "version": "1.0.0",
   "description": "模拟 select 的组件",
-  "keywords": ["widget"],
+  "keywords": [
+    "widget"
+  ],
   "homepage": "http://aralejs.org/select",
   "author": "贯高 <sakura9515@gmail.com>",
   "maintainers": [
@@ -17,28 +19,33 @@
     "url": "https://github.com/aralejs/select/issues"
   },
   "spm": {
-    "dependencies": {
-      "jquery": "1.7.2",
-      "arale-overlay": "1.2.0",
-      "arale-templatable": "0.10.0",
-      "handlebars-runtime": "1.3.0",
-      "alice-select": "1.1.0"
-    },
-    "devDependencies": {
-      "sinon": "1.6.0",
-      "expect.js": "0.3.1"
-    },
-    "engines": {
-      "seajs": "2.2.1",
-      "seajs-text": "1.1.0"
-    },
-    "main": "./index.js",
-    "output": [
-      "./index.css"
-    ],
-    "buildArgs": "--ignore jquery"
+    "build": {
+      "global": {
+        "jquery": "jQuery"
+      }
+    }
   },
-  "tests": [
-    "select"
-  ]
+  "main": "./index.js",
+  "dependencies": {
+    "arale-overlay": "~1.2.2",
+    "arale-templatable": "~1.0.1",
+    "alice-select": "~1.1.0"
+  },
+  "devDependencies": {
+    "atool-build": "~0.7.6",
+    "atool-doc": "^0.4.3",
+    "atool-test": "^0.4.3",
+    "expect.js": "^0.3.1",
+    "handlebars-runtime": "~1.0.12",
+    "sinon": "^1.17.4"
+  },
+  "scripts": {
+    "build": "atool-build -o ./dist/${npm_package_family}/${npm_package_name}/${npm_package_version}",
+    "test": "atool-test",
+    "doc": "atool-doc"
+  },
+  "engines": {
+    "node": ">=4.0.0"
+  },
+  "publishConfig": {}
 }

@@ -1,6 +1,8 @@
 # HISTORY
 
 ---
+## 1.0.0
+`CHANGED` 升级到 atool，npm源
 
 ## 0.11.0
 

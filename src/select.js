@@ -2,7 +2,18 @@ var Overlay = require('arale-overlay');
 var $ = require('jquery');
 var Templatable = require('arale-templatable');
 
-var template = require('./select.handlebars');
+var template = `<div class="{{classPrefix}}">
+    <ul class="{{classPrefix}}-content" data-role="content">
+        {{#each options}}
+        <li data-role="item"
+          class="{{../classPrefix}}-item {{#if disabled}}{{../../classPrefix}}-item-disabled{{/if}}"
+          data-value="{{value}}"
+          data-defaultSelected="{{toString defaultSelected}}"
+          data-selected="{{toString selected}}"
+          data-disabled="{{toString disabled}}">{{{text}}}</li>
+        {{/each}}
+    </ul>
+</div>`;
 
 var Select = Overlay.extend({
 
