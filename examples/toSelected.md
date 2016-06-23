@@ -1,7 +1,5 @@
 # 通过 select 接口去选择
 
-<link rel="stylesheet" href="../node_modules/alice-select/dist/select.css" />
-
 ```html
 <script type="text/javascript" src="https://a.alipayobjects.com/jquery/jquery/1.7.2/jquery.js"></script>
 <a href="#" id="example4" class="ui-select-trigger">请选择</a>

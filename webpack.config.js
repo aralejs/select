@@ -2,7 +2,7 @@ const webpack = require('atool-build/lib/webpack');
 
 module.exports = function(webpackConfig) {
   webpackConfig.externals = {
-     jquery: "jQuery",
+     jquery: "jQuery"
   };
 
   // disable common

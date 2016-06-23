@@ -1,2 +1,1 @@
-
-module.exports = require('./src/select');
+module.exports = require('./lib/select');

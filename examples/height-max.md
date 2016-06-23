@@ -1,7 +1,5 @@
 # 设置最大高度
 
-<link rel="stylesheet" href="../node_modules/alice-select/dist/select.css" />
-
 ```html
 <script type="text/javascript" src="https://a.alipayobjects.com/jquery/jquery/1.7.2/jquery.js"></script>
 
