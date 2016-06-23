@@ -1,5 +1,4 @@
 # trigger
-<link rel="stylesheet" href="../node_modules/alice-select/dist/select.css" />
 
 需要指定 `data-role="trigger-content"`，否则会覆盖整个 trigger 的内容
 

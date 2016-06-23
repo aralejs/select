@@ -1,7 +1,5 @@
 # 级联操作
 
-<link rel="stylesheet" href="../node_modules/alice-select/dist/select.css" />
-
 ```html
 <script type="text/javascript" src="https://a.alipayobjects.com/jquery/jquery/1.7.2/jquery.js"></script>
 
@@ -47,6 +45,7 @@ function parseCity(type, prov) {
 }
 
 import Select from '../index';
+
 const a1 = new Select({
     trigger: '#exampel6-1',
     triggerTpl: '<a href="#"><span data-role="trigger-content"></span><i class="iconfont" title="下三角形">&#xF03C;</i></a>',

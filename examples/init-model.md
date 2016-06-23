@@ -1,7 +1,5 @@
 # 直接传入 DOM 初始化
 
-<link rel="stylesheet" href="../node_modules/alice-select/dist/select.css" />
-
 trigger 为任意 DOM，但必须传入 model 数据
 
 ```html
